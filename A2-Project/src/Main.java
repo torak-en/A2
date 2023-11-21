@@ -29,6 +29,6 @@ public class Main {
 	}
 
 	public void tick() {
-		System.out.println("a");
+
 	}
 }
