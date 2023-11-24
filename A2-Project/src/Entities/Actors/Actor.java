@@ -38,4 +38,16 @@ public abstract class Actor {
 	public char getLayout() {
 		return layout;
 	}
+
+	public Direction getPreviousDirection() {
+		return previousDirection;
+	}
+
+	public Direction getPendingDirection() {
+		return pendingDirection;
+	}
+
+	public void setPendingDirection(Direction pendingDirection) {
+		this.pendingDirection = pendingDirection;
+	}
 }
