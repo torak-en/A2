@@ -1,3 +1,7 @@
+import Entities.Actors.Actor;
+import Entities.Items.Item;
+import Entities.Tiles.Tile;
+
 import java.util.List;
 
 public class LevelLayout {
@@ -8,35 +12,35 @@ public class LevelLayout {
     List<Item> itemList;
     List<Actor> actorList;
 
-    private void setTile(int x, int y, Tile newTile) {
+    public void setTile(int x, int y, Tile newTile) {
         tileLayer[y][x] = newTile;
     }
-    private Tile getTile(int x, int y, Tile newTile) {
+    public Tile getTile(int x, int y, Tile newTile) {
         return tileLayer[y][x] ;
     }
-    private List<Item> getItems (){
+    public List<Item> getItems (){
         return this.itemList;
     }
-    private void setItem(int x, Item item){
+    public void setItem(int x, Item item){
         itemList.add(x,item);
     }
-    private List<Actor> getActors (){
+    public List<Actor> getActors (){
         return this.actorList;
     }
-    private void setActor(int x, Actor actor){
+    public void setActor(int x, Actor actor){
         actorList.add(x,actor);
     }
-    private void createTileLayer(int x, int y){
+    public void createTileLayer(int x, int y){
         this.tileLayer = new Tile[y][x];
     }
-    private void setSpawn (int x, int y){
+    public void setSpawn (int x, int y){
         this.spawnX = x;
         this.spawnY = y;
     }
-    private int getSpawnX(){
+    public int getSpawnX(){
         return this.spawnX;
     }
-    private int getSpawnY(){
+    public int getSpawnY(){
         return this.spawnY;
     }
 

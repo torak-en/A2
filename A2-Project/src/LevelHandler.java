@@ -6,6 +6,7 @@ import java.util.Scanner;
 
 public class LevelHandler {
     static int levelTime = 0; //The amount of completion time a level file has specified.
+    static int specialisedTileCount = 0;
 
     /***
      * Constructor to create a LevelHandler object.
@@ -23,68 +24,109 @@ public class LevelHandler {
     private static Level readDataFile(File fileLevel) {
         Scanner in;
 
-        Level newLevelLayout = null;
+        Level newLevel = null;
 
         try {
             in = new Scanner(fileLevel);
-            newLevelLayout = readLineByLine(in);
+            newLevel = readLineByLine(in);
         } catch (FileNotFoundException e) {
             System.out.println("Could not find " + fileLevel.getName());
             System.exit(1);
         }
-        return newLevelLayout;
+        return newLevel;
     }
 
     /***
      * Method that allows for the retrieval of the levelTime attribute.
-     * @return levelTime of the Level.
+     * @return The completion time of the Level.
      */
     public static int getLevelTime() {
         return levelTime;
     }
 
     /***
-     * Private Method that produces a LevelLayout from the data read from the Scanner reading the file.
+     * Private method that produces a LevelLayout from the data read from the Scanner reading the file.
      * @param in
-     * @return Completed LevelLayout structure.
+     * @return A completed LevelLayout structure.
      */
     private static Level readLineByLine(Scanner in) {
         String levelName = in.next();
         levelTime = in.nextInt();
         int levelWidth = in.nextInt();
         int levelHeight = in.nextInt();
-        String levelShape = in.next();
 
-
-        //Work Zone.
         Level newLevel = new Level();
-        LevelLayout newLevelLayout = null;
+        newLevel.levelName = levelName;
+        newLevel.timer = levelTime;
+
+        LevelLayout newLevelLayout = new LevelLayout();
+        String parseThis = in.next(); //This -> S,I,D,P,T-1,CS-2,B,E,LD
+        //System.out.println(parseThis);
+
+
+        //Tile Scanning
+
+        Scanner tileParseScanner = new Scanner(parseThis);
+        tileParseScanner.useDelimiter(",");
+
+
+
+        //Use another loop to get multi-line?
+//        for (int j = 0; j < levelHeight; j++) {
+//
+//        }
+        for (int i = 0; i < levelWidth; i++) {
+            String currentVal = tileParseScanner.next();
+            if (currentVal.equalsIgnoreCase("B")) {
+                //System.out.println("Button" + i);
+                //Specialised
+                specialisedTileCount++;
+            } else if (currentVal.equalsIgnoreCase("CS")) {
+                //System.out.println("ComputerSocket" + i);
+                //Specialised
+                specialisedTileCount++;
+            } else if (currentVal.equalsIgnoreCase("D")) {
+                //System.out.println("Dirt" + i);
+            } else if (currentVal.equalsIgnoreCase("E")) {
+                //System.out.println("Exit" + i);
+            } else if (currentVal.equalsIgnoreCase("I")) {
+                //System.out.println("Ice" + i);
+                //Specialised
+                specialisedTileCount++;
+            } else if (currentVal.equalsIgnoreCase("LD")) {
+                //System.out.println("LockedDoor" + i);
+                //Specialised
+                specialisedTileCount++;
+            } else if (currentVal.equalsIgnoreCase("P")) {
+                //System.out.println("Path" + i);
+            } else if (currentVal.equalsIgnoreCase("T")) {
+                //System.out.println("Trap" + i);
+                //Specialised
+                specialisedTileCount++;
+            } else if (currentVal.equalsIgnoreCase("W")) {
+                //System.out.println("Water" + i);
+            } else if (currentVal.equalsIgnoreCase("WL")) {
+                //System.out.println("Wall" + i);
+            } else if (currentVal.equalsIgnoreCase("S")) {
+                newLevelLayout.setSpawn(i, levelWidth);
+            } else {
+                System.out.println("CurrentVal is: " + i + currentVal);
+            }
+        }
+
+        specialisedParse(in, specialisedTileCount);
 
         newLevel.currentLevel = newLevelLayout;
-
         return newLevel;
     }
 
-    /**
-     * Private method that initialises the Tile, Actor and Item layers that make up the LevelLayout
-     * @param in
-     * @param newLevelLayout
-     * @param levelWidth
-     * @param levelHeight
-     * @return A completed LevelLayout structure.
-     */
-    private static LevelLayout initialiseLayers(Scanner in, LevelLayout newLevelLayout, int levelWidth, int levelHeight) {
-        //TBD
-        return newLevelLayout;
-    }
+    private static Tile specialisedParse(Scanner in, int specialisedTileCount) {
+        String currentTileVal = in.next();
 
-    /***
-     * Private method that parses the Tile data in the file being read
-     * @param in
-     * @return The respective tile produced by the letter in the file.
-     */
-    private static Tile parseTileData(Scanner in) {
-        //TBD
+        for (int i = 0; i < specialisedTileCount; i++) {
+            System.out.println(currentTileVal);
+        }
+
         return null;
     }
 }
