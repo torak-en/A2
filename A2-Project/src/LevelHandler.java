@@ -1,3 +1,5 @@
+import Entities.Tiles.Tile;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
@@ -10,7 +12,7 @@ public class LevelHandler {
      * @param levelFile
      */
     public LevelHandler(File levelFile) {
-        readDataFile(levelFile); //Produces a Complete LevelLayout Object.
+        readDataFile(levelFile); //Produces a complete LevelLayout object.
     }
 
     /***
@@ -18,10 +20,10 @@ public class LevelHandler {
      * @param fileLevel
      * @return A completed LevelLayout object with all it's attributes.
      */
-    private static LevelLayout readDataFile(File fileLevel) {
+    private static Level readDataFile(File fileLevel) {
         Scanner in;
 
-        LevelLayout newLevelLayout = null;
+        Level newLevelLayout = null;
 
         try {
             in = new Scanner(fileLevel);
@@ -46,17 +48,43 @@ public class LevelHandler {
      * @param in
      * @return Completed LevelLayout structure.
      */
-    private static LevelLayout readLineByLine(Scanner in) {
+    private static Level readLineByLine(Scanner in) {
         String levelName = in.next();
         levelTime = in.nextInt();
         int levelWidth = in.nextInt();
         int levelHeight = in.nextInt();
         String levelShape = in.next();
 
+
+        //Work Zone.
         Level newLevel = new Level();
+        LevelLayout newLevelLayout = null;
 
-        LevelLayout newLevelMock = null;
+        newLevel.currentLevel = newLevelLayout;
 
-        return newLevelMock;
+        return newLevel;
+    }
+
+    /**
+     * Private method that initialises the Tile, Actor and Item layers that make up the LevelLayout
+     * @param in
+     * @param newLevelLayout
+     * @param levelWidth
+     * @param levelHeight
+     * @return A completed LevelLayout structure.
+     */
+    private static LevelLayout initialiseLayers(Scanner in, LevelLayout newLevelLayout, int levelWidth, int levelHeight) {
+        //TBD
+        return newLevelLayout;
+    }
+
+    /***
+     * Private method that parses the Tile data in the file being read
+     * @param in
+     * @return The respective tile produced by the letter in the file.
+     */
+    private static Tile parseTileData(Scanner in) {
+        //TBD
+        return null;
     }
 }
