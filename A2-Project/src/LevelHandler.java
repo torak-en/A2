@@ -1,4 +1,4 @@
-import Entities.Tiles.Tile;
+import Entities.Tiles.*;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -59,72 +59,89 @@ public class LevelHandler {
         newLevel.levelName = levelName;
         newLevel.timer = levelTime;
 
-        LevelLayout newLevelLayout = new LevelLayout();
-        String parseThis = in.next(); //This -> S,I,D,P,T-1,CS-2,B,E,LD
-        //System.out.println(parseThis);
-
-
-        //Tile Scanning
-
-        Scanner tileParseScanner = new Scanner(parseThis);
-        tileParseScanner.useDelimiter(",");
-
-
-
-        //Use another loop to get multi-line?
-//        for (int j = 0; j < levelHeight; j++) {
-//
-//        }
-        for (int i = 0; i < levelWidth; i++) {
-            String currentVal = tileParseScanner.next();
-            if (currentVal.equalsIgnoreCase("B")) {
-                //System.out.println("Button" + i);
-                //Specialised
-                specialisedTileCount++;
-            } else if (currentVal.equalsIgnoreCase("CS")) {
-                //System.out.println("ComputerSocket" + i);
-                //Specialised
-                specialisedTileCount++;
-            } else if (currentVal.equalsIgnoreCase("D")) {
-                //System.out.println("Dirt" + i);
-            } else if (currentVal.equalsIgnoreCase("E")) {
-                //System.out.println("Exit" + i);
-            } else if (currentVal.equalsIgnoreCase("I")) {
-                //System.out.println("Ice" + i);
-                //Specialised
-                specialisedTileCount++;
-            } else if (currentVal.equalsIgnoreCase("LD")) {
-                //System.out.println("LockedDoor" + i);
-                //Specialised
-                specialisedTileCount++;
-            } else if (currentVal.equalsIgnoreCase("P")) {
-                //System.out.println("Path" + i);
-            } else if (currentVal.equalsIgnoreCase("T")) {
-                //System.out.println("Trap" + i);
-                //Specialised
-                specialisedTileCount++;
-            } else if (currentVal.equalsIgnoreCase("W")) {
-                //System.out.println("Water" + i);
-            } else if (currentVal.equalsIgnoreCase("WL")) {
-                //System.out.println("Wall" + i);
-            } else if (currentVal.equalsIgnoreCase("S")) {
-                newLevelLayout.setSpawn(i, levelWidth);
-            } else {
-                System.out.println("CurrentVal is: " + i + currentVal);
-            }
-        }
-
-        specialisedParse(in, specialisedTileCount);
-
-        newLevel.currentLevel = newLevelLayout;
+        newLevel.currentLevel = initialiseLevelLayout(in, levelWidth, levelHeight); //Initialises the levelLayout
         return newLevel;
     }
 
+
+    /*
+    Main class to parse through the Tile, Item and Actor levelLayout information-
+    currently the main priority is initialising tiles and specialised tile attributes.
+     */
+    private static LevelLayout initialiseLevelLayout(Scanner in, int levelWidth, int levelHeight) {
+        LevelLayout newLevelLayout = new LevelLayout();
+        newLevelLayout.createTileLayer(levelWidth, levelHeight);
+
+        String tileSection = in.next();
+        Scanner tileParseScanner = new Scanner(tileSection);
+        tileParseScanner.useDelimiter(",");
+
+        //Loops through the file and outputs the location on an x, y level. (Should allow for multi-line/height support)
+        for (int j = 0; j < levelHeight; j++) {
+            for (int i = 0; i < levelWidth; i++) {
+                String currentLetter = tileParseScanner.next(); //Reads the currentTile Letter and assignment for comparisons
+                if (currentLetter.equalsIgnoreCase("B")) {
+                    System.out.println("Button" + i + "," + j);
+                    //SpecialisedTile
+                    specialisedTileCount++;
+                } else if (currentLetter.equalsIgnoreCase("CS")) {
+                    System.out.println("ComputerSocket" + i + "," + j);
+                    //SpecialisedTile
+                    specialisedTileCount++;
+                } else if (currentLetter.equalsIgnoreCase("D")) {
+//                    System.out.println("Dirt" + i + "," + j);
+                    Dirt dirtTile = new Dirt(i, j);
+                    newLevelLayout.setTile(i, j, dirtTile);
+                } else if (currentLetter.equalsIgnoreCase("E")) {
+//                    System.out.println("Exit" + i + "," + j);
+                    Exit exitTile = new Exit(i, j);
+                    newLevelLayout.setTile(i, j, exitTile);
+                } else if (currentLetter.equalsIgnoreCase("I")) {
+                    System.out.println("Ice" + i + "," + j);
+                    //SpecialisedTile
+                    specialisedTileCount++;
+                } else if (currentLetter.equalsIgnoreCase("LD")) {
+                    System.out.println("LockedDoor" + i + "," + j);
+                    //SpecialisedTile
+                    specialisedTileCount++;
+                } else if (currentLetter.equalsIgnoreCase("P")) {
+//                    System.out.println("Path" + i + "," + j);
+                    Path pathTile = new Path(i, j);
+                    newLevelLayout.setTile(i, j, pathTile);
+                } else if (currentLetter.equalsIgnoreCase("T")) {
+                    System.out.println("Trap" + i + "," + j);
+                    //SpecialisedTile
+                    specialisedTileCount++;
+                } else if (currentLetter.equalsIgnoreCase("W")) {
+//                    System.out.println("Water" + i + "," + j);
+                    Water waterTile = new Water(i, j);
+                    newLevelLayout.setTile(i, j, waterTile);
+                } else if (currentLetter.equalsIgnoreCase("WL")) {
+//                    System.out.println("Wall" + i + "," + j);
+                    Wall wallTile = new Wall(i, j);
+                    newLevelLayout.setTile(i, j, wallTile);
+                } else if (currentLetter.equalsIgnoreCase("S")) {
+                    newLevelLayout.setSpawn(i, j);
+                } else {
+                    System.out.println("CurrentTile is: " + i + currentLetter);
+                }
+            }
+        }
+
+        //specialisedParse(in, specialisedTileCount);
+
+
+        return newLevelLayout;
+    }
+
+    /* TBD: Idea behind this is to parse the data for specialised tiles
+     that have additional attributes, that can then be added to the levelLayout.
+     */
     private static Tile specialisedParse(Scanner in, int specialisedTileCount) {
-        String currentTileVal = in.next();
+        String specialisedTileAttribute = in.next();
 
         for (int i = 0; i < specialisedTileCount; i++) {
-            System.out.println(currentTileVal);
+            System.out.println(specialisedTileAttribute);
         }
 
         return null;

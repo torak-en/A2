@@ -1,0 +1,11 @@
+Test 500
+9 1
+S,I,D,P,T,CS,B,E,LD
+T1,CS2
+K-Blue
+I-RD
+F-51
+P-32D
+B-34L
+Ke-51
+Bu-22,1
