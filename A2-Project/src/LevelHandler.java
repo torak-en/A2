@@ -1,4 +1,5 @@
-import Entities.Tiles.*;
+import Enum.Direction;
+import Tiles.*;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -6,7 +7,6 @@ import java.util.Scanner;
 
 public class LevelHandler {
     static int levelTime = 0; //The amount of completion time a level file has specified.
-    static int specialisedTileCount = 0;
 
     /***
      * Constructor to create a LevelHandler object.
@@ -72,52 +72,48 @@ public class LevelHandler {
         LevelLayout newLevelLayout = new LevelLayout();
         newLevelLayout.createTileLayer(levelWidth, levelHeight);
 
-        String tileSection = in.next();
-        Scanner tileParseScanner = new Scanner(tileSection);
-        tileParseScanner.useDelimiter(",");
+        initialiseTileLayer(newLevelLayout, in, levelHeight, levelWidth);
+
+        return newLevelLayout;
+    }
+
+    //Continue with TileParserAccessory Methods
+    //You have the general pattern now
+
+    //Ice will be a bit of a pain.
+
+
+    private static LevelLayout initialiseTileLayer(LevelLayout newLevelLayout, Scanner tileScanner, int levelHeight, int levelWidth) {
+        String tileSection = tileScanner.next();
+        Scanner tileDataScanner = new Scanner(tileSection); //Specific to parsing 1st Line
+        tileDataScanner.useDelimiter(",");
 
         //Loops through the file and outputs the location on an x, y level. (Should allow for multi-line/height support)
         for (int j = 0; j < levelHeight; j++) {
             for (int i = 0; i < levelWidth; i++) {
-                String currentLetter = tileParseScanner.next(); //Reads the currentTile Letter and assignment for comparisons
+                String currentLetter = tileDataScanner.next(); //Reads the currentTile Letter and assignment for comparisons
+
+
+                //Testing for specialisedTiles, non-specialised Tiles can be set perfectly well.
+
                 if (currentLetter.equalsIgnoreCase("B")) {
-                    System.out.println("Button" + i + "," + j);
-                    //SpecialisedTile
-                    specialisedTileCount++;
-                } else if (currentLetter.equalsIgnoreCase("CS")) {
-                    System.out.println("ComputerSocket" + i + "," + j);
-                    //SpecialisedTile
-                    specialisedTileCount++;
+                    Button buttonTile = new Button(i, j, ButtonAttributeParse("B", tileScanner));
+                    newLevelLayout.setTile(i, j, buttonTile);
+//                } else if (currentLetter.equalsIgnoreCase("CS")) {
+//                    ChipSocket chipSocketTile = new ChipSocket(i, j, ChipSocketAttributeParse("CS", tileScanner));
                 } else if (currentLetter.equalsIgnoreCase("D")) {
-//                    System.out.println("Dirt" + i + "," + j);
                     Dirt dirtTile = new Dirt(i, j);
                     newLevelLayout.setTile(i, j, dirtTile);
                 } else if (currentLetter.equalsIgnoreCase("E")) {
-//                    System.out.println("Exit" + i + "," + j);
                     Exit exitTile = new Exit(i, j);
                     newLevelLayout.setTile(i, j, exitTile);
-                } else if (currentLetter.equalsIgnoreCase("I")) {
-                    System.out.println("Ice" + i + "," + j);
-                    //SpecialisedTile
-                    specialisedTileCount++;
-                } else if (currentLetter.equalsIgnoreCase("LD")) {
-                    System.out.println("LockedDoor" + i + "," + j);
-                    //SpecialisedTile
-                    specialisedTileCount++;
                 } else if (currentLetter.equalsIgnoreCase("P")) {
-//                    System.out.println("Path" + i + "," + j);
                     Path pathTile = new Path(i, j);
                     newLevelLayout.setTile(i, j, pathTile);
-                } else if (currentLetter.equalsIgnoreCase("T")) {
-                    System.out.println("Trap" + i + "," + j);
-                    //SpecialisedTile
-                    specialisedTileCount++;
                 } else if (currentLetter.equalsIgnoreCase("W")) {
-//                    System.out.println("Water" + i + "," + j);
                     Water waterTile = new Water(i, j);
                     newLevelLayout.setTile(i, j, waterTile);
                 } else if (currentLetter.equalsIgnoreCase("WL")) {
-//                    System.out.println("Wall" + i + "," + j);
                     Wall wallTile = new Wall(i, j);
                     newLevelLayout.setTile(i, j, wallTile);
                 } else if (currentLetter.equalsIgnoreCase("S")) {
@@ -128,20 +124,171 @@ public class LevelHandler {
             }
         }
 
-        //specialisedParse(in, specialisedTileCount);
-
-
-        return newLevelLayout;
+        return (newLevelLayout);
     }
 
-    /* TBD: Idea behind this is to parse the data for specialised tiles
-     that have additional attributes, that can then be added to the levelLayout.
-     */
-    private static Tile specialisedParse(Scanner in, int specialisedTileCount) {
+    //issue is we need to start from 0 everytime.
+    private static int ButtonAttributeParse(String currentLetter, Scanner in) {
+        int currentButtonID = 0;
         String specialisedTileAttribute = in.next();
 
-        for (int i = 0; i < specialisedTileCount; i++) {
-            System.out.println(specialisedTileAttribute);
+        Scanner idParser = new Scanner(specialisedTileAttribute);
+        idParser.useDelimiter(",");
+
+        int z = 0;
+
+        while ((idParser.hasNext()) && z < specialisedTileAttribute.length()) {
+            String tileSpecialisedValue = idParser.next();
+            Scanner breakdownParser = new Scanner(tileSpecialisedValue);
+            breakdownParser.useDelimiter("-");
+
+
+            String tileIdentifier = breakdownParser.next();
+
+            if (tileIdentifier.equalsIgnoreCase(currentLetter)) {
+                int tileSpecialisedID = breakdownParser.nextInt();
+                currentButtonID = tileSpecialisedID;
+                return currentButtonID;
+            } else {
+                z++;
+            }
+        }
+        return currentButtonID;
+    }
+
+    private static int ChipSocketAttributeParse(String currentLetter, Scanner in) {
+        int currentChipSocketNumberOfChips = 0;
+
+        String specialisedTileAttribute = in.next();
+
+        Scanner idParser = new Scanner(specialisedTileAttribute);
+        idParser.useDelimiter(",");
+
+        int z = 0;
+
+        while ((idParser.hasNext()) && z < specialisedTileAttribute.length()) {
+            String tileSpecialisedValue = idParser.next();
+            Scanner breakdownParser = new Scanner(tileSpecialisedValue);
+            breakdownParser.useDelimiter("-");
+
+
+            String tileIdentifier = breakdownParser.next();
+
+            if (tileIdentifier.equalsIgnoreCase(currentLetter)) {
+                int tileSpecialisedID = breakdownParser.nextInt();
+                currentChipSocketNumberOfChips = tileSpecialisedID;
+                return currentChipSocketNumberOfChips;
+            }
+
+            z++;
+        }
+
+        return currentChipSocketNumberOfChips;
+    }
+
+    private static int TrapAttributeParse(String currentLetter, Scanner in) {
+        int currentTrapID = 0;
+
+        String specialisedTileAttribute = in.next();
+
+        Scanner idParser = new Scanner(specialisedTileAttribute);
+        idParser.useDelimiter(",");
+
+        int z = 0;
+
+        while ((idParser.hasNext()) && z < specialisedTileAttribute.length()) {
+            String tileSpecialisedValue = idParser.next();
+            Scanner breakdownParser = new Scanner(tileSpecialisedValue);
+            breakdownParser.useDelimiter("-");
+
+
+            String tileIdentifier = breakdownParser.next();
+
+            if (tileIdentifier.equalsIgnoreCase(currentLetter)) {
+                int tileSpecialisedID = breakdownParser.nextInt();
+                currentTrapID = tileSpecialisedID;
+            } else {
+                z++;
+            }
+        }
+
+
+        return currentTrapID;
+    }
+
+    private static String LockedDoorAttributeParse(String currentLetter, Scanner in) {
+        String currentLockedDoorColour = "";
+
+        String specialisedTileAttribute = in.next();
+
+        Scanner idParser = new Scanner(specialisedTileAttribute);
+        idParser.useDelimiter(",");
+
+        int z = 0;
+
+        while ((idParser.hasNext()) && z < specialisedTileAttribute.length()) {
+            String tileSpecialisedValue = idParser.next();
+            Scanner breakdownParser = new Scanner(tileSpecialisedValue);
+            breakdownParser.useDelimiter("-");
+
+
+            String tileIdentifier = breakdownParser.next();
+
+            if (tileIdentifier.equalsIgnoreCase(currentLetter)) {
+                String tileSpecialisedAttribute = breakdownParser.next();
+                currentLockedDoorColour = tileSpecialisedAttribute;
+            } else {
+                z++;
+            }
+        }
+
+        return currentLockedDoorColour;
+    }
+
+    private static Direction IceAttributeParse(String currentLetter, Scanner in) {
+        Direction currentDirection = null;
+
+        String specialisedTileAttribute = in.next();
+
+        Scanner idParser = new Scanner(specialisedTileAttribute);
+        idParser.useDelimiter(",");
+
+        int z = 0;
+
+        while ((idParser.hasNext()) && z < specialisedTileAttribute.length()) {
+            String tileSpecialisedValue = idParser.next();
+            Scanner breakdownParser = new Scanner(tileSpecialisedValue);
+            breakdownParser.useDelimiter("-");
+
+
+            String tileIdentifier = breakdownParser.next();
+
+            if (tileIdentifier.equalsIgnoreCase(currentLetter)) {
+                String tileSpecialisedAttribute = breakdownParser.next();
+                currentDirection = translateDirection(tileSpecialisedAttribute);
+            } else {
+                z++;
+            }
+        }
+
+        return currentDirection;
+    }
+
+    private static Direction translateDirection(String currentDirectionFromFile) {
+        Scanner directionParser = new Scanner(currentDirectionFromFile);
+
+        int z = 0;
+        while ((directionParser.hasNext()) && z < currentDirectionFromFile.length()) {
+
+            String tileSpecialisedValue = directionParser.next();
+            Scanner breakdownParser = new Scanner(tileSpecialisedValue);
+            breakdownParser.useDelimiter(":");
+
+            while (breakdownParser.hasNext()) {
+                String currentDirection = breakdownParser.next();
+                System.out.println(currentDirection);
+            }
+            z++;
         }
 
         return null;
