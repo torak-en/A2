@@ -1,14 +1,14 @@
 package Entities.Actors;
 
 import java.util.List;
-
+import Enum.EntityType;
 public class Frog extends Actor{
 	private Node nodePathToPlayer;
 	private int playerX;
 	private int playerY;
 
 	public Frog(int x, int y) {
-		super(x, y);
+		super(x, y, EntityType.FROG);
 	}
 
 	protected void tick(){

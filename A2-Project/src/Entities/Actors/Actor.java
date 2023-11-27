@@ -1,18 +1,17 @@
 package Entities.Actors;
 
+import Entities.Entity;
 import Enum.Direction;
+import Enum.EntityType;
 
-public abstract class Actor {
-	private int x;
-	private int y;
+public abstract class Actor extends Entity {
 	private char layout;
-	private Boolean isMovedByIce;
+	private boolean isMovedByIce;
 	private Direction pendingDirection;
 	private Direction previousDirection;
 
-	public Actor (int x, int y){
-		this.x = x;
-		this.y = y;
+	public Actor (int x, int y, EntityType type){
+		super(x,y,type);
 	}
 
 	private void tick(){
@@ -21,14 +20,6 @@ public abstract class Actor {
 
 	private Direction calculateMove(){
 		return Direction.UP;
-	}
-
-	public int getX() {
-		return x;
-	}
-
-	public int getY() {
-		return y;
 	}
 
 	public void setLayout(char layout) {

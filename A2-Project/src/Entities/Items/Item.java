@@ -1,12 +1,12 @@
 package Entities.Items;
 
-public class Item {
+import Entities.Entity;
+import Enum.EntityType;
 
-	private int x;
-	private int y;
+public class Item extends Entity {
 
-	public Item(int x, int y){
-		this.x = x;
-		this.y = y;
+
+	public Item(int x, int y, EntityType type){
+		super(x,y,type);
 	}
 }

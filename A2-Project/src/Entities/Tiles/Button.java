@@ -1,11 +1,12 @@
 package Entities.Tiles;
 
+import Enum.EntityType;
 public class Button extends Tile{
 	private Trap linkedTrap;
 	private int id;
 
 	public Button(int x, int y, int id) {
-		super(x, y);
+		super(x, y, EntityType.BUTTON);
 		this.id = id;
 	}
 

@@ -1,20 +1,12 @@
 package Entities.Tiles;
 
-public abstract class Tile {
-	private int x;
-	private int y;
+import Entities.Entity;
+import Enum.EntityType;
 
-	public Tile(int x, int y) {
-		this.x = x;
-		this.y = y;
+public abstract class Tile extends Entity {
+
+	public Tile(int x, int y, EntityType type) {
+		super(x,y,type);
 	}
 
-
-	public int getX() {
-		return x;
-	}
-
-	public int getY() {
-		return y;
-	}
 }

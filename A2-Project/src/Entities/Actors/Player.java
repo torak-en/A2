@@ -2,6 +2,7 @@ package Entities.Actors;
 
 import Entities.Items.ComputerChip;
 import Entities.Items.Key;
+import Enum.EntityType;
 
 import java.util.ArrayList;
 
@@ -14,7 +15,7 @@ public class Player extends Actor{
 
 
 	public Player(int x, int y) {
-		super(x, y);
+		super(x, y, EntityType.PLAYER);
 	}
 
 	public void attemptUseKey (Key key){

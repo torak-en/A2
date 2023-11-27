@@ -2,13 +2,14 @@ package Entities.Tiles;
 
 import Entities.Actors.Actor;
 import Enum.Direction;
+import Enum.EntityType;
 
 public class Ice extends Tile{
 	private Direction entranceDirection1;
 	private Direction entranceDirection2;
 
 	public Ice(int x, int y, Direction entranceDirection1, Direction entranceDirection2) {
-		super(x, y);
+		super(x, y, EntityType.ICE);
 		this.entranceDirection1 = entranceDirection1;
 		this.entranceDirection2 = entranceDirection2;
 	}
