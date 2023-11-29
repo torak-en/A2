@@ -1,19 +1,19 @@
 package Game;
 
+import Entities.Actors.Actor;
+import Entities.Items.Item;
 import Entities.Tiles.Tile;
 import Level.Level;
 import Level.LevelHandler;
 import Render.Render;
 
 public class Game {
-	private boolean running = true;
-	private String state = "Start Menu";
 	private Level level;
 
 	public static void main(String[] args) {
 		System.out.println("Hello world!");
 		LevelHandler nlh = new LevelHandler();
-		Level nl = nlh.createLevel(1);
+		Level nl = nlh.createLevel(2);
 		System.out.println(nl.getTileLayer().length * nl.getTileLayer()[0].length);
 		System.out.println(nl.getItemList().toString());
 		System.out.println(nl.getActorList().toString());
@@ -27,11 +27,23 @@ public class Game {
 	}
 
 	public Game(){
-		level = new LevelHandler().createLevel(1);
+		level = new LevelHandler().createLevel(2);
 	}
 
 	public void tick(){
+		for (Actor a : level.getActorList()) {
+			level = a.tick(level);
+		}
 
+		for (Item i : level.getItemList()) {
+			level = i.tick(level);
+		}
+
+		for (Tile[] tileLayer : level.getTileLayer()) {
+			for (Tile tile : tileLayer) {
+				level = tile.tick(level);
+			}
+		}
 	}
 
 	public Level getLevel() {

@@ -11,6 +11,7 @@ import Enum.Direction;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
@@ -41,18 +42,26 @@ public class LevelHandler {
 			line = sc.nextLine();
 			args = line.split(",");
 			for (int j = 0; j < x; j++) {
-				tiles[j][y-i-1] = checkTileType(args[j],j,y-i-1);
+				tiles[j][i] = checkTileType(args[j],j,i);
 			}
+		}
+
+		for (Tile[] tiles1: tiles) {
+			System.out.println(Arrays.toString(tiles1));
 		}
 
 		List<Item> items = new ArrayList<>();
 		List<Actor> actors = new ArrayList<>();
+		Player player = null;
 
 		while (sc.hasNextLine()){
 			line = sc.nextLine();
 			Entity e = checkItemOrActorType(line);
 			if (e instanceof Actor a){
 				actors.add(a);
+				if (a instanceof Player p){
+					player = p;
+				}
 			} else if (e instanceof Item i){
 				items.add(i);
 			} else {
@@ -60,7 +69,7 @@ public class LevelHandler {
 			}
 		}
 		sc.close();
-		return new Level(levelTime, leveName, tiles, items, actors);
+		return new Level(levelTime, leveName, tiles, items, actors,player);
 	}
 
 
@@ -92,7 +101,7 @@ public class LevelHandler {
 			case "K" -> new Key(x, y, sp[3]);
 			case "Pl" -> new Player(x, y);
 			case "F" -> new Frog(x, y);
-			case "Bu" -> new Bug(x, y, sToDirection(sp[3]));
+			case "Bu" -> new Bug(x, y, sToDirection(sp[3]),sToDirection(sp[4]));
 			case "Pi" -> new PinkBall(x, y, sToDirection(sp[3]));
 			case "Bl" -> new Block(x, y);
 			default -> throw new IllegalArgumentException("Not a valid String for Item or Actor (" + s + ")");

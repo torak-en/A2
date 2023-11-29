@@ -1,6 +1,7 @@
 package Level;
 
 import Entities.Actors.Actor;
+import Entities.Actors.Player;
 import Entities.Items.Item;
 import Entities.Tiles.Tile;
 
@@ -14,16 +15,14 @@ public class Level {
 	private Tile[][] tileLayer;
 	private List<Item> itemList;
 	private List<Actor> actorList;
-
-	public Level(int levelTime, String levelName, Tile[][] tileLayer, List<Item> itemList, List<Actor> actorList){
+	private Player player;
+	public Level(int levelTime, String levelName, Tile[][] tileLayer, List<Item> itemList, List<Actor> actorList, Player player){
 		this.levelTime = levelTime;
 		this.levelName = levelName;
 		this.tileLayer = tileLayer;
 		this.itemList = itemList;
 		this.actorList = actorList;
-	}
-	public void tick(){
-
+		this.player = player;
 	}
 
 	//region Getters and Setters
@@ -73,6 +72,10 @@ public class Level {
 
 	public void setActorList(List<Actor> actorList) {
 		this.actorList = actorList;
+	}
+
+	public Player getPlayer() {
+		return player;
 	}
 
 	//endregion
