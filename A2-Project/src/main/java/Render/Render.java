@@ -43,7 +43,6 @@ public class Render extends Application{
 
 	@Override
 	public void start(Stage stage) throws Exception {
-		//gameGraphicEngine.menuUI(stage);
 		initUI(stage);
 		game = new Game();
 	}
