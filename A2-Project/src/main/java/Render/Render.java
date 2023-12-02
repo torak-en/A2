@@ -43,7 +43,8 @@ public class Render extends Application{
 
 	@Override
 	public void start(Stage stage) throws Exception {
-		initUI(stage);
+		//initUI(stage);
+		gameGraphicEngine.MenuScreenUI(stage);
 		game = new Game();
 	}
 
@@ -292,8 +293,6 @@ public class Render extends Application{
 			return Direction.NONE;
 		}
 	}
-
-
 }
 
 

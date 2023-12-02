@@ -1,8 +1,5 @@
 package Render;
-import Game.Game;
-import Render.Render;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
@@ -12,36 +9,35 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class GraphicsHandler {
-    public void menuUI(Stage stage){
-        Render renderEngine = new Render();
+    private Canvas paneCanvas = new Canvas(400,600);
 
+    public void MenuScreenUI(Stage stage){
         //Change once a TitleImage has been made.
-        Image userInterfaceImage = new Image("file:UserInterface/Placeholder_removeInFinal.png");
+        Image userInterfaceImage = new Image("file:UserInterface/InterimTitleImage1.png");
 
         BorderPane root = new BorderPane();
 
         //Setting up the GameTitle Image shown on the main menu.
         ImageView imageView = new ImageView();
         imageView.setImage(userInterfaceImage);
-        imageView.setX(10);
-        imageView.setY(10);
+        imageView.setPreserveRatio(true);
+        imageView.maxHeight(500);
+        imageView.maxWidth(500);
 
-        //Positioning on Image
-        imageView.setFitHeight(90);
-        imageView.setFitWidth(90);
-        imageView.setX(150);
-        imageView.setY(90);
+        //Size
+        imageView.setFitHeight(150);
+        imageView.setFitWidth(190);
+
+        //Positioning
+        imageView.setX(90);
+        imageView.setY(50);
 
         root.getChildren().add(imageView);
-
-        //Setup of Canvas.
-        Canvas canvas = new Canvas(400, 400); //Temporary size (Looks good though)
-        root.setCenter(canvas);
+        root.setCenter(paneCanvas);
 
         //Title of Pane
         stage.setTitle("Main Menu (Test)");
@@ -52,64 +48,45 @@ public class GraphicsHandler {
         centralBar.setPadding(new Insets(210, 20, 90, 30));
         root.setCenter(centralBar);
 
-        //Buttons + functionality
-        //Button loadPlayerButton = new Button("Load Player");
-        Button loadPlayerButton = new Button("Esc Interface");
-        centralBar.getChildren().add(loadPlayerButton);
-        loadPlayerButton.setOnAction(e -> {
-            //System.out.println("Open Load Player?");
-
-            //Call Esc Interface for testing.
-        });
-
-        //Button newGameButton = new Button("New Game");
         Button newGameButton = new Button("Profile Select Interface");
         centralBar.getChildren().add(newGameButton);
         newGameButton.setOnAction(e -> {
-            //System.out.println("Open New Game?");
-
             //Call Profile Selection Interface for testing.
+
         });
 
-        //Button leaderboardButton = new Button("Leaderboard");
         Button leaderboardButton = new Button("Win Screen Interface");
         centralBar.getChildren().add(leaderboardButton);
         leaderboardButton.setOnAction(e -> {
-            //System.out.println("Open Leaderboard?");
+            //Test
             WinScreenUI(stage);
+        });
 
-            //Call Win Screen Interface for testing.
+        Button button1 = new Button("Lose Screen Interface");
+        centralBar.getChildren().add(button1);
+        button1.setOnAction(e -> {
+            LoseScreenUI(stage);
         });
 
 
-        //Button quitButton = new Button("Quit");
-        Button quitButton = new Button("Lose Screen Interface");
+        Button quitButton = new Button("Quit");
         centralBar.getChildren().add(quitButton);
         quitButton.setOnAction(e -> {
-            //System.exit(0);
-
-            //Call Lose Screen Interface.
+            System.exit(0);
         });
 
-        //Final stage show.
         Scene scene = new Scene(root, 400, 400);
 
         stage.setScene(scene);
         stage.show();
     }
 
-    //EscMenu Interface
-
-    //Profile Select Interface
-
     //Win Screen Interface
-
     public void WinScreenUI(Stage stage) {
         BorderPane root = new BorderPane();
         stage.setTitle("Win Screen");
 
-        Canvas canvas = new Canvas(400, 400); //Temporary size (Looks good though)
-        root.setCenter(canvas);
+        root.setCenter(paneCanvas);
 
         //Congratulations Label:
         Label congratulationsLabel = new Label("Congratulations, You Won!");
@@ -126,7 +103,7 @@ public class GraphicsHandler {
         returnToMainMenuButton.setMinWidth(150);
 
         returnToMainMenuButton.setOnAction(e -> {
-            menuUI(stage);
+            MenuScreenUI(stage);
         });
 
 
@@ -144,6 +121,48 @@ public class GraphicsHandler {
     }
 
     //Lose Screen Interface
+    public void LoseScreenUI(Stage stage) {
+        BorderPane root = new BorderPane();
+        stage.setTitle("Lose Screen");
 
-    //Mouse Listener Method
+        root.setCenter(paneCanvas);
+
+        //Congratulations Label:
+        Label lossLabel = new Label("Game Over, you died!");
+        lossLabel.setMinWidth(150);
+
+        Label informationLevelPerformanceLabel = new Label("Placeholder Text");
+        informationLevelPerformanceLabel.setMinWidth(150);
+
+
+        //Button to return to main menu:
+        Button returnToMainMenuButton = new Button("Return to Main menu");
+        returnToMainMenuButton.setPrefWidth(Control.USE_COMPUTED_SIZE);
+        returnToMainMenuButton.setMinWidth(150);
+
+        returnToMainMenuButton.setOnAction(e -> {
+            MenuScreenUI(stage);
+        });
+
+
+        //VBox Declaration
+        VBox centralVBox = new VBox();
+        centralVBox.setPadding(new Insets(70, 0, 0, 120));
+        centralVBox.setSpacing(50);
+
+        centralVBox.getChildren().addAll(lossLabel, informationLevelPerformanceLabel, returnToMainMenuButton);
+        root.getChildren().add(centralVBox);
+
+        Scene scene = new Scene (root, 400, 400);
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    //Profile Selection Interface
+    //- 3 Elements
+    //  - Profile Name Label
+    //  - Select Profile Button
+    //  - Delete Profile Button
+    //
+    //- Fetches from ProfileHandler
 }
