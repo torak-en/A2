@@ -7,15 +7,12 @@ import Entities.Tiles.Tile;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.event.EventHandler;
-import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
-import javafx.scene.control.Button;
 import javafx.stage.Stage;
 import Game.Game;
 import Level.Level;
@@ -43,8 +40,8 @@ public class Render extends Application{
 
 	@Override
 	public void start(Stage stage) throws Exception {
-		initUI(stage);
-		//gameGraphicEngine.MenuScreenUI(stage);
+		//initUI(stage);
+		gameGraphicEngine.MenuScreenUI(stage);
 		game = new Game();
 	}
 
