@@ -76,8 +76,6 @@ public class Render extends Application{
 		stage.setResizable(false);
 		stage.setScene(scene);
 		stage.show();
-
-
 	}
 
 	private Scene getScene(StackPane root) {
