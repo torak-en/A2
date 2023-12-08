@@ -19,6 +19,7 @@ public class GraphicsHandler {
     //Add Brick tile png to Main Menu Background (REPEATING) (Complete)
     //Add ScrollBarView (ListView) for Profile Selector
     //Create Levels (10 target, but 8 aimed)
+    //Place level rendering in Graphics Handler(Alex)
 
     public void MenuScreenUI(Stage stage) {
         BorderPane root = new BorderPane();
