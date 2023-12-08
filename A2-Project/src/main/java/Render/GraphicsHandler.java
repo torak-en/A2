@@ -1,11 +1,10 @@
 package Render;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.control.Button;
-import javafx.scene.control.Control;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
@@ -51,7 +50,7 @@ public class GraphicsHandler {
         titleImageView.setY(150);
 
         root.getChildren().add(titleImageView);
-        root.setCenter(paneCanvas);
+        //root.setCenter(paneCanvas);
 
         //PANE Title
         stage.setTitle("Main Menu");
@@ -246,18 +245,26 @@ public class GraphicsHandler {
         BorderPane root = new BorderPane();
         stage.setTitle("Profile Selector");
 
-        Label profileSelectorInformationDisplay = new Label("Placeholder Text");
-        profileSelectorInformationDisplay.setMinWidth(150);
-
-        //VBox Declaration
         VBox centralVBox = new VBox();
-        centralVBox.setPadding(new Insets(50, 3, 90, 200));
-        centralVBox.setSpacing(0);
+        centralVBox.setSpacing(10);
+        centralVBox.setPadding(new Insets(50,50,0,75));
+        root.setCenter(centralVBox);
 
-        HBox centralBar = new HBox();
-        centralBar.setSpacing(10);
-        centralBar.setPadding(new Insets(150, 3, 90, 75));
-        root.setBottom(centralBar);
+        Label selectionLabel = new Label("Please select a Profile: ");
+
+        //Placeholder values. (Use GetProfile to add Profile values)
+        ObservableList<String> items = FXCollections.observableArrayList(
+                "Item 1", "Item 2", "Item 3", "Item 4", "Item 5");
+
+        ListView<String> listView = new ListView<>(items);
+        listView.setMaxSize(350, 350);
+
+        centralVBox.getChildren().addAll(selectionLabel, listView);
+
+        HBox centralHBar = new HBox();
+        centralHBar.setSpacing(10);
+        centralHBar.setPadding(new Insets(50, 3, 90, 75));
+        root.setBottom(centralHBar);
 
         Button selectProfileButton = new Button("Select Profile");
         selectProfileButton.setPrefWidth(Control.USE_COMPUTED_SIZE);
@@ -282,11 +289,7 @@ public class GraphicsHandler {
             LevelSelectorUI(maxLevelUnlocked, stage);
         });
 
-        centralBar.getChildren().addAll(selectProfileButton, deleteProfileButton, returnToMainMenuButton);
-
-        centralVBox.getChildren().add(profileSelectorInformationDisplay);
-
-        root.getChildren().add(centralVBox);
+        centralHBar.getChildren().addAll(selectProfileButton, deleteProfileButton, returnToMainMenuButton);
 
         Scene scene = new Scene (root, canvasWidth, canvasHeight);
         stage.setScene(scene);
@@ -302,21 +305,23 @@ public class GraphicsHandler {
         profileSelectorInformationDisplay.setMinWidth(150);
 
         TextField nameEntryField = new TextField();
-        nameEntryField.setMinWidth(150);
+
+        nameEntryField.setMaxSize(150,100);
 
         //VBox Declaration
         VBox centralVBox = new VBox();
-        centralVBox.setPadding(new Insets(100, 3, 90, 150));
-        centralVBox.setSpacing(0);
+        centralVBox.setPadding(new Insets(100, 3, 90, 75));
+        centralVBox.setSpacing(5);
+        root.setTop(centralVBox);
 
-        HBox centralBar = new HBox();
-        centralBar.setSpacing(10);
-        centralBar.setPadding(new Insets(300, 3, 90, 120));
-        root.setBottom(centralBar);
+        HBox centralHBar = new HBox();
+        centralHBar.setSpacing(10);
+        centralHBar.setPadding(new Insets(0, 3, 90, 75));
+        root.setBottom(centralHBar);
 
-        Button selectProfileButton = new Button("Start");
-        selectProfileButton.setPrefWidth(Control.USE_COMPUTED_SIZE);
-        selectProfileButton.setMinWidth(100);
+        Button createProfileButton = new Button("Start");
+        createProfileButton.setPrefWidth(Control.USE_COMPUTED_SIZE);
+        createProfileButton.setMinWidth(100);
 
         //Button to return to main menu:
         Button returnToMainMenuButton = new Button("Return to Main menu");
@@ -326,11 +331,9 @@ public class GraphicsHandler {
             MenuScreenUI(stage);
         });
 
-        centralBar.getChildren().addAll(selectProfileButton, returnToMainMenuButton);
+        centralHBar.getChildren().addAll(createProfileButton, returnToMainMenuButton);
 
         centralVBox.getChildren().addAll(profileSelectorInformationDisplay, nameEntryField);
-
-        root.getChildren().add(centralVBox);
 
         Scene scene = new Scene (root, canvasWidth, canvasHeight);
         stage.setScene(scene);
