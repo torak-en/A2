@@ -12,7 +12,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import Game.Game;
 import Level.Level;
@@ -36,10 +36,12 @@ public class Render extends Application{
 	private Level curLevel;
 	boolean goUp, goDown, goRight, goLeft;
 	private int playerMoveCooldown = 0;
+	private GraphicsHandler gameGraphicEngine = new GraphicsHandler();
 
 	@Override
 	public void start(Stage stage) throws Exception {
 		initUI(stage);
+		//gameGraphicEngine.MenuScreenUI(stage);
 		game = new Game();
 	}
 
@@ -286,8 +288,6 @@ public class Render extends Application{
 			return Direction.NONE;
 		}
 	}
-
-
 }
 
 
