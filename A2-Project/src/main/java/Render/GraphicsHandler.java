@@ -9,19 +9,25 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 public class GraphicsHandler {
-    private int windowWidth = 500;
-    private int windowHeight = 500;
-    private Canvas paneCanvas = new Canvas(windowWidth, windowHeight);
+    private int canvasWidth = 500;
+    private int canvasHeight = 500;
+    private Canvas paneCanvas = new Canvas(canvasWidth, canvasHeight);
 
-    public void MenuScreenUI(Stage stage){;
-        //NOTE: Change once a TitleImage has been made.
-        Image userInterfaceImage = new Image("file:UserInterface/InterimTitleImage1.png");
+    //Add Brick tile png to Main Menu Background (REPEATING) (Complete)
+    //Add ScrollBarView (ListView) for Profile Selector
+    //Create Levels (10 target, but 8 aimed)
 
+    public void MenuScreenUI(Stage stage) {
         BorderPane root = new BorderPane();
+
+        //NOTE: Change once a TitleImage has been made.
+        Image gameTitleImage = new Image("file:UserInterface/InterimTitleImage1.png");
+        Image originalImage = new Image("file:UserInterface/PathTileTexture.png");
+
+        CreateMosaicBackground(root, originalImage);
 
         root.minHeight(200);
         root.minWidth(200);
@@ -29,21 +35,21 @@ public class GraphicsHandler {
         root.minWidth(500);
 
         //Setting up the GameTitle Image shown on the main menu.
-        ImageView imageView = new ImageView();
-        imageView.setImage(userInterfaceImage);
-        imageView.setPreserveRatio(true);
-        imageView.maxHeight(500);
-        imageView.maxWidth(500);
+        ImageView titleImageView = new ImageView();
+        titleImageView.setImage(gameTitleImage);
+        titleImageView.setPreserveRatio(true);
+        titleImageView.maxHeight(500);
+        titleImageView.maxWidth(500);
 
         //IMG Size
-        imageView.setFitHeight(150);
-        imageView.setFitWidth(190);
+        titleImageView.setFitHeight(150);
+        titleImageView.setFitWidth(190);
 
         //IMG Positioning
-        imageView.setX(150);
-        imageView.setY(150);
+        titleImageView.setX(150);
+        titleImageView.setY(150);
 
-        root.getChildren().add(imageView);
+        root.getChildren().add(titleImageView);
         root.setCenter(paneCanvas);
 
         //PANE Title
@@ -73,9 +79,24 @@ public class GraphicsHandler {
 
         centralBar.getChildren().addAll(newPlayerGameButton, loadPreviousPlayerButton, quitButton);
 
-        Scene scene = new Scene(root, windowWidth, windowHeight);
+        Scene scene = new Scene(root, canvasWidth, canvasHeight);
         stage.setScene(scene);
+        stage.setResizable(false);
         stage.show();
+    }
+
+    private BorderPane CreateMosaicBackground(BorderPane root, Image originalImage) {
+        for (int y = 0; y < canvasHeight; y += originalImage.getHeight()) {
+            for (int x = 0; x < canvasWidth; x += originalImage.getWidth()) {
+                ImageView imageView = new ImageView(originalImage);
+
+                imageView.setTranslateX(x);
+                imageView.setTranslateY(y);
+
+                root.getChildren().add(imageView);
+            }
+        }
+        return root;
     }
 
     public void TestScreenUI(Stage stage){;
@@ -141,7 +162,7 @@ public class GraphicsHandler {
 
         centralBar.getChildren().addAll(profileSelectScreenInterfaceButton, winScreenInterfaceButton, loseScreenInterfaceButton, quitButton);
 
-        Scene scene = new Scene(root, windowWidth, windowHeight);
+        Scene scene = new Scene(root, canvasWidth, canvasHeight);
         stage.setScene(scene);
         stage.show();
     }
@@ -178,7 +199,7 @@ public class GraphicsHandler {
 
         root.getChildren().add(centralVBox);
 
-        Scene scene = new Scene (root, windowWidth, windowHeight);
+        Scene scene = new Scene (root, canvasWidth, canvasHeight);
         stage.setScene(scene);
         stage.show();
     }
@@ -215,7 +236,7 @@ public class GraphicsHandler {
 
         root.getChildren().add(centralVBox);
 
-        Scene scene = new Scene (root, windowWidth, windowHeight);
+        Scene scene = new Scene (root, canvasWidth, canvasHeight);
         stage.setScene(scene);
         stage.show();
     }
@@ -223,10 +244,6 @@ public class GraphicsHandler {
     public void LoadProfileSelectorUI(Stage stage) {
         BorderPane root = new BorderPane();
         stage.setTitle("Profile Selector");
-
-        BackgroundFill backgroundFill = new BackgroundFill(Color.LIGHTGRAY, CornerRadii.EMPTY, Insets.EMPTY);
-        Background background = new Background(backgroundFill);
-        root.setBackground(background);
 
         Label profileSelectorInformationDisplay = new Label("Placeholder Text");
         profileSelectorInformationDisplay.setMinWidth(150);
@@ -258,7 +275,10 @@ public class GraphicsHandler {
         });
 
         selectProfileButton.setOnAction(e ->{
-            LevelSelectorUI(stage);
+            //Call Profile and obtain the highest level unlocked.
+            int maxLevelUnlocked = 3; //Get via getMaxLevelUnlocked method
+
+            LevelSelectorUI(maxLevelUnlocked, stage);
         });
 
         centralBar.getChildren().addAll(selectProfileButton, deleteProfileButton, returnToMainMenuButton);
@@ -267,7 +287,7 @@ public class GraphicsHandler {
 
         root.getChildren().add(centralVBox);
 
-        Scene scene = new Scene (root, windowWidth, windowHeight);
+        Scene scene = new Scene (root, canvasWidth, canvasHeight);
         stage.setScene(scene);
         stage.show();
     }
@@ -311,13 +331,13 @@ public class GraphicsHandler {
 
         root.getChildren().add(centralVBox);
 
-        Scene scene = new Scene (root, windowWidth, windowHeight);
+        Scene scene = new Scene (root, canvasWidth, canvasHeight);
         stage.setScene(scene);
         stage.show();
     }
 
     //Level Selector
-    public void LevelSelectorUI(Stage stage) {
+    public void LevelSelectorUI(int maxLevel, Stage stage) {
         BorderPane root = new BorderPane();
         stage.setTitle("Level Selector");
 
@@ -336,13 +356,49 @@ public class GraphicsHandler {
 
         HBox centralBar = new HBox();
         centralBar.setSpacing(0);
-        centralBar.setPadding(new Insets(windowWidth/2, 3, 90, 190));
+        centralBar.setPadding(new Insets(canvasWidth /2, 3, 90, 190));
         root.setBottom(centralBar);
 
+        //Implement level access blocking via .setDisable method and loop?
         Button levelOneButton = new Button("1");
         Button levelTwoButton = new Button("2");
+        levelTwoButton.setDisable(true);
         Button levelThreeButton = new Button("3");
+        levelThreeButton.setDisable(true);
+
+        //Subject to removal?
         Button randomlevelButton = new Button("R");
+        randomlevelButton.setDisable(true);
+
+        switch (maxLevel) {
+            case (2):
+                levelTwoButton.setDisable(false);
+                randomlevelButton.setDisable(false);
+            case (3):
+                levelTwoButton.setDisable(false);
+                levelThreeButton.setDisable(false);
+                randomlevelButton.setDisable(false);
+        }
+
+        levelOneButton.setOnAction(e -> {
+            //Create Level 1
+        });
+
+        levelTwoButton.setOnAction(e -> {
+            //Create Level 2
+        });
+
+        levelThreeButton.setOnAction(e -> {
+            //Create Level 3
+        });
+
+
+        //Remove if not enough time is given.
+        randomlevelButton.setOnAction(e -> {
+            //Random number generator between 1 -> max level unlocked for profile.
+            //Create the respective level.
+        });
+
 
         //Button to return to main menu:
         Button returnToMainMenuButton = new Button("Return to Main menu");
@@ -358,7 +414,7 @@ public class GraphicsHandler {
 
         root.getChildren().addAll(selectBar, levelBar);
 
-        Scene scene = new Scene (root, windowWidth, windowHeight);
+        Scene scene = new Scene (root, canvasWidth, canvasHeight);
         stage.setScene(scene);
         stage.show();
     }
