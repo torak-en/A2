@@ -1,4 +1,7 @@
 package Render;
+import Level.LevelHandler;
+import Profile.Profile;
+import Profile.ProfileHandler;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -10,14 +13,24 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class GraphicsHandler {
     private int canvasWidth = 500;
     private int canvasHeight = 500;
     private Canvas paneCanvas = new Canvas(canvasWidth, canvasHeight);
+    private static String currentProfileName;
+    private final int maxLevelPermitted = 3;
 
     //Add Brick tile png to Main Menu Background (REPEATING) (Complete)
-    //Add ScrollBarView (ListView) for Profile Selector
+    //Add ScrollBarView (ListView) for Profile Selector (Complete)
+    //Names in Profile Selector and Select Button (Complete)
+    //Centre the ListView (Complete)
+    //CreateProfile button
+    //DeleteProfile button
     //Create Levels (10 target, but 8 aimed)
+
     //Place level rendering in Graphics Handler(Alex)
 
     public void MenuScreenUI(Stage stage) {
@@ -99,6 +112,232 @@ public class GraphicsHandler {
         return root;
     }
 
+    public void LoadProfileSelectorUI(Stage stage) {
+        ProfileHandler profileHandler = new ProfileHandler();
+
+        BorderPane root = new BorderPane();
+        stage.setTitle("Profile Selector");
+
+        VBox centralVBox = new VBox();
+        centralVBox.setSpacing(10);
+        centralVBox.setPadding(new Insets(50,50,0,75));
+        root.setCenter(centralVBox);
+
+        Label selectionLabel = new Label("Please select a Profile: ");
+
+        ObservableList<String> profileNameData =
+                FXCollections.observableArrayList(obtainProfileNameList(profileHandler.getProfiles()));
+
+        ListView<String> listView = new ListView<>(profileNameData);
+        listView.setMaxSize(350, 350);
+
+        centralVBox.getChildren().addAll(selectionLabel, listView);
+
+        HBox centralHBar = new HBox();
+        centralHBar.setSpacing(10);
+        centralHBar.setPadding(new Insets(50, 3, 90, 75));
+        root.setBottom(centralHBar);
+
+        Button selectProfileButton = new Button("Select Profile");
+        selectProfileButton.setMinWidth(100);
+        selectProfileButton.setDisable(true);
+
+        Button deleteProfileButton = new Button("Delete Profile");
+        deleteProfileButton.setMinWidth(100);
+        deleteProfileButton.setDisable(true);
+
+        //Button to return to main menu:
+        Button returnToMainMenuButton = new Button("Return to Main menu");
+        returnToMainMenuButton.setMinWidth(100);
+
+        returnToMainMenuButton.setOnAction(e -> {
+            MenuScreenUI(stage);
+        });
+
+        listView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                currentProfileName = obtainProfileName(listView);
+                selectProfileButton.setDisable(false);
+                deleteProfileButton.setDisable(false);
+            }
+        });
+
+        selectProfileButton.setOnAction(e ->{
+            for (int i = 0; i < profileHandler.getProfiles().size(); i++) {
+                if (profileHandler.getProfiles().get(i).getProfileName().equalsIgnoreCase(currentProfileName)) {
+                    Profile selectedProfile = profileHandler.getProfiles().get(i);
+                    try {
+                        LevelSelectorUI(selectedProfile, stage);
+                    } catch (Exception maxLevel) {
+                        System.out.println("The selected profile has an unlocked level greater" +
+                                " than the total number of levels unlocked. Please try again!");
+                        System.exit(1);
+                    }
+                }
+            }
+        });
+
+        centralHBar.getChildren().addAll(selectProfileButton, deleteProfileButton, returnToMainMenuButton);
+
+        Scene scene = new Scene (root, canvasWidth, canvasHeight);
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    private static String obtainProfileName(ListView<String> listView) {
+        String selectedProfileName = listView.getSelectionModel().getSelectedItem();
+        if (selectedProfileName != null) {
+            return selectedProfileName;
+        } else {
+            return "No item selected";
+        }
+    }
+
+    private ArrayList<String> obtainProfileNameList(List<Profile> profileList) {
+        ArrayList<String> profileData = new ArrayList<>();
+
+        for (int i = 0; i < profileList.size(); i++) {
+            String profileDataString = profileList.get(i).getProfileName();
+            profileData.add(profileDataString);
+        }
+
+        return profileData;
+    }
+
+    public void CreateNewProfileUI(Stage stage) {
+        ProfileHandler profileHandler = new ProfileHandler();
+        BorderPane root = new BorderPane();
+        stage.setTitle("Create New Profile");
+
+        Label profileSelectorInformationDisplay = new Label("Please enter a name:");
+        profileSelectorInformationDisplay.setMinWidth(150);
+
+        TextField nameEntryField = new TextField();
+
+        nameEntryField.setMaxSize(150,100);
+
+        //VBox Declaration
+        VBox centralVBox = new VBox();
+        centralVBox.setPadding(new Insets(100, 3, 90, 75));
+        centralVBox.setSpacing(5);
+        root.setTop(centralVBox);
+
+        HBox centralHBar = new HBox();
+        centralHBar.setSpacing(10);
+        centralHBar.setPadding(new Insets(0, 3, 90, 75));
+        root.setBottom(centralHBar);
+
+        Button createProfileNameButton = new Button("Start");
+        createProfileNameButton.setMinWidth(100);
+
+        //Button to return to main menu:
+        Button returnToMainMenuButton = new Button("Return to Main menu");
+        returnToMainMenuButton.setMinWidth(100);
+
+        createProfileNameButton.setOnAction(e -> {
+            //Create Profile with name entered in textField
+
+            //Build-Read Level 1 using profile(?)
+        });
+
+        returnToMainMenuButton.setOnAction(e -> {
+            MenuScreenUI(stage);
+        });
+
+        centralHBar.getChildren().addAll(createProfileNameButton, returnToMainMenuButton);
+
+        centralVBox.getChildren().addAll(profileSelectorInformationDisplay, nameEntryField);
+
+        Scene scene = new Scene (root, canvasWidth, canvasHeight);
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    public void LevelSelectorUI(Profile profileSelected, Stage stage) throws Exception {
+
+        LevelHandler levelHandler = new LevelHandler();
+        Render render = new Render();
+
+        BorderPane root = new BorderPane();
+        stage.setTitle("Level Selector");
+
+        Label selectLevelLabel = new Label("Please select a level: ");
+        selectLevelLabel.setMinWidth(500);
+
+        HBox selectBar = new HBox();
+        selectBar.setSpacing(0);
+        selectBar.setPadding(new Insets(100, 3, 90, 125));
+        root.setBottom(selectBar);
+
+        HBox levelBar = new HBox();
+        levelBar.setSpacing(10);
+        levelBar.setPadding(new Insets(150, 3, 90, 125));
+        root.setBottom(levelBar);
+
+        HBox centralBar = new HBox();
+        centralBar.setSpacing(0);
+        centralBar.setPadding(new Insets(canvasWidth /2, 3, 90, 190));
+        root.setBottom(centralBar);
+
+        //Implement level access blocking via .setDisable method and loop?
+        Button levelOneButton = new Button("1");
+        Button levelTwoButton = new Button("2");
+        levelTwoButton.setDisable(true);
+        Button levelThreeButton = new Button("3");
+        levelThreeButton.setDisable(true);
+
+        int maxLevel = profileSelected.getMaxLevelNumUnlcoked();
+
+        if (maxLevel > maxLevelPermitted) {
+            throw new Exception();
+        }
+
+        switch (maxLevel) {
+            case (2):
+                levelTwoButton.setDisable(false);
+            case (3):
+                levelTwoButton.setDisable(false);
+                levelThreeButton.setDisable(false);
+        }
+
+        levelOneButton.setOnAction(e -> {
+            //Create Level 1
+            //Go to Render to display level.
+            //levelHandler.createLevel(1);
+        });
+
+        levelTwoButton.setOnAction(e -> {
+            //Create Level 2
+            //Go to Render to display level.
+            levelHandler.createLevel(2);
+        });
+
+        levelThreeButton.setOnAction(e -> {
+            //Create Level 3
+            //Go to Render to display level.
+
+        });
+
+        //Button to return to main menu:
+        Button returnToMainMenuButton = new Button("Return to Main menu");
+        returnToMainMenuButton.setMinWidth(100);
+
+        returnToMainMenuButton.setOnAction(e -> {
+            MenuScreenUI(stage);
+        });
+
+        centralBar.getChildren().addAll(returnToMainMenuButton, selectLevelLabel);
+        levelBar.getChildren().addAll(levelOneButton, levelTwoButton, levelThreeButton);
+        selectBar.getChildren().add(selectLevelLabel);
+
+        root.getChildren().addAll(selectBar, levelBar);
+
+        Scene scene = new Scene (root, canvasWidth, canvasHeight);
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    //Remove In Final(?)
     public void TestScreenUI(Stage stage){;
         //NOTE: Change once a TitleImage has been made.
         Image userInterfaceImage = new Image("file:UserInterface/InterimTitleImage1.png");
@@ -167,7 +406,6 @@ public class GraphicsHandler {
         stage.show();
     }
 
-    //Win Screen Interface
     public void WinScreenUI(Stage stage) {
         BorderPane root = new BorderPane();
         stage.setTitle("Win Screen");
@@ -204,7 +442,6 @@ public class GraphicsHandler {
         stage.show();
     }
 
-    //Lose Screen Interface
     public void LoseScreenUI(Stage stage) {
         BorderPane root = new BorderPane();
         stage.setTitle("Lose Screen");
@@ -241,185 +478,4 @@ public class GraphicsHandler {
         stage.show();
     }
 
-    public void LoadProfileSelectorUI(Stage stage) {
-        BorderPane root = new BorderPane();
-        stage.setTitle("Profile Selector");
-
-        VBox centralVBox = new VBox();
-        centralVBox.setSpacing(10);
-        centralVBox.setPadding(new Insets(50,50,0,75));
-        root.setCenter(centralVBox);
-
-        Label selectionLabel = new Label("Please select a Profile: ");
-
-        //Placeholder values. (Use GetProfile to add Profile values)
-        ObservableList<String> items = FXCollections.observableArrayList(
-                "Item 1", "Item 2", "Item 3", "Item 4", "Item 5");
-
-        ListView<String> listView = new ListView<>(items);
-        listView.setMaxSize(350, 350);
-
-        centralVBox.getChildren().addAll(selectionLabel, listView);
-
-        HBox centralHBar = new HBox();
-        centralHBar.setSpacing(10);
-        centralHBar.setPadding(new Insets(50, 3, 90, 75));
-        root.setBottom(centralHBar);
-
-        Button selectProfileButton = new Button("Select Profile");
-        selectProfileButton.setPrefWidth(Control.USE_COMPUTED_SIZE);
-        selectProfileButton.setMinWidth(100);
-
-        Button deleteProfileButton = new Button("Delete Profile");
-        deleteProfileButton.setPrefWidth(Control.USE_COMPUTED_SIZE);
-        deleteProfileButton.setMinWidth(100);
-
-        //Button to return to main menu:
-        Button returnToMainMenuButton = new Button("Return to Main menu");
-        returnToMainMenuButton.setMinWidth(100);
-
-        returnToMainMenuButton.setOnAction(e -> {
-            MenuScreenUI(stage);
-        });
-
-        selectProfileButton.setOnAction(e ->{
-            //Call Profile and obtain the highest level unlocked.
-            int maxLevelUnlocked = 3; //Get via getMaxLevelUnlocked method
-
-            LevelSelectorUI(maxLevelUnlocked, stage);
-        });
-
-        centralHBar.getChildren().addAll(selectProfileButton, deleteProfileButton, returnToMainMenuButton);
-
-        Scene scene = new Scene (root, canvasWidth, canvasHeight);
-        stage.setScene(scene);
-        stage.show();
-    }
-
-    //Create New Profile
-    public void CreateNewProfileUI(Stage stage) {
-        BorderPane root = new BorderPane();
-        stage.setTitle("Create New Profile");
-
-        Label profileSelectorInformationDisplay = new Label("Please enter a name:");
-        profileSelectorInformationDisplay.setMinWidth(150);
-
-        TextField nameEntryField = new TextField();
-
-        nameEntryField.setMaxSize(150,100);
-
-        //VBox Declaration
-        VBox centralVBox = new VBox();
-        centralVBox.setPadding(new Insets(100, 3, 90, 75));
-        centralVBox.setSpacing(5);
-        root.setTop(centralVBox);
-
-        HBox centralHBar = new HBox();
-        centralHBar.setSpacing(10);
-        centralHBar.setPadding(new Insets(0, 3, 90, 75));
-        root.setBottom(centralHBar);
-
-        Button createProfileButton = new Button("Start");
-        createProfileButton.setPrefWidth(Control.USE_COMPUTED_SIZE);
-        createProfileButton.setMinWidth(100);
-
-        //Button to return to main menu:
-        Button returnToMainMenuButton = new Button("Return to Main menu");
-        returnToMainMenuButton.setMinWidth(100);
-
-        returnToMainMenuButton.setOnAction(e -> {
-            MenuScreenUI(stage);
-        });
-
-        centralHBar.getChildren().addAll(createProfileButton, returnToMainMenuButton);
-
-        centralVBox.getChildren().addAll(profileSelectorInformationDisplay, nameEntryField);
-
-        Scene scene = new Scene (root, canvasWidth, canvasHeight);
-        stage.setScene(scene);
-        stage.show();
-    }
-
-    //Level Selector
-    public void LevelSelectorUI(int maxLevel, Stage stage) {
-        BorderPane root = new BorderPane();
-        stage.setTitle("Level Selector");
-
-        Label selectLevelLabel = new Label("Please select a level: ");
-        selectLevelLabel.setMinWidth(500);
-
-        HBox selectBar = new HBox();
-        selectBar.setSpacing(0);
-        selectBar.setPadding(new Insets(100, 3, 90, 125));
-        root.setBottom(selectBar);
-
-        HBox levelBar = new HBox();
-        levelBar.setSpacing(10);
-        levelBar.setPadding(new Insets(150, 3, 90, 125));
-        root.setBottom(levelBar);
-
-        HBox centralBar = new HBox();
-        centralBar.setSpacing(0);
-        centralBar.setPadding(new Insets(canvasWidth /2, 3, 90, 190));
-        root.setBottom(centralBar);
-
-        //Implement level access blocking via .setDisable method and loop?
-        Button levelOneButton = new Button("1");
-        Button levelTwoButton = new Button("2");
-        levelTwoButton.setDisable(true);
-        Button levelThreeButton = new Button("3");
-        levelThreeButton.setDisable(true);
-
-        //Subject to removal?
-        Button randomlevelButton = new Button("R");
-        randomlevelButton.setDisable(true);
-
-        switch (maxLevel) {
-            case (2):
-                levelTwoButton.setDisable(false);
-                randomlevelButton.setDisable(false);
-            case (3):
-                levelTwoButton.setDisable(false);
-                levelThreeButton.setDisable(false);
-                randomlevelButton.setDisable(false);
-        }
-
-        levelOneButton.setOnAction(e -> {
-            //Create Level 1
-        });
-
-        levelTwoButton.setOnAction(e -> {
-            //Create Level 2
-        });
-
-        levelThreeButton.setOnAction(e -> {
-            //Create Level 3
-        });
-
-
-        //Remove if not enough time is given.
-        randomlevelButton.setOnAction(e -> {
-            //Random number generator between 1 -> max level unlocked for profile.
-            //Create the respective level.
-        });
-
-
-        //Button to return to main menu:
-        Button returnToMainMenuButton = new Button("Return to Main menu");
-        returnToMainMenuButton.setMinWidth(100);
-
-        returnToMainMenuButton.setOnAction(e -> {
-            MenuScreenUI(stage);
-        });
-
-        centralBar.getChildren().addAll(returnToMainMenuButton, selectLevelLabel);
-        levelBar.getChildren().addAll(levelOneButton, levelTwoButton, levelThreeButton, randomlevelButton);
-        selectBar.getChildren().add(selectLevelLabel);
-
-        root.getChildren().addAll(selectBar, levelBar);
-
-        Scene scene = new Scene (root, canvasWidth, canvasHeight);
-        stage.setScene(scene);
-        stage.show();
-    }
 }

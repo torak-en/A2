@@ -22,7 +22,7 @@ public class Game {
 	}
 
 	public Game(){
-		level = new LevelHandler().createLevel(2);
+		level = new LevelHandler().createLevel(1);
 	}
 
 	public void tick(){
