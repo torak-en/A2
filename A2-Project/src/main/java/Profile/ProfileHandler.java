@@ -60,8 +60,9 @@ public class ProfileHandler {
 	}
 
 	public void deleteProfile(String name){
+//		System.out.println(name);
 		File newProfile = new File("Profiles/" + name + ".txt");
-		if (!newProfile.delete()){
+		if (!newProfile.exists()){
 			throw new RuntimeException("Profile Unable to be Deleted");
 		}
 	}

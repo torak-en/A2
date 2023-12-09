@@ -185,6 +185,16 @@ public class GraphicsHandler {
         Button returnToMainMenuButton = new Button("Return to Main menu");
         returnToMainMenuButton.setMinWidth(100);
 
+        deleteProfileButton.setOnAction(e -> {
+            //profileHandler.deleteProfile(currentProfileName);
+            for (int i = 0; i < profileNameData.size(); i++) {
+                if (profileNameData.get(i).equalsIgnoreCase(currentProfileName)) {
+                    profileHandler.deleteProfile(profileNameData.get(i));
+                    //listView.getSelectionModel().getSelectedItems().remove(i);
+                }
+            }
+        });
+
         returnToMainMenuButton.setOnAction(e -> {
             MenuScreenUI(stage);
         });
