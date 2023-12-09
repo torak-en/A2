@@ -23,21 +23,16 @@ public class Frog extends Actor{
 
 	@Override
 	public Level tick(Level level) {
+//		if (playerX == getX() && playerY == getY() && level.getPlayer() != null){
+//			level.getPlayer().setAlive(false);
+//		}
 		if (ticksTillMove == 0 && getPendingDirection() == null){
-			Player p = null;
+			Player p = level.getPlayer();
 			ticksTillMove = TICKS_BETWEEN_MOVE;
-			for (Actor a : level.getActorList()) {
-				if (a.getType() == EntityType.PLAYER) {
-					p = (Player) a;
-					if (playerX != p.getX() && playerY != p.getY() && p.isAlive()) {
-						nodePathToPlayer = calculatePathToPlayer(p, level);
-						playerX = p.getX();
-						playerY = p.getY();
-					}
-				}
-			}
-			if (playerX == getX() && playerY == getY() && p != null){
-				p.setAlive(false);
+			if (playerX != p.getX() && playerY != p.getY() && p.isAlive()) {
+				nodePathToPlayer = calculatePathToPlayer(p, level);
+				playerX = p.getX();
+				playerY = p.getY();
 			}
 			if (nodePathToPlayer != null) {
 				setX(nodePathToPlayer.getX());
