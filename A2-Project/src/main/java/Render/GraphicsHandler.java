@@ -37,8 +37,6 @@ public class GraphicsHandler {
     private final int nsPerTick = ns / ticksPerSecond;
     private double progress = 0;
     private long startTime = System.nanoTime();
-
-    private Game game;
     private GraphicsContext gc;
     private Level curLevel;
     boolean goUp, goDown, goRight, goLeft;
@@ -175,12 +173,12 @@ public class GraphicsHandler {
         Button winScreenInterfaceButton = new Button("Win Screen Interface");
         winScreenInterfaceButton.setOnAction(e -> {
             //Test
-            winScreenUI(stage, game);
+//            winScreenUI(stage, game);
         });
 
         Button loseScreenInterfaceButton = new Button("Lose Screen Interface");
         loseScreenInterfaceButton.setOnAction(e -> {
-            loseScreenUI(stage, game);
+//            loseScreenUI(stage, game);
         });
 
 
@@ -458,7 +456,7 @@ public class GraphicsHandler {
         p.applyMove();
 
         playerMoveCooldown--;
-        renderLevel();
+        renderLevel(game);
         game.tick();
         if (p.hasWon()){
             timer.stop();
@@ -470,7 +468,7 @@ public class GraphicsHandler {
 
     }
 
-    public void renderLevel() {
+    public void renderLevel(Game game) {
         curLevel = game.getLevel();
         if (curLevel != null) {
             // Render the current level
@@ -657,8 +655,9 @@ public class GraphicsHandler {
         //Disable button if there are no more levels
 
        nextLevelButton.setOnAction(e -> {
+           game.updateLevel(game.getLevelNum() + 1);
             gameUI(stage, game);
-        });
+       });
 
         centralBar.getChildren().addAll(returnToMainMenuButton, nextLevelButton);
 
@@ -701,6 +700,7 @@ public class GraphicsHandler {
         restartLevelButton.setMinWidth(100);
 
         restartLevelButton.setOnAction(e -> {
+            game.updateLevel(game.getLevelNum());
             gameUI(stage, game);
         });
 

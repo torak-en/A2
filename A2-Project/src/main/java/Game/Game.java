@@ -13,6 +13,7 @@ import Render.Render;
 
 public class Game {
 	private Level level;
+	private int levelNum;
 
  	public static void main(String[] args) {
 		HighscoreHandler highscoreHandler = new HighscoreHandler();
@@ -22,7 +23,6 @@ public class Game {
 	}
 
 	public Game(){
-		level = new LevelHandler().createLevel(2);
 	}
 
 	public void tick(){
@@ -41,11 +41,25 @@ public class Game {
 		}
 	}
 
+	public void updateLevel(int levelNum){
+		 this.levelNum = levelNum;
+		 LevelHandler handler = new LevelHandler();
+		 level = handler.createLevel(levelNum);
+	}
+
 	public Level getLevel() {
 		return level;
 	}
 
 	public void setLevel(Level level) {
 		this.level = level;
+	}
+
+	public int getLevelNum() {
+		return levelNum;
+	}
+
+	public void setLevelNum(int levelNum) {
+		this.levelNum = levelNum;
 	}
 }
