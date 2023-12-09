@@ -34,13 +34,4 @@ public class Render extends Application{
 		gameGraphicEngine.winScreenUI(stage, game);
 		//game = new Game();
 	}
-
-
-
-
-
-
-
 }
-
-
