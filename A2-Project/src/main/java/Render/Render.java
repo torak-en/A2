@@ -40,8 +40,8 @@ public class Render extends Application{
 
 	@Override
 	public void start(Stage stage) throws Exception {
-		initUI(stage);
-		//gameGraphicEngine.MenuScreenUI(stage);
+		//initUI(stage);
+		gameGraphicEngine.MenuScreenUI(stage);
 		game = new Game();
 	}
 
