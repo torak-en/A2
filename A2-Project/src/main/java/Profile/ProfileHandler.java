@@ -58,4 +58,11 @@ public class ProfileHandler {
 		}
 		return "Profile Created";
 	}
+
+	public void deleteProfile(String name){
+		File newProfile = new File("Profiles/" + name + ".txt");
+		if (!newProfile.delete()){
+			throw new RuntimeException("Profile Unable to be Deleted");
+		}
+	}
 }
