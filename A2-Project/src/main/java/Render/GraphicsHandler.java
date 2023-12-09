@@ -44,7 +44,7 @@ public class GraphicsHandler {
     private AnimationTimer timer = null;
     private boolean running = true;
     private final int ns = 1000000000;
-    private final int ticksPerSecond = 60;
+    private final int ticksPerSecond = 30;
     private final int nsPerTick = ns / ticksPerSecond;
     private double progress = 0;
     private long startTime = System.nanoTime();
@@ -55,6 +55,7 @@ public class GraphicsHandler {
 
     private static String currentProfileName;
     private final int maxLevelPermitted = 3;
+    private Direction nextInput = Direction.NONE;
 
 
     //Add Brick tile png to Main Menu Background (REPEATING) (Complete)
@@ -537,6 +538,7 @@ public class GraphicsHandler {
                     long currentTime = System.nanoTime();
                     double diff = currentTime-startTime;
                     progress += diff / nsPerTick;
+                    System.out.println(progress);
                     if (progress >=1) {
                         progress--;
                         tick(stage, game);
@@ -561,16 +563,27 @@ public class GraphicsHandler {
         scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent keyEvent) {
-                switch (keyEvent.getCode()){
-                    case UP: goUp = true;
-                    case W: goUp = true;
-                    case DOWN: goDown = true;
-                    case S: goDown = true;
-                    case RIGHT: goRight = true;
-                    case D: goRight = true;
-                    case LEFT: goLeft = true;
-                    case A: goLeft = true;
-                    default:
+                if (nextInput == Direction.NONE) {
+                    switch (keyEvent.getCode()) {
+                        case W:
+                            goUp = true;
+                        case S:
+                            goDown = true;
+                        case D:
+                            goRight = true;
+                        case A:
+                            goLeft = true;
+                        default:
+                    }
+                    if (goUp) {
+                        nextInput = Direction.UP;
+                    } else if (goDown) {
+                        nextInput = Direction.DOWN;
+                    } else if (goRight) {
+                        nextInput = Direction.RIGHT;
+                    } else if (goLeft) {
+                        nextInput = Direction.LEFT;
+                    }
                 }
             }
         });
@@ -579,15 +592,12 @@ public class GraphicsHandler {
             @Override
             public void handle(KeyEvent keyEvent) {
                 switch (keyEvent.getCode()){
-                    case UP: goUp = false;
                     case W: goUp = false;
-                    case DOWN: goDown = false;
                     case S: goDown = false;
-                    case RIGHT: goRight = false;
                     case D: goRight = false;
-                    case LEFT: goLeft = false;
                     case A: goLeft = false;
                 }
+
             }
         });
         return scene;
@@ -595,14 +605,16 @@ public class GraphicsHandler {
 
     private void tick(Stage stage, Game game) {
         Player p = game.getLevel().getPlayer();
-        if (p.getPendingDirection() == null) {
-            if (p.checkLocation(inputToDirection(), curLevel)) {
-                p.setPendingDirection(inputToDirection());
+        if (playerMoveCooldown == 0) {
+            if (p.getPendingDirection() == null) {
+                if (p.checkLocation(nextInput, curLevel)) {
+                    p.setPendingDirection(nextInput);
+                }
             }
+            playerMoveCooldown = 20;
+            nextInput = Direction.NONE;
+            p.applyMove();
         }
-        System.out.println(p.getPendingDirection());
-        p.applyMove();
-
         playerMoveCooldown--;
         renderLevel(game);
         game.tick();
@@ -755,20 +767,6 @@ public class GraphicsHandler {
     public void setActorsVisible(List<Actor> actors, Tile[][] tiles, int x, int y) {
         for (Actor a : actors) {
             a.setVisible(tiles[a.getX()][a.getY()].isVisible());
-        }
-    }
-
-    public Direction inputToDirection(){
-        if (goUp){
-            return Direction.UP;
-        } else if (goDown){
-            return Direction.DOWN;
-        } else if (goRight){
-            return Direction.RIGHT;
-        } else if (goLeft){
-            return Direction.LEFT;
-        } else {
-            return Direction.NONE;
         }
     }
 

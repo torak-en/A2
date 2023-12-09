@@ -58,7 +58,7 @@ public class Bug extends Actor{
 			return d;
 		}
 		if (checkLocation(getInverse(getPreviousDirection()), level)){
-			return getPreviousDirection();
+			return getInverse(getPreviousDirection());
 		}
 		return Direction.NONE;
 	}
