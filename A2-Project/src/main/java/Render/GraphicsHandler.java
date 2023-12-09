@@ -269,10 +269,18 @@ public class GraphicsHandler {
         Button returnToMainMenuButton = new Button("Return to Main menu");
         returnToMainMenuButton.setMinWidth(100);
 
-        createProfileNameButton.setOnAction(e -> {
-            //Create Profile with name entered in textField
+        Label creationErrorLabel = new Label("");
+        creationErrorLabel.setMinWidth(150);
 
-            //Build-Read Level 1 using profile(?)
+        createProfileNameButton.setOnAction(e -> {
+            String s = profileHandler.createNewProfile(nameEntryField.getText());
+            if (s.equals("Profile Created")){
+                LoadProfileSelectorUI(stage);
+            } else if (s .equals("Name can only be made of of characters. No Symbols, whitespaces, etc.")){
+                creationErrorLabel.setText(s);
+            } else if (s.equals("Error with profile creation, profile may already exist.")){
+                creationErrorLabel.setText(s);
+            }
         });
 
         returnToMainMenuButton.setOnAction(e -> {
@@ -281,7 +289,7 @@ public class GraphicsHandler {
 
         centralHBar.getChildren().addAll(createProfileNameButton, returnToMainMenuButton);
 
-        centralVBox.getChildren().addAll(profileSelectorInformationDisplay, nameEntryField);
+        centralVBox.getChildren().addAll(profileSelectorInformationDisplay, nameEntryField, creationErrorLabel);
 
         Scene scene = new Scene (root, canvasWidth, canvasHeight);
         stage.setScene(scene);

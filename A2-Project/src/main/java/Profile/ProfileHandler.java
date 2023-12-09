@@ -56,6 +56,7 @@ public class ProfileHandler {
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
+		newProfile.delete();
 		return "Profile Created";
 	}
 
