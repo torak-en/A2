@@ -219,7 +219,7 @@ public class GraphicsHandler {
         stage.setScene(scene);
         stage.show();
     }
-
+    
     private static String obtainProfileName(ListView<String> listView) {
         String selectedProfileName = listView.getSelectionModel().getSelectedItem();
         if (selectedProfileName != null) {
@@ -292,7 +292,6 @@ public class GraphicsHandler {
     public void LevelSelectorUI(Profile profileSelected, Stage stage) throws Exception {
 
         LevelHandler levelHandler = new LevelHandler();
-        Render render = new Render();
 
         BorderPane root = new BorderPane();
         stage.setTitle("Level Selector");
@@ -438,101 +437,6 @@ public class GraphicsHandler {
         centralBar.getChildren().addAll(profileSelectScreenInterfaceButton, winScreenInterfaceButton, loseScreenInterfaceButton, quitButton);
 
         Scene scene = new Scene(root, canvasWidth, canvasHeight);
-        stage.setScene(scene);
-        stage.show();
-    }
-
-    public void LoadProfileSelectorUI(Stage stage) {
-        BorderPane root = new BorderPane();
-        stage.setTitle("Profile Selector");
-
-        Label profileSelectorInformationDisplay = new Label("Placeholder Text");
-        profileSelectorInformationDisplay.setMinWidth(150);
-
-        //VBox Declaration
-        VBox centralVBox = new VBox();
-        centralVBox.setPadding(new Insets(50, 3, 90, 200));
-        centralVBox.setSpacing(0);
-
-        HBox centralBar = new HBox();
-        centralBar.setSpacing(10);
-        centralBar.setPadding(new Insets(150, 3, 90, 75));
-        root.setBottom(centralBar);
-
-        Button selectProfileButton = new Button("Select Profile");
-        selectProfileButton.setPrefWidth(Control.USE_COMPUTED_SIZE);
-        selectProfileButton.setMinWidth(100);
-
-        Button deleteProfileButton = new Button("Delete Profile");
-        deleteProfileButton.setPrefWidth(Control.USE_COMPUTED_SIZE);
-        deleteProfileButton.setMinWidth(100);
-
-        //Button to return to main menu:
-        Button returnToMainMenuButton = new Button("Return to Main menu");
-        returnToMainMenuButton.setMinWidth(100);
-
-        returnToMainMenuButton.setOnAction(e -> {
-            MenuScreenUI(stage);
-        });
-
-        selectProfileButton.setOnAction(e ->{
-            //Call Profile and obtain the highest level unlocked.
-            int maxLevelUnlocked = 3; //Get via getMaxLevelUnlocked method
-
-            LevelSelectorUI(maxLevelUnlocked, stage);
-        });
-
-        centralBar.getChildren().addAll(selectProfileButton, deleteProfileButton, returnToMainMenuButton);
-
-        centralVBox.getChildren().add(profileSelectorInformationDisplay);
-
-        root.getChildren().add(centralVBox);
-
-        Scene scene = new Scene (root, canvasWidth, canvasHeight);
-        stage.setScene(scene);
-        stage.show();
-    }
-
-    //Create New Profile
-    public void CreateNewProfileUI(Stage stage) {
-        BorderPane root = new BorderPane();
-        stage.setTitle("Create New Profile");
-
-        Label profileSelectorInformationDisplay = new Label("Please enter a name:");
-        profileSelectorInformationDisplay.setMinWidth(150);
-
-        TextField nameEntryField = new TextField();
-        nameEntryField.setMinWidth(150);
-
-        //VBox Declaration
-        VBox centralVBox = new VBox();
-        centralVBox.setPadding(new Insets(100, 3, 90, 150));
-        centralVBox.setSpacing(0);
-
-        HBox centralBar = new HBox();
-        centralBar.setSpacing(10);
-        centralBar.setPadding(new Insets(300, 3, 90, 120));
-        root.setBottom(centralBar);
-
-        Button selectProfileButton = new Button("Start");
-        selectProfileButton.setPrefWidth(Control.USE_COMPUTED_SIZE);
-        selectProfileButton.setMinWidth(100);
-
-        //Button to return to main menu:
-        Button returnToMainMenuButton = new Button("Return to Main menu");
-        returnToMainMenuButton.setMinWidth(100);
-
-        returnToMainMenuButton.setOnAction(e -> {
-            MenuScreenUI(stage);
-        });
-
-        centralBar.getChildren().addAll(selectProfileButton, returnToMainMenuButton);
-
-        centralVBox.getChildren().addAll(profileSelectorInformationDisplay, nameEntryField);
-
-        root.getChildren().add(centralVBox);
-
-        Scene scene = new Scene (root, canvasWidth, canvasHeight);
         stage.setScene(scene);
         stage.show();
     }
