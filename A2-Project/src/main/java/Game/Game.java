@@ -14,6 +14,7 @@ import Render.Render;
 public class Game {
 	private Level level;
 	private int levelNum;
+	private Profile currentProfile;
 
  	public static void main(String[] args) {
 		HighscoreHandler highscoreHandler = new HighscoreHandler();
@@ -62,5 +63,13 @@ public class Game {
 
 	public void setLevelNum(int levelNum) {
 		this.levelNum = levelNum;
+	}
+
+	public Profile getCurrentProfile() {
+		return currentProfile;
+	}
+
+	public void setCurrentProfile(Profile currentProfile) {
+		this.currentProfile = currentProfile;
 	}
 }

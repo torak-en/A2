@@ -334,10 +334,15 @@ public class GraphicsHandler {
                 levelThreeButton.setDisable(false);
         }
 
+        Game game = new Game();
+
         levelOneButton.setOnAction(e -> {
             //Create Level 1
             //Go to Render to display level.
             //levelHandler.createLevel(1);
+            game.updateLevel(2);
+            game.setCurrentProfile(profileSelected);
+            gameUI(stage, game);
         });
 
         levelTwoButton.setOnAction(e -> {
@@ -850,7 +855,7 @@ public class GraphicsHandler {
             gameUI(stage, game);
         });
 
-        centralBar.getChildren().addAll(returnToMainMenuButton);
+        centralBar.getChildren().addAll(restartLevelButton, returnToMainMenuButton);
 
         centralVBox.getChildren().add(loseMessageLabel);
 
