@@ -1,6 +1,9 @@
 package Render;
+import Profile.Profile;
+import Profile.ProfileHandler;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -9,6 +12,10 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class GraphicsHandler {
     private int canvasWidth = 500;
@@ -242,6 +249,7 @@ public class GraphicsHandler {
     }
 
     public void LoadProfileSelectorUI(Stage stage) {
+        ProfileHandler eX = new ProfileHandler();
         BorderPane root = new BorderPane();
         stage.setTitle("Profile Selector");
 
@@ -252,14 +260,17 @@ public class GraphicsHandler {
 
         Label selectionLabel = new Label("Please select a Profile: ");
 
-        //Placeholder values. (Use GetProfile to add Profile values)
-        ObservableList<String> items = FXCollections.observableArrayList(
-                "Item 1", "Item 2", "Item 3", "Item 4", "Item 5");
+        ObservableList<String> profileNameData =
+                FXCollections.observableArrayList(conversionMethod(eX.getProfiles()));
 
-        ListView<String> listView = new ListView<>(items);
+        ListView<String> listView = new ListView<>(profileNameData);
         listView.setMaxSize(350, 350);
 
         centralVBox.getChildren().addAll(selectionLabel, listView);
+
+
+
+
 
         HBox centralHBar = new HBox();
         centralHBar.setSpacing(10);
@@ -267,12 +278,12 @@ public class GraphicsHandler {
         root.setBottom(centralHBar);
 
         Button selectProfileButton = new Button("Select Profile");
-        selectProfileButton.setPrefWidth(Control.USE_COMPUTED_SIZE);
         selectProfileButton.setMinWidth(100);
+        selectProfileButton.setDisable(true);
 
         Button deleteProfileButton = new Button("Delete Profile");
-        deleteProfileButton.setPrefWidth(Control.USE_COMPUTED_SIZE);
         deleteProfileButton.setMinWidth(100);
+        deleteProfileButton.setDisable(true);
 
         //Button to return to main menu:
         Button returnToMainMenuButton = new Button("Return to Main menu");
@@ -294,6 +305,18 @@ public class GraphicsHandler {
         Scene scene = new Scene (root, canvasWidth, canvasHeight);
         stage.setScene(scene);
         stage.show();
+    }
+
+    private ArrayList<String> conversionMethod(List<Profile> profileList) {
+        ArrayList<String> profileData = new ArrayList<>();
+
+        for (int i = 0; i < profileList.size(); i++) {
+            String profileDataString = profileList.get(i).getProfileName()
+                    + " [MaxLevelUnlocked: " + profileList.get(i).getMaxLevelNumUnlcoked() + "]";
+            profileData.add(profileDataString);
+        }
+
+        return profileData;
     }
 
     //Create New Profile
