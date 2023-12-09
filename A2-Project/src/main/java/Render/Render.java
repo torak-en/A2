@@ -28,6 +28,10 @@ public class Render extends Application{
 
 	@Override
 	public void start(Stage stage) throws Exception {
-		gameGraphicEngine.MenuScreenUI(stage);
+		//initUI(stage);
+		Game game = new Game();
+		game.setLevelNum(1);
+		gameGraphicEngine.winScreenUI(stage, game);
+		//game = new Game();
 	}
 }
