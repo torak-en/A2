@@ -15,6 +15,7 @@ public class Player extends Actor{
 	private boolean alive = true;
 	private int cooldown = 0;
 	private boolean beingMovedByIce = false;
+	private boolean won = false;
 
 
 	public Player(int x, int y) {
@@ -65,5 +66,13 @@ public class Player extends Actor{
 
 	public void setCooldown(int cooldown) {
 		this.cooldown = cooldown;
+	}
+
+	public boolean hasWon() {
+		return won;
+	}
+
+	public void setWon(boolean won) {
+		this.won = won;
 	}
 }
