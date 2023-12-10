@@ -525,7 +525,6 @@ public class GraphicsHandler {
                     long currentTime = System.nanoTime();
                     double diff = currentTime-startTime;
                     progress += diff / nsPerTick;
-                    System.out.println(progress);
                     if (progress >=1) {
                         progress--;
                         tick(stage, game);

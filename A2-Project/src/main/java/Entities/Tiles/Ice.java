@@ -32,7 +32,7 @@ public class Ice extends Tile{
 	public Level tick(Level level) {
 		for (Actor a : level.getActorList()) {
 			if (a.getX() == getX() && a.getY() == getY()){
-				a.setPendingDirection(slide(a));
+				a.setPendingDirection(slide(a,level));
 			}
 		}
 		return level;
@@ -47,12 +47,60 @@ public class Ice extends Tile{
 	 * @param a The player sliding on the ice
 	 * @return The direction in which the player should slide
 	 */
-	public Direction slide(Actor a){
-		if (getInverse(a.getPreviousDirection()) == entranceDirection1){
-			return entranceDirection2;
+	public Direction slide(Actor a, Level level){
+		Direction directionMovedOntoIce = a.getPreviousDirection();
+		if (directionMovedOntoIce == getInverse(entranceDirection1)){
+			if (a.getType() == EntityType.PLAYER){
+				System.out.println("Player");
+				System.out.println(entranceDirection2);
+				System.out.println(a.playerCheckLocation(entranceDirection2, level));
+				if (a.playerCheckLocation(entranceDirection2, level)){
+					System.out.println(entranceDirection2 + " Chosen");
+					return entranceDirection2;
+				} else if (a.playerCheckLocation(entranceDirection1, level)){
+					System.out.println(entranceDirection1 + " Chosen");
+					return entranceDirection1;
+				} else {
+					return Direction.NONE;
+				}
+
+			} else if (a.getType() == EntityType.BLOCK){
+				System.out.println("Block");
+				if (a.blockCheckLocation(entranceDirection2, level)){
+					return entranceDirection2;
+				} else if (a.blockCheckLocation(entranceDirection1, level)){
+					return entranceDirection1;
+				} else {
+					return Direction.NONE;
+				}
+			}
 		} else {
-			return entranceDirection1;
+			if (a.getType() == EntityType.PLAYER){
+				System.out.println("Player");
+				System.out.println(entranceDirection1);
+				System.out.println(a.playerCheckLocation(entranceDirection1, level));
+				if (a.playerCheckLocation(entranceDirection1, level)){
+					System.out.println(entranceDirection1 + " Chosen");
+					return entranceDirection1;
+				} else if (a.playerCheckLocation(entranceDirection2, level)){
+					System.out.println(entranceDirection2 + " Chosen");
+					return entranceDirection2;
+				} else {
+					return Direction.NONE;
+				}
+
+			} else if (a.getType() == EntityType.BLOCK){
+				System.out.println("Block");
+				if (a.blockCheckLocation(entranceDirection1, level)){
+					return entranceDirection1;
+				} else if (a.blockCheckLocation(entranceDirection2, level)){
+					return entranceDirection2;
+				} else {
+					return Direction.NONE;
+				}
+			}
 		}
+		return Direction.NONE;
 	}
 
 }
