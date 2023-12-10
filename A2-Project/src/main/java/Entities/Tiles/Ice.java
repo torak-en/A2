@@ -38,8 +38,8 @@ public class Ice extends Tile{
 		return level;
 	}
 
-	private boolean checkMoveOntoIce(Direction direction){
-		return direction == entranceDirection1 || direction == entranceDirection2;
+	public boolean checkMoveOntoIce(Direction direction){
+		return getInverse(direction) == entranceDirection1 || getInverse(direction) == entranceDirection2;
 	}
 	/**
 	 * Determines the direction in which an actor should slide based on its previous direction
@@ -47,11 +47,11 @@ public class Ice extends Tile{
 	 * @param a The player sliding on the ice
 	 * @return The direction in which the player should slide
 	 */
-	private Direction slide(Actor a){
-		if (a.getPreviousDirection() == entranceDirection1){
-			return getInverse(entranceDirection2);
+	public Direction slide(Actor a){
+		if (getInverse(a.getPreviousDirection()) == entranceDirection1){
+			return entranceDirection2;
 		} else {
-			return getInverse(entranceDirection1);
+			return entranceDirection1;
 		}
 	}
 
