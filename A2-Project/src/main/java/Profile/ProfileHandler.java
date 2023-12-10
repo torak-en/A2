@@ -30,8 +30,13 @@ public class ProfileHandler {
 			int maxUnlockedLevel = Integer.parseInt(sc.nextLine());
 
 			profiles.add(new Profile(name[0], maxUnlockedLevel));
+			sc.close();
 		}
 		return profiles;
+	}
+
+	public void updateProfile(String name, int newMaxLevel){
+
 	}
 
 	public String createNewProfile(String name){
@@ -56,15 +61,15 @@ public class ProfileHandler {
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
-		newProfile.delete();
 		return "Profile Created";
 	}
 
 	public void deleteProfile(String name){
 //		System.out.println(name);
 		File newProfile = new File("Profiles/" + name + ".txt");
-		if (!newProfile.exists()){
+		if (!newProfile.delete()){
 			throw new RuntimeException("Profile Unable to be Deleted");
 		}
+
 	}
 }

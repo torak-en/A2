@@ -29,18 +29,23 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class GraphicsHandler {
     private int canvasWidth = 500;
     private int canvasHeight = 500;
     private Canvas paneCanvas = new Canvas(canvasWidth, canvasHeight);
 
+    private Image backgroundImage = new Image("file:UserInterface/path_background.png");
+    private Image dirtBackgroundImage = new Image("file:UserInterface/dirt_background.png");
+    private Image crackedBackgroundImage = new Image("file:UserInterface/cracked_path_background.png");
     private AnimationTimer timer = null;
     private boolean running = true;
     private final int ns = 1000000000;
@@ -58,6 +63,7 @@ public class GraphicsHandler {
     private Direction nextInput = Direction.NONE;
 
 
+
     //Add Brick tile png to Main Menu Background (REPEATING) (Complete)
     //Add ScrollBarView (ListView) for Profile Selector (Complete)
     //Names in Profile Selector and Select Button (Complete)
@@ -73,9 +79,8 @@ public class GraphicsHandler {
 
         //NOTE: Change once a TitleImage has been made.
         Image gameTitleImage = new Image("file:UserInterface/InterimTitleImage1.png");
-        Image originalImage = new Image("file:UserInterface/PathTileTexture.png");
 
-        CreateMosaicBackground(root, originalImage);
+        CreateMosaicBackground(root);
 
         root.minHeight(200);
         root.minWidth(200);
@@ -133,10 +138,21 @@ public class GraphicsHandler {
         stage.show();
     }
 
-    private BorderPane CreateMosaicBackground(BorderPane root, Image originalImage) {
-        for (int y = 0; y < canvasHeight; y += originalImage.getHeight()) {
-            for (int x = 0; x < canvasWidth; x += originalImage.getWidth()) {
-                ImageView imageView = new ImageView(originalImage);
+    private BorderPane CreateMosaicBackground(BorderPane root) {
+        for (int y = 0; y < canvasHeight; y += backgroundImage.getHeight()) {
+            for (int x = 0; x < canvasWidth; x += backgroundImage.getWidth()) {
+                Random rand = new Random();
+                int randomInt = rand.nextInt(10);
+
+                ImageView imageView = null;
+                System.out.println(randomInt);
+                if (randomInt < 4) {
+                     imageView = new ImageView(backgroundImage);
+                } else if (randomInt < 8){
+                    imageView = new ImageView(crackedBackgroundImage);
+                } else {
+                    imageView = new ImageView(dirtBackgroundImage);
+                }
 
                 imageView.setTranslateX(x);
                 imageView.setTranslateY(y);
@@ -151,6 +167,7 @@ public class GraphicsHandler {
         ProfileHandler profileHandler = new ProfileHandler();
 
         BorderPane root = new BorderPane();
+        CreateMosaicBackground(root);
         stage.setTitle("Profile Selector");
 
         VBox centralVBox = new VBox();
@@ -159,6 +176,7 @@ public class GraphicsHandler {
         root.setCenter(centralVBox);
 
         Label selectionLabel = new Label("Please select a Profile: ");
+        selectionLabel.setTextFill(Color.color(1,1,1));
 
         ObservableList<String> profileNameData =
                 FXCollections.observableArrayList(obtainProfileNameList(profileHandler.getProfiles()));
@@ -188,9 +206,12 @@ public class GraphicsHandler {
         deleteProfileButton.setOnAction(e -> {
             //profileHandler.deleteProfile(currentProfileName);
             for (int i = 0; i < profileNameData.size(); i++) {
+                System.out.println(profileNameData.get(i));
+                System.out.println(currentProfileName);
                 if (profileNameData.get(i).equalsIgnoreCase(currentProfileName)) {
                     profileHandler.deleteProfile(profileNameData.get(i));
-                    //listView.getSelectionModel().getSelectedItems().remove(i);
+                    profileNameData.remove(i);
+                    listView.refresh();
                 }
             }
         });
@@ -252,10 +273,12 @@ public class GraphicsHandler {
     public void CreateNewProfileUI(Stage stage) {
         ProfileHandler profileHandler = new ProfileHandler();
         BorderPane root = new BorderPane();
+        CreateMosaicBackground(root);
         stage.setTitle("Create New Profile");
 
         Label profileSelectorInformationDisplay = new Label("Please enter a name:");
         profileSelectorInformationDisplay.setMinWidth(150);
+        profileSelectorInformationDisplay.setTextFill(Color.color(1,1,1));
 
         TextField nameEntryField = new TextField();
 
@@ -281,6 +304,7 @@ public class GraphicsHandler {
 
         Label creationErrorLabel = new Label("");
         creationErrorLabel.setMinWidth(150);
+        creationErrorLabel.setTextFill(Color.color(1,1,1));
 
         createProfileNameButton.setOnAction(e -> {
             String s = profileHandler.createNewProfile(nameEntryField.getText());
@@ -311,10 +335,12 @@ public class GraphicsHandler {
         LevelHandler levelHandler = new LevelHandler();
 
         BorderPane root = new BorderPane();
+        CreateMosaicBackground(root);
         stage.setTitle("Level Selector");
 
         Label selectLevelLabel = new Label("Please select a level: ");
         selectLevelLabel.setMinWidth(500);
+        selectLevelLabel.setTextFill(Color.color(1,1,1));
 
         HBox selectBar = new HBox();
         selectBar.setSpacing(0);
@@ -400,6 +426,7 @@ public class GraphicsHandler {
         Image userInterfaceImage = new Image("file:UserInterface/InterimTitleImage1.png");
 
         BorderPane root = new BorderPane();
+        CreateMosaicBackground(root);
 
         root.minHeight(200);
         root.minWidth(200);
@@ -466,10 +493,12 @@ public class GraphicsHandler {
     //Level Selector
     public void LevelSelectorUI(int maxLevel, Stage stage) {
         BorderPane root = new BorderPane();
+        CreateMosaicBackground(root);
         stage.setTitle("Level Selector");
 
         Label selectLevelLabel = new Label("Please select a level: ");
         selectLevelLabel.setMinWidth(500);
+        selectLevelLabel.setTextFill(Color.color(1,1,1));
 
         HBox selectBar = new HBox();
         selectBar.setSpacing(0);
@@ -796,10 +825,12 @@ public class GraphicsHandler {
     //Win Screen Interface
     public void winScreenUI(Stage stage, Game game) {
         BorderPane root = new BorderPane();
+        CreateMosaicBackground(root);
         stage.setTitle("Win Screen");
 
         Label winMessageLabel = new Label("Congratulations, you beat this level.");
         winMessageLabel.setMinWidth(200);
+        winMessageLabel.setTextFill(Color.color(1,1,1));
 
         //VBox Declaration
         VBox centralVBox = new VBox();
@@ -842,10 +873,12 @@ public class GraphicsHandler {
     //Lose Screen Interface
     public void loseScreenUI(Stage stage, Game game) {
         BorderPane root = new BorderPane();
+        CreateMosaicBackground(root);
         stage.setTitle("Lose Screen");
 
         Label loseMessageLabel = new Label("You died, Please try again!");
         loseMessageLabel.setMinWidth(150);
+        loseMessageLabel.setTextFill(Color.color(1,1,1));
 
         //VBox Declaration
         VBox centralVBox = new VBox();
