@@ -1,7 +1,7 @@
 Continuation,100
 20,10
 W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W
-W,P,W,E,P,P,P,P,P,P,P,P,P,P,P,P,P,P,P,W
+W,P,W,E,Lr,P,P,P,P,C2,P,P,P,P,P,P,P,P,P,W
 W,P,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,P,P,W
 W,P,W,P,P,P,P,P,P,P,P,P,P,P,P,P,P,P,P,W
 W,P,W,P,P,P,P,P,P,P,P,P,P,P,P,P,P,P,P,W
@@ -13,6 +13,7 @@ W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W
 K,5,1,r
 Pl,1,2
 CC,18,4
+CC,18,3
 Pi,5,4,r
 F,1,1
 Bu,6,2,r,l

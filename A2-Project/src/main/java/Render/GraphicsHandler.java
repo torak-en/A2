@@ -49,7 +49,7 @@ public class GraphicsHandler {
     private AnimationTimer timer = null;
     private boolean running = true;
     private final int ns = 1000000000;
-    private final int ticksPerSecond = 30;
+    private final int ticksPerSecond = 60;
     private final int nsPerTick = ns / ticksPerSecond;
     private double progress = 0;
     private long startTime = System.nanoTime();
@@ -145,7 +145,6 @@ public class GraphicsHandler {
                 int randomInt = rand.nextInt(10);
 
                 ImageView imageView = null;
-                System.out.println(randomInt);
                 if (randomInt < 4) {
                      imageView = new ImageView(backgroundImage);
                 } else if (randomInt < 8){
@@ -206,8 +205,6 @@ public class GraphicsHandler {
         deleteProfileButton.setOnAction(e -> {
             //profileHandler.deleteProfile(currentProfileName);
             for (int i = 0; i < profileNameData.size(); i++) {
-                System.out.println(profileNameData.get(i));
-                System.out.println(currentProfileName);
                 if (profileNameData.get(i).equalsIgnoreCase(currentProfileName)) {
                     profileHandler.deleteProfile(profileNameData.get(i));
                     profileNameData.remove(i);
@@ -384,7 +381,7 @@ public class GraphicsHandler {
             //Create Level 1
             //Go to Render to display level.
             //levelHandler.createLevel(1);
-            game.updateLevel(2);
+            game.updateLevel(3);
             game.setCurrentProfile(profileSelected);
             gameUI(stage, game);
         });
@@ -582,6 +579,7 @@ public class GraphicsHandler {
         gc = canvas.getGraphicsContext2D();
         root.getChildren().add(canvas);
 
+        startTime = System.nanoTime();
         timer = new AnimationTimer() {
             @Override
             public void handle(long l) {
@@ -659,7 +657,7 @@ public class GraphicsHandler {
         Player p = game.getLevel().getPlayer();
         if (playerMoveCooldown == 0) {
             if (p.getPendingDirection() == null) {
-                if (p.checkLocation(nextInput, curLevel)) {
+                if (p.playerCheckLocation(nextInput, curLevel)) {
                     p.setPendingDirection(nextInput);
                 }
             }
@@ -855,6 +853,7 @@ public class GraphicsHandler {
         //Disable button if there are no more levels
 
        nextLevelButton.setOnAction(e -> {
+           System.out.println(game.getLevelNum());
            game.updateLevel(game.getLevelNum() + 1);
             gameUI(stage, game);
        });

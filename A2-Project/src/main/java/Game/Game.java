@@ -11,6 +11,8 @@ import Profile.Profile;
 import Profile.ProfileHandler;
 import Render.Render;
 
+import java.util.List;
+
 public class Game {
 	private Level level;
 	private int levelNum;
@@ -32,8 +34,9 @@ public class Game {
 			level = a.tick(level);
 		}
 
-		for (Item i : level.getItemList()) {
-			level = i.tick(level);
+		List<Item> items = level.getItemList();
+		for (int i = 0; i < items.size(); i++) {
+			items.get(i).tick(level);
 		}
 
 		for (Tile[] tileLayer : level.getTileLayer()) {

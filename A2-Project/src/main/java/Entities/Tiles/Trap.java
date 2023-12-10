@@ -17,16 +17,6 @@ public class Trap extends Tile{
 
 	@Override
 	public Level tick(Level level) {
-		if (active){
-			for (Actor a: level.getActorList()) {
-				if (a.getType() == EntityType.PLAYER){
-					Player p = (Player) a;
-					p.setAlive(false);
-				} else {
-					level.getActorList().remove(a);
-				}
-			}
-		}
 		return level;
 	}
 
@@ -36,5 +26,9 @@ public class Trap extends Tile{
 
 	public int getId() {
 		return id;
+	}
+
+	public boolean isActive() {
+		return active;
 	}
 }

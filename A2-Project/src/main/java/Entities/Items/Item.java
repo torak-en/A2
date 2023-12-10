@@ -1,5 +1,6 @@
 package Entities.Items;
 
+import Entities.Actors.Player;
 import Entities.Entity;
 import Enum.EntityType;
 import Level.Level;
@@ -15,7 +16,9 @@ public class Item extends Entity {
 
 	@Override
 	public Level tick(Level level) {
-		if (pickedUp){
+		Player p = level.getPlayer();
+		if (p.getX() == getX() && p.getY() == getY()){
+			p.pickupItem(this);
 			level.getItemList().remove(this);
 		}
 		return level;
@@ -35,13 +38,5 @@ public class Item extends Entity {
 
 	public int getY() {
 		return super.getY();
-	}
-
-	public void setPickedUp(boolean pickedUp) {
-		this.pickedUp = pickedUp;
-	}
-
-	public boolean isPickedUp() {
-		return pickedUp;
 	}
 }
