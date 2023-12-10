@@ -13,17 +13,38 @@ import Level.Level;
 import java.nio.channels.NonWritableChannelException;
 import java.util.Objects;
 
+/**
+ * The abstract class representing an actor entity in the game.
+ */
 public abstract class Actor extends Entity {
 	private char layout;
 	private boolean isMovedByIce;
 	private Direction pendingDirection;
 	private Direction previousDirection;
 
+
+	/**
+     * Constructor for an Actor object.
+     * @param x The x-coordinate of the actor.
+     * @param y The y-coordinate of the actor.
+     * @param type The type of entity.
+     */
+
 	public Actor (int x, int y, EntityType type){
 		super(x,y,type);
 	}
 
+	/**
+     * Abstract method to calculate the movement direction of the actor.
+     * @param level The level where the actor exists.
+     * @return The calculated movement direction.
+     */
+
 	public abstract Direction calculateMove(Level level);
+
+	/**
+     * Applies the pending movement to the actor's position.
+     */
 
 	public void applyMove(){
 		int x = getX();
@@ -40,6 +61,13 @@ public abstract class Actor extends Entity {
 		previousDirection = pendingDirection;
 		pendingDirection = null;
 	}
+
+	/**
+     * Checks if the specified location in a given direction is valid for movement.
+     * @param direction The direction to check.
+     * @param level The level where the check is performed.
+     * @return True if the location is valid for movement, false otherwise.
+     */
 
 	public boolean checkLocation(Direction direction, Level level){
 		int newX = getX();
@@ -69,6 +97,14 @@ public abstract class Actor extends Entity {
 
 		return true;
 	}
+
+
+	/**
+     * Checks if the specified location for a player's movement is valid and performs actions accordingly.
+     * @param direction The direction in which the player wants to move.
+     * @param level The level where the check is performed.
+     * @return True if the location is valid for the player's movement, false otherwise.
+     */
 
 	public boolean playerCheckLocation(Direction direction, Level level){
 		int newX = getX();
@@ -124,17 +160,40 @@ public abstract class Actor extends Entity {
 	}
 
 
+	/**
+     * Retrieves the previous direction of the actor.
+     * @return The previous direction of the actor.
+     */
+
 	public Direction getPreviousDirection() {
 		return previousDirection;
 	}
+
+
+	/**
+     * Sets the previous direction of the actor.
+     * @param previousDirection The previous direction to set for the actor.
+     */
 
 	public void setPreviousDirection(Direction previousDirection) {
 		this.previousDirection = previousDirection;
 	}
 
+
+	/**
+     * Retrieves the pending direction of the actor.
+     * @return The pending direction of the actor.
+     */
+
 	public Direction getPendingDirection() {
 		return pendingDirection;
 	}
+
+	
+	/**
+     * Sets the pending direction of the actor.
+     * @param pendingDirection The pending direction to set for the actor.
+     */
 
 	public void setPendingDirection(Direction pendingDirection) {
 		this.pendingDirection = pendingDirection;

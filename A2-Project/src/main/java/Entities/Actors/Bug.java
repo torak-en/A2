@@ -5,11 +5,26 @@ import Enum.EntityType;
 import Enum.Direction;
 import Level.Level;
 
+
+/**
+ * Represents a bug entity in the game.
+ * Extends the Actor class.
+ */
+
 public class Bug extends Actor{
 	private Direction initialDirection;
 	private Direction edgeDirection;
 	private final int TICKS_BETWEEN_MOVE = 30;
 	private int ticksTillMove = 0;
+
+
+	/**
+     * Constructor for a Bug object.
+     * @param x The x-coordinate of the bug.
+     * @param y The y-coordinate of the bug.
+     * @param edgeDirection The initial edge direction of the bug.
+     * @param initialDirection The initial direction of the bug.
+     */
 
 	public Bug(int x, int y, Direction edgeDirection, Direction initialDirection) {
 		super(x, y, EntityType.BUG);
@@ -18,6 +33,14 @@ public class Bug extends Actor{
 		ticksTillMove = TICKS_BETWEEN_MOVE;
 		setPreviousDirection(initialDirection);
 	}
+
+
+	/**
+     * Overrides the tick method inherited from Actor class.
+     * This method defines the actions performed by the bug during each game tick.
+     * @param level The level where the bug exists.
+     * @return The modified level after the tick.
+     */
 
 	@Override
 	public Level tick(Level level) {
@@ -34,6 +57,14 @@ public class Bug extends Actor{
 		return level;
 	}
 
+
+	/**
+     * Overrides the calculateMove method inherited from Actor class.
+     * This method calculates the movement direction of the bug.
+     * @param level The level where the bug exists.
+     * @return The calculated movement direction of the bug (or NONE if no movement).
+     */
+	
 	@Override
 	public Direction calculateMove(Level level) {
 		boolean clearSpace = false;

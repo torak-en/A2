@@ -8,6 +8,12 @@ import Enum.EntityType;
 import Enum.Direction;
 import Level.Level;
 
+
+/**
+ * Represents a frog entity in the game.
+ * Extends the Actor class.
+ */
+
 public class Frog extends Actor{
 	private Node nodePathToPlayer;
 	private int playerX = -1;
@@ -16,10 +22,25 @@ public class Frog extends Actor{
 	private final int TICKS_BETWEEN_MOVE = 100;
 	private int ticksTillMove = 0;
 
+
+	/**
+     * Constructor for a Frog object.
+     * @param x The x-coordinate of the frog.
+     * @param y The y-coordinate of the frog.
+     */
+
 	public Frog(int x, int y) {
 		super(x, y, EntityType.FROG);
 		ticksTillMove = TICKS_BETWEEN_MOVE;
 	}
+
+
+	/**
+     * Overrides the tick method inherited from Actor class.
+     * This method defines the actions performed by the frog during each game tick.
+     * @param level The level where the frog exists.
+     * @return The modified level after the tick.
+     */
 
 	@Override
 	public Level tick(Level level) {
@@ -52,11 +73,26 @@ public class Frog extends Actor{
 		return level;
 	}
 
+
+	/**
+     * Overrides the calculateMove method inherited from Actor class.
+     * This method calculates the movement direction of the frog.
+     * @param level The level where the frog exists.
+     * @return The calculated movement direction of the frog (or NONE if no movement).
+     */
+
 	@Override
 	public Direction calculateMove(Level level) {
+		// This method is not used for frog movement; movement logic is handled in the tick method.
 		return null;
 	}
 
+	/**
+	 * Calculates the path to the player using a breadth first search algorithm.
+	 * @param player The player object.
+	 * @param level The level where the frog exists.
+	 * @return The node containing the path to the player.
+	 */
 	private Node calculatePathToPlayer(Player player, Level level) {
 		int pX = player.getX();
 		int pY = player.getY();
@@ -128,6 +164,17 @@ public class Frog extends Actor{
 
 	}
 
+
+	/**
+	 * Checks if a given location is valid for movement.
+	 * @param x The x-coordinate of the location.
+	 * @param y The y-coordinate of the location.
+	 * @param level The level where the check is performed.
+	 * @param filledNodes The list of nodes that have already been checked.
+	 * @param lastNodes The list of nodes that have been checked in the previous iteration.
+	 * @return True if the location is valid for movement, false otherwise.
+	 */
+
 	private Boolean checkValidLocation (int x, int y, Level level, List<Node> filledNodes, List<Node> lastNodes){
 		EntityType nextTile = level.getTileLayer()[x][y].getType();
 		if (nextTile == EntityType.EXIT || nextTile == EntityType.WATER || nextTile == EntityType.WALL || nextTile == EntityType.LOCKED_DOOR || nextTile == EntityType.CHIP_SOCKET){
@@ -156,6 +203,12 @@ public class Frog extends Actor{
 		return true;
 	}
 
+	/**
+	 * Generates a random direction for the frog to move in.
+	 * @param level The level where the frog exists.
+	 * @return The randomly generated direction.
+	 */
+	
 	private Direction randomDirection (Level level){
 		boolean upValid = checkLocation(Direction.UP, level);
 		boolean rightValid = checkLocation(Direction.RIGHT, level);
