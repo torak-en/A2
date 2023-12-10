@@ -4,7 +4,6 @@ import Enum.EntityType;
 import Level.Level;
 
 public class Water extends Tile{
-
 	private boolean replace = false;
 	public Water(int x, int y) {
 		super(x, y, EntityType.WATER);
