@@ -4,6 +4,7 @@ import Entities.Actors.Player;
 import Entities.Items.Item;
 import Entities.Tiles.Tile;
 import Game.Game;
+import Highscore.Highscore;
 import Level.Level;
 import Enum.Direction;
 import javafx.animation.AnimationTimer;
@@ -18,6 +19,7 @@ import Profile.ProfileHandler;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
@@ -30,6 +32,7 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import Highscore.HighscoreHandler;
 
 /**
  * GraphicsHandler manages the graphical user interface elements and rendering.
@@ -809,6 +812,16 @@ public class GraphicsHandler {
         createMosaicBackground(root);
         stage.setTitle("Win Screen");
 
+        int levelBeat = game.getLevelNum();
+        String playerNameRead;
+        int playerTimeRead;
+        int playerDayRead;
+        int playerMonthRead;
+        int playerYearRead;
+
+        HighscoreHandler highScoreHandler = new HighscoreHandler();
+        List<Highscore> highscoreArrayList = highScoreHandler.getHighscores(levelBeat);
+
         Label winMessageLabel = new Label("Congratulations, you beat this level.");
         winMessageLabel.setMinWidth(200);
         winMessageLabel.setTextFill(Color.color(1,1,1));
@@ -818,8 +831,35 @@ public class GraphicsHandler {
         centralVBox.setSpacing(10);
         root.setCenter(centralVBox);
 
+
+
         TableView scoreBoardTableView = new TableView();
         scoreBoardTableView.setMaxSize(400,400);
+
+        // Define columns
+        TableColumn<Highscore, String> playerNameColumn = new TableColumn<>("Name");
+        playerNameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+
+        TableColumn<Highscore, Integer> timeTakenColumn = new TableColumn<>("Time Taken");
+        timeTakenColumn.setCellValueFactory(new PropertyValueFactory<>("timeTaken"));
+
+        TableColumn<Highscore, Integer> dayColumn = new TableColumn<>("Day");
+        dayColumn.setCellValueFactory(new PropertyValueFactory<>("day"));
+
+        TableColumn<Highscore, Integer>  monthColumn = new TableColumn<>("Month");
+        monthColumn.setCellValueFactory(new PropertyValueFactory<>("month"));
+
+        TableColumn<Highscore, Integer> yearColumn = new TableColumn<>("Year");
+        yearColumn.setCellValueFactory(new PropertyValueFactory<>("year"));
+
+        scoreBoardTableView.getColumns().addAll(playerNameColumn, timeTakenColumn, dayColumn, monthColumn, yearColumn);
+
+//        for (int i = 0; i < highscoreArrayList.size(); i++) {
+//            scoreBoardTableView.getItems().add(highscoreArrayList.get(i));
+//        }
+
+        //Insert Data
+
 
         HBox centralBar = new HBox();
         centralBar.setSpacing(10);
@@ -850,6 +890,17 @@ public class GraphicsHandler {
         Scene scene = new Scene (root, canvasWidth, canvasHeight);
         stage.setScene(scene);
         stage.show();
+    }
+
+    private ArrayList<String> obtainHighscoreList(List<Highscore> highscoreList) {
+        ArrayList<String> highscoreData = new ArrayList<>();
+
+        for (int i = 0; i < highscoreList.size(); i++) {
+            String highscoreName = highscoreList.get(i).getName();
+            highscoreData.add(highscoreName);
+        }
+
+        return highscoreData;
     }
 
     /**
