@@ -832,24 +832,26 @@ public class GraphicsHandler {
         centralVBox.setSpacing(10);
         root.setCenter(centralVBox);
 
+
+
         TableView scoreBoardTableView = new TableView<Highscore>();
         scoreBoardTableView.setMaxSize(400,400);
 
         // Define columns
         TableColumn playerNameColumn = new TableColumn<Highscore, String>("Name");
-        playerNameColumn.setCellValueFactory(new PropertyValueFactory<Highscore, String>("name"));
+        playerNameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
 
         TableColumn timeTakenColumn = new TableColumn<Highscore, Integer>("Time Taken");
-        timeTakenColumn.setCellValueFactory(new PropertyValueFactory<Highscore, Integer>("timeTaken"));
+        timeTakenColumn.setCellValueFactory(new PropertyValueFactory<>("timeTaken"));
 
         TableColumn dayColumn = new TableColumn<Highscore, Integer>("Day");
-        dayColumn.setCellValueFactory(new PropertyValueFactory<Highscore, Integer>("day"));
+        dayColumn.setCellValueFactory(new PropertyValueFactory<>("day"));
 
         TableColumn monthColumn = new TableColumn<Highscore, Integer>("Month");
-        monthColumn.setCellValueFactory(new PropertyValueFactory<Highscore, Integer>("month"));
+        monthColumn.setCellValueFactory(new PropertyValueFactory<>("month"));
 
         TableColumn yearColumn = new TableColumn<Highscore, Integer>("Year");
-        yearColumn.setCellValueFactory(new PropertyValueFactory<Highscore, Integer>("year"));
+        yearColumn.setCellValueFactory(new PropertyValueFactory<>("year"));
 
         scoreBoardTableView.getColumns().add(playerNameColumn);
         scoreBoardTableView.getColumns().add(timeTakenColumn);

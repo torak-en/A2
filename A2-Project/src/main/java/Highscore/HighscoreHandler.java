@@ -59,11 +59,11 @@ public class HighscoreHandler {
 	public void newHighscore(int levelNum, Highscore highscore){
 		File levelHighscores = new File("Highscores/"+ levelNum +".txt");
 
-		String name = highscore.getName().get();
-		int timeTaken = highscore.getTimeTaken().get();
+		String name = highscore.getName();
+		int timeTaken = highscore.getTimeTaken();
 		int day = highscore.getDay().get();
-		int month = highscore.getMonth().get();
-		int year = highscore.getYear().get();
+		int month = highscore.getMonth();
+		int year = highscore.getYear();
 
 		if (levelHighscores.exists()) {
 			Scanner sc = null;

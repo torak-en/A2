@@ -39,8 +39,8 @@ public class Highscore {
      * Retrieves the name associated with the highscore entry.
      * @return The name associated with the highscore.
      */
-	public SimpleStringProperty getName() {
-		return (SimpleStringProperty) name;
+	public String getName() {
+		return name.get();
 	}
 
 	/**
@@ -55,8 +55,8 @@ public class Highscore {
      * Retrieves the time taken to achieve the highscore.
      * @return The time taken for the highscore.
      */
-	public SimpleIntegerProperty getTimeTaken() {
-		return (SimpleIntegerProperty) timeTaken;
+	public int getTimeTaken() {
+		return timeTaken.get();
 	}
 
 	/**
@@ -87,8 +87,8 @@ public class Highscore {
      * Retrieves the month of the recorded highscore.
      * @return The month of the highscore.
      */
-	public SimpleIntegerProperty getMonth() {
-		return (SimpleIntegerProperty) month;
+	public int getMonth() {
+		return month.get();
 	}
 
 	/**
@@ -103,8 +103,8 @@ public class Highscore {
      * Retrieves the year of the recorded highscore.
      * @return The year of the highscore.
      */
-	public SimpleIntegerProperty getYear() {
-		return (SimpleIntegerProperty) year;
+	public int getYear() {
+		return year.get();
 	}
 
 	/**
