@@ -23,9 +23,10 @@ public class Frog extends Actor{
 
 	@Override
 	public Level tick(Level level) {
-//		if (playerX == getX() && playerY == getY() && level.getPlayer() != null){
-//			level.getPlayer().setAlive(false);
-//		}
+		if (playerX == getX() && playerY == getY()){
+			level.getPlayer().setAlive(false);
+			setPendingDirection(Direction.NONE);
+		}
 		if (ticksTillMove == 0 && getPendingDirection() == null){
 			Player p = level.getPlayer();
 			ticksTillMove = TICKS_BETWEEN_MOVE;

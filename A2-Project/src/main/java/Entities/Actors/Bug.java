@@ -21,6 +21,10 @@ public class Bug extends Actor{
 
 	@Override
 	public Level tick(Level level) {
+		Player p = level.getPlayer();
+		if (getX() == p.getX() && getY() == p.getY()){
+			p.setAlive(false);
+		}
 		if (ticksTillMove == 0 && getPendingDirection() == null){
 			ticksTillMove = TICKS_BETWEEN_MOVE;
 			setPendingDirection(calculateMove(level));

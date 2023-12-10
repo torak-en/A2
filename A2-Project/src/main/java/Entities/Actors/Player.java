@@ -1,17 +1,19 @@
 package Entities.Actors;
 
 import Entities.Items.ComputerChip;
+import Entities.Items.Item;
 import Entities.Items.Key;
 import Enum.EntityType;
 import Enum.Direction;
 import Level.Level;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Player extends Actor{
 
-	private ArrayList<Key> heldKeys;
-	private ArrayList<ComputerChip> heldChips;
+	private List<Key> heldKeys = new ArrayList<>();
+	private List<ComputerChip> heldGold = new ArrayList<>();
 	private boolean alive = true;
 	private int cooldown = 0;
 	private boolean beingMovedByIce = false;
@@ -24,6 +26,12 @@ public class Player extends Actor{
 
 	@Override
 	public Level tick(Level level) {
+		List<Actor> actors = level.getActorList();
+		for (Actor a : actors) {
+			if (a.getX() == getX() && a.getY() == getY() && a != this){
+				alive = false;
+			}
+		}
 		return level;
 	}
 
@@ -40,12 +48,14 @@ public class Player extends Actor{
 
 	}
 
-	public void pickupKey(){
-
-	}
-
-	public void pickupChip(){
-
+	public void pickupItem(Item item){
+		if (item.getType() == EntityType.KEY){
+			Key key = (Key) item;
+			heldKeys.add(key);
+		} else if (item.getType() == EntityType.COMPUTER_CHIP) {
+			ComputerChip gold = (ComputerChip) item;
+			heldGold.add(gold);
+		}
 	}
 
 	public boolean isAlive() {
@@ -74,5 +84,13 @@ public class Player extends Actor{
 
 	public void setWon(boolean won) {
 		this.won = won;
+	}
+
+	public List<Key> getHeldKeys() {
+		return heldKeys;
+	}
+
+	public List<ComputerChip> getHeldGold() {
+		return heldGold;
 	}
 }

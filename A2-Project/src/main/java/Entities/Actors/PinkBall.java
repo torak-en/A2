@@ -18,6 +18,10 @@ public class PinkBall extends Actor{
 
 	@Override
 	public Level tick(Level level) {
+		Player p = level.getPlayer();
+		if (getX() == p.getX() && getY() == p.getY()){
+			p.setAlive(false);
+		}
 		if (ticksTillMove == 0 && getPendingDirection() == null){
 			ticksTillMove = TICKS_BETWEEN_MOVE;
 			setPendingDirection(calculateMove(level));
@@ -32,8 +36,11 @@ public class PinkBall extends Actor{
 		Direction pd = getPreviousDirection();
 		if (checkLocation(pd, level)){
 			return pd;
+		} else if (checkLocation(getInverse(pd), level)){
+			return getInverse(pd);
+		} else {
+			return Direction.NONE;
 		}
-		return getInverse(pd);
 	}
 
 }
