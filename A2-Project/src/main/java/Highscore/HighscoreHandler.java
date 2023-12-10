@@ -1,5 +1,8 @@
 package Highscore;
 
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -56,11 +59,11 @@ public class HighscoreHandler {
 	public void newHighscore(int levelNum, Highscore highscore){
 		File levelHighscores = new File("Highscores/"+ levelNum +".txt");
 
-		String name = highscore.getName();
-		int timeTaken = highscore.getTimeTaken();
-		int day = highscore.getDay();
-		int month = highscore.getMonth();
-		int year = highscore.getYear();
+		String name = highscore.getName().get();
+		int timeTaken = highscore.getTimeTaken().get();
+		int day = highscore.getDay().get();
+		int month = highscore.getMonth().get();
+		int year = highscore.getYear().get();
 
 		if (levelHighscores.exists()) {
 			Scanner sc = null;

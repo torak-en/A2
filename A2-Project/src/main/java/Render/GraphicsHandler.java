@@ -413,7 +413,9 @@ public class GraphicsHandler {
         });
 
         levelTwoButton.setOnAction(e -> {
-            levelHandler.createLevel(2);
+            game.updateLevel(2);
+            game.setCurrentProfile(profileSelected);
+            gameUI(stage, game);
         });
 
         levelThreeButton.setOnAction(e -> {
@@ -813,14 +815,13 @@ public class GraphicsHandler {
         stage.setTitle("Win Screen");
 
         int levelBeat = game.getLevelNum();
-        String playerNameRead;
-        int playerTimeRead;
-        int playerDayRead;
-        int playerMonthRead;
-        int playerYearRead;
 
-        HighscoreHandler highScoreHandler = new HighscoreHandler();
-        List<Highscore> highscoreArrayList = highScoreHandler.getHighscores(levelBeat);
+//        HighscoreHandler highScoreHandler = new HighscoreHandler();
+//        List<Highscore> highscores = highScoreHandler.getHighscores(levelBeat);
+
+//        for (int i = 0; i < highscoreArrayList.size(); i++) {
+//            System.out.println(highscoreArrayList.get(i));
+//        }
 
         Label winMessageLabel = new Label("Congratulations, you beat this level.");
         winMessageLabel.setMinWidth(200);
@@ -831,35 +832,42 @@ public class GraphicsHandler {
         centralVBox.setSpacing(10);
         root.setCenter(centralVBox);
 
-
-
-        TableView scoreBoardTableView = new TableView();
+        TableView scoreBoardTableView = new TableView<Highscore>();
         scoreBoardTableView.setMaxSize(400,400);
 
         // Define columns
-        TableColumn<Highscore, String> playerNameColumn = new TableColumn<>("Name");
-        playerNameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+        TableColumn playerNameColumn = new TableColumn<Highscore, String>("Name");
+        playerNameColumn.setCellValueFactory(new PropertyValueFactory<Highscore, String>("name"));
 
-        TableColumn<Highscore, Integer> timeTakenColumn = new TableColumn<>("Time Taken");
-        timeTakenColumn.setCellValueFactory(new PropertyValueFactory<>("timeTaken"));
+        TableColumn timeTakenColumn = new TableColumn<Highscore, Integer>("Time Taken");
+        timeTakenColumn.setCellValueFactory(new PropertyValueFactory<Highscore, Integer>("timeTaken"));
 
-        TableColumn<Highscore, Integer> dayColumn = new TableColumn<>("Day");
-        dayColumn.setCellValueFactory(new PropertyValueFactory<>("day"));
+        TableColumn dayColumn = new TableColumn<Highscore, Integer>("Day");
+        dayColumn.setCellValueFactory(new PropertyValueFactory<Highscore, Integer>("day"));
 
-        TableColumn<Highscore, Integer>  monthColumn = new TableColumn<>("Month");
-        monthColumn.setCellValueFactory(new PropertyValueFactory<>("month"));
+        TableColumn monthColumn = new TableColumn<Highscore, Integer>("Month");
+        monthColumn.setCellValueFactory(new PropertyValueFactory<Highscore, Integer>("month"));
 
-        TableColumn<Highscore, Integer> yearColumn = new TableColumn<>("Year");
-        yearColumn.setCellValueFactory(new PropertyValueFactory<>("year"));
+        TableColumn yearColumn = new TableColumn<Highscore, Integer>("Year");
+        yearColumn.setCellValueFactory(new PropertyValueFactory<Highscore, Integer>("year"));
 
-        scoreBoardTableView.getColumns().addAll(playerNameColumn, timeTakenColumn, dayColumn, monthColumn, yearColumn);
+        scoreBoardTableView.getColumns().add(playerNameColumn);
+        scoreBoardTableView.getColumns().add(timeTakenColumn);
+        scoreBoardTableView.getColumns().add(dayColumn);
+        scoreBoardTableView.getColumns().add(monthColumn);
+        scoreBoardTableView.getColumns().add(yearColumn);
 
-//        for (int i = 0; i < highscoreArrayList.size(); i++) {
-//            scoreBoardTableView.getItems().add(highscoreArrayList.get(i));
-//        }
+        scoreBoardTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
-        //Insert Data
+        Highscore h1 = new Highscore("John", 1,1,1,1);
 
+        scoreBoardTableView.getItems().add(h1);
+
+        ObservableList<Highscore> observableList =  FXCollections.observableArrayList();
+
+        observableList.add(h1);
+
+        scoreBoardTableView.setItems(observableList);
 
         HBox centralBar = new HBox();
         centralBar.setSpacing(10);
@@ -896,7 +904,7 @@ public class GraphicsHandler {
         ArrayList<String> highscoreData = new ArrayList<>();
 
         for (int i = 0; i < highscoreList.size(); i++) {
-            String highscoreName = highscoreList.get(i).getName();
+            String highscoreName = String.valueOf(highscoreList.get(i).getName());
             highscoreData.add(highscoreName);
         }
 

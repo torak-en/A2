@@ -30,8 +30,9 @@ public class Render extends Application{
 	public void start(Stage stage) throws Exception {
 		//initUI(stage);
 		Game game = new Game();
-		game.setLevelNum(1);
+//		game.setLevelNum(1);
 		gameGraphicEngine.winScreenUI(stage, game);
+//		gameGraphicEngine.menuScreenUI(stage);
 		//game = new Game();
 	}
 }

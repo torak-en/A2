@@ -1,16 +1,21 @@
 package Highscore;
 
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+
 import java.util.Date;
 
 /**
  * Represents a highscore entry in the game.
  */
 public class Highscore {
-	private String name;
-	private int timeTaken;
-	private int day;
-	private int month;
-	private int year;
+	private StringProperty name = new SimpleStringProperty(" ");
+	private IntegerProperty timeTaken = new SimpleIntegerProperty( );
+	private IntegerProperty day = new SimpleIntegerProperty( );
+	private IntegerProperty month = new SimpleIntegerProperty( );
+	private IntegerProperty year = new SimpleIntegerProperty( );
 
 
 	/**
@@ -22,20 +27,20 @@ public class Highscore {
      * @param year The year of the recorded highscore.
      */
 
-	public Highscore(String name, int timeTaken,int day, int month, int year){
-		this.name = name;
-		this.timeTaken = timeTaken;
-		this.day = day;
-		this.month = month;
-		this.year = year;
+	public Highscore(String name, int timeTaken, int day, int month, int year){
+		this.name.set(name);
+		this.timeTaken.set(timeTaken);
+		this.day.set(day);
+		this.month.set(month);
+		this.year.set(year);
 	}
 
 	/**
      * Retrieves the name associated with the highscore entry.
      * @return The name associated with the highscore.
      */
-	public String getName() {
-		return name;
+	public SimpleStringProperty getName() {
+		return (SimpleStringProperty) name;
 	}
 
 	/**
@@ -43,15 +48,15 @@ public class Highscore {
      * @param name The name to set for the highscore.
      */
 	public void setName(String name) {
-		this.name = name;
+		this.name.set(name);
 	}
 
 	/**
      * Retrieves the time taken to achieve the highscore.
      * @return The time taken for the highscore.
      */
-	public int getTimeTaken() {
-		return timeTaken;
+	public SimpleIntegerProperty getTimeTaken() {
+		return (SimpleIntegerProperty) timeTaken;
 	}
 
 	/**
@@ -59,15 +64,15 @@ public class Highscore {
      * @param timeTaken The time taken to set for the highscore.
      */
 	public void setTimeTaken(int timeTaken) {
-		this.timeTaken = timeTaken;
+		this.timeTaken.set(timeTaken);
 	}
 
 	/**
      * Retrieves the day of the recorded highscore.
      * @return The day of the highscore.
      */
-	public int getDay() {
-		return day;
+	public SimpleIntegerProperty getDay() {
+		return (SimpleIntegerProperty) day;
 	}
 
 	/**
@@ -75,15 +80,15 @@ public class Highscore {
      * @param day The day to set for the highscore.
      */
 	public void setDay(int day) {
-		this.day = day;
+		this.day.set(day);
 	}
 
 	/**
      * Retrieves the month of the recorded highscore.
      * @return The month of the highscore.
      */
-	public int getMonth() {
-		return month;
+	public SimpleIntegerProperty getMonth() {
+		return (SimpleIntegerProperty) month;
 	}
 
 	/**
@@ -91,15 +96,15 @@ public class Highscore {
      * @param month The month to set for the highscore.
      */
 	public void setMonth(int month) {
-		this.month = month;
+		this.month.set(month);
 	}
 
 	/**
      * Retrieves the year of the recorded highscore.
      * @return The year of the highscore.
      */
-	public int getYear() {
-		return year;
+	public SimpleIntegerProperty getYear() {
+		return (SimpleIntegerProperty) year;
 	}
 
 	/**
@@ -107,6 +112,6 @@ public class Highscore {
      * @param year The year to set for the highscore.
      */
 	public void setYear(int year) {
-		this.year = year;
+		this.year.set(year);
 	}
 }
