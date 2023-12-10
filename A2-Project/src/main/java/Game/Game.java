@@ -48,13 +48,14 @@ public class Game {
      */
 
 	public void tick(){
-		for (Actor a : level.getActorList()) {
-			level = a.tick(level);
+		List<Actor> actors = level.getActorList();
+		for (int i = 0; i < actors.size(); i++) {
+			level = actors.get(i).tick(level);
 		}
 
 		List<Item> items = level.getItemList();
 		for (int i = 0; i < items.size(); i++) {
-			items.get(i).tick(level);
+			level = items.get(i).tick(level);
 		}
 
 		for (Tile[] tileLayer : level.getTileLayer()) {

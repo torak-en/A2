@@ -12,6 +12,9 @@ import Level.Level;
 
 public class Block extends Actor{
 
+	private final int TICKS_BETWEEN_MOVE = 10;
+	private int ticksTillMove = 0;
+
 	/**
 	 * Constructor for a block object.
 	 * @param x The x-coordinate of the block.
@@ -37,6 +40,15 @@ public class Block extends Actor{
 			level.getTileLayer()[getX()][getY()] = new Path(getX(), getY());
 			level.getActorList().remove(this);
 		}
+		if (ticksTillMove == 0){
+			if (getPendingDirection() != null){
+				applyMove();
+			}
+			ticksTillMove = TICKS_BETWEEN_MOVE;
+		}
+		ticksTillMove--;
+
+
 		return level;
 	}
 

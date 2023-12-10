@@ -126,7 +126,6 @@ public abstract class Actor extends Entity {
 		Tile nextTile = level.getTileLayer()[newX][newY];
 		Player p = level.getPlayer();
 		Key usedKey = null;
-		ComputerChip usedChip = null;
 		if (nextTile.getType() == EntityType.WALL){
 			return false;
 		} else if (nextTile.getType() == EntityType.LOCKED_DOOR){
@@ -159,8 +158,10 @@ public abstract class Actor extends Entity {
 		}
 
 		for (Actor a : level.getActorList()) {
-			if (a.getX() == getX() && a.getY() == getY() &&  a.getType() == EntityType.BLOCK){
+			if (a.getX() == newX && a.getY() == newY &&  a.getType() == EntityType.BLOCK){
 				Block b = (Block) a;
+				System.out.println(direction);
+				System.out.println(b.blockCheckLocation(direction,level));
 				if (!b.blockCheckLocation(direction,level)){
 					return false;
 				} else {
@@ -186,10 +187,17 @@ public abstract class Actor extends Entity {
 		} else if (direction == Direction.NONE){
 			return true;
 		}
-		EntityType nextTile = level.getTileLayer()[newX][newY].getType();
-		if (nextTile != EntityType.PATH && nextTile != EntityType.BUTTON && nextTile != EntityType.TRAP && nextTile != EntityType.ICE && nextTile != EntityType.WATER){
+		Tile nextTile = level.getTileLayer()[newX][newY];
+		if (nextTile.getType() != EntityType.PATH && nextTile.getType() != EntityType.BUTTON && nextTile.getType() != EntityType.TRAP && nextTile.getType() != EntityType.ICE && nextTile.getType() != EntityType.WATER){
 			System.out.println("WHy");
 			return false;
+		} else if (nextTile.getType() == EntityType.ICE){
+			Ice ice = (Ice) nextTile;
+			if (!ice.checkMoveOntoIce(direction)){
+				return false;
+			} else {
+
+			}
 		}
 
 		for (Actor a : level.getActorList()) {
