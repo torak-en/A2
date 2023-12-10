@@ -404,16 +404,21 @@ public class GraphicsHandler {
             //Create Level 1
             //Go to Render to display level.
             //levelHandler.createLevel(1);
-            game.updateLevel(3);
+            game.updateLevel(1);
             game.setCurrentProfile(profileSelected);
             gameUI(stage, game);
         });
 
         levelTwoButton.setOnAction(e -> {
             levelHandler.createLevel(2);
+            game.setCurrentProfile(profileSelected);
+            gameUI(stage, game);
         });
 
         levelThreeButton.setOnAction(e -> {
+            levelHandler.createLevel(3);
+            game.setCurrentProfile(profileSelected);
+            gameUI(stage, game);
         });
 
         Button returnToMainMenuButton = new Button("Return to Main menu");
