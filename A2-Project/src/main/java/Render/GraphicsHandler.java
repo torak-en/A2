@@ -13,7 +13,6 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
-import javafx.scene.control.Control;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import Level.LevelHandler;
@@ -21,9 +20,6 @@ import Profile.Profile;
 import Profile.ProfileHandler;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.geometry.Insets;
-import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -74,41 +70,34 @@ public class GraphicsHandler {
 
     //Place level rendering in Graphics Handler(Alex)
 
-    public void MenuScreenUI(Stage stage) {
+    public void menuScreenUI(Stage stage) {
         BorderPane root = new BorderPane();
 
-        //NOTE: Change once a TitleImage has been made.
         Image gameTitleImage = new Image("file:UserInterface/InterimTitleImage1.png");
 
-        CreateMosaicBackground(root);
+        createMosaicBackground(root);
 
         root.minHeight(200);
         root.minWidth(200);
         root.maxHeight(500);
         root.minWidth(500);
 
-        //Setting up the GameTitle Image shown on the main menu.
         ImageView titleImageView = new ImageView();
         titleImageView.setImage(gameTitleImage);
         titleImageView.setPreserveRatio(true);
         titleImageView.maxHeight(500);
         titleImageView.maxWidth(500);
 
-        //IMG Size
         titleImageView.setFitHeight(150);
         titleImageView.setFitWidth(190);
 
-        //IMG Positioning
         titleImageView.setX(150);
         titleImageView.setY(150);
 
         root.getChildren().add(titleImageView);
-        //root.setCenter(paneCanvas);
 
-        //PANE Title
         stage.setTitle("Main Menu");
 
-        //HorizontalBox used to place buttons in a good position.
         HBox centralBar = new HBox();
         centralBar.setSpacing(10);
         centralBar.setPadding(new Insets(300, 3, 90, 120));
@@ -116,12 +105,12 @@ public class GraphicsHandler {
 
         Button newPlayerGameButton = new Button("Create a new Profile");
         newPlayerGameButton.setOnAction(e -> {
-            CreateNewProfileUI(stage);
+            createNewProfileUI(stage);
         });
 
         Button loadPreviousPlayerButton = new Button("Load Profile");
         loadPreviousPlayerButton.setOnAction(e -> {
-            LoadProfileSelectorUI(stage);
+            loadProfileSelectorUI(stage);
         });
 
 
@@ -138,7 +127,7 @@ public class GraphicsHandler {
         stage.show();
     }
 
-    private BorderPane CreateMosaicBackground(BorderPane root) {
+    private BorderPane createMosaicBackground(BorderPane root) {
         for (int y = 0; y < canvasHeight; y += backgroundImage.getHeight()) {
             for (int x = 0; x < canvasWidth; x += backgroundImage.getWidth()) {
                 Random rand = new Random();
@@ -163,11 +152,11 @@ public class GraphicsHandler {
         return root;
     }
 
-    public void LoadProfileSelectorUI(Stage stage) {
+    public void loadProfileSelectorUI(Stage stage) {
         ProfileHandler profileHandler = new ProfileHandler();
 
         BorderPane root = new BorderPane();
-        CreateMosaicBackground(root);
+        createMosaicBackground(root);
         stage.setTitle("Profile Selector");
 
         VBox centralVBox = new VBox();
@@ -199,12 +188,10 @@ public class GraphicsHandler {
         deleteProfileButton.setMinWidth(100);
         deleteProfileButton.setDisable(true);
 
-        //Button to return to main menu:
         Button returnToMainMenuButton = new Button("Return to Main menu");
         returnToMainMenuButton.setMinWidth(100);
 
         deleteProfileButton.setOnAction(e -> {
-            //profileHandler.deleteProfile(currentProfileName);
             for (int i = 0; i < profileNameData.size(); i++) {
                 System.out.println(profileNameData.get(i));
                 System.out.println(currentProfileName);
@@ -217,7 +204,7 @@ public class GraphicsHandler {
         });
 
         returnToMainMenuButton.setOnAction(e -> {
-            MenuScreenUI(stage);
+            menuScreenUI(stage);
         });
 
         listView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
@@ -233,7 +220,7 @@ public class GraphicsHandler {
                 if (profileHandler.getProfiles().get(i).getProfileName().equalsIgnoreCase(currentProfileName)) {
                     Profile selectedProfile = profileHandler.getProfiles().get(i);
                     try {
-                        LevelSelectorUI(selectedProfile, stage);
+                        levelSelectorUI(selectedProfile, stage);
                     } catch (Exception maxLevel) {
                         System.out.println("The selected profile has an unlocked level greater" +
                                 " than the total number of levels unlocked. Please try again!");
@@ -270,10 +257,10 @@ public class GraphicsHandler {
         return profileData;
     }
 
-    public void CreateNewProfileUI(Stage stage) {
+    public void createNewProfileUI(Stage stage) {
         ProfileHandler profileHandler = new ProfileHandler();
         BorderPane root = new BorderPane();
-        CreateMosaicBackground(root);
+        createMosaicBackground(root);
         stage.setTitle("Create New Profile");
 
         Label profileSelectorInformationDisplay = new Label("Please enter a name:");
@@ -284,21 +271,19 @@ public class GraphicsHandler {
 
         nameEntryField.setMaxSize(150,100);
 
-        //VBox Declaration
         VBox centralVBox = new VBox();
-        centralVBox.setPadding(new Insets(100, 3, 90, 75));
+        centralVBox.setPadding(new Insets(100, 3, 90, 125));
         centralVBox.setSpacing(5);
         root.setTop(centralVBox);
 
         HBox centralHBar = new HBox();
         centralHBar.setSpacing(10);
-        centralHBar.setPadding(new Insets(0, 3, 90, 75));
+        centralHBar.setPadding(new Insets(100, 3, 90, 125));
         root.setBottom(centralHBar);
 
         Button createProfileNameButton = new Button("Start");
         createProfileNameButton.setMinWidth(100);
 
-        //Button to return to main menu:
         Button returnToMainMenuButton = new Button("Return to Main menu");
         returnToMainMenuButton.setMinWidth(100);
 
@@ -309,7 +294,7 @@ public class GraphicsHandler {
         createProfileNameButton.setOnAction(e -> {
             String s = profileHandler.createNewProfile(nameEntryField.getText());
             if (s.equals("Profile Created")){
-                LoadProfileSelectorUI(stage);
+                loadProfileSelectorUI(stage);
             } else if (s .equals("Name can only be made of of characters. No Symbols, whitespaces, etc.")){
                 creationErrorLabel.setText(s);
             } else if (s.equals("Error with profile creation, profile may already exist.")){
@@ -318,7 +303,7 @@ public class GraphicsHandler {
         });
 
         returnToMainMenuButton.setOnAction(e -> {
-            MenuScreenUI(stage);
+            menuScreenUI(stage);
         });
 
         centralHBar.getChildren().addAll(createProfileNameButton, returnToMainMenuButton);
@@ -330,12 +315,12 @@ public class GraphicsHandler {
         stage.show();
     }
 
-    public void LevelSelectorUI(Profile profileSelected, Stage stage) throws Exception {
+    public void levelSelectorUI(Profile profileSelected, Stage stage) throws Exception {
 
         LevelHandler levelHandler = new LevelHandler();
 
         BorderPane root = new BorderPane();
-        CreateMosaicBackground(root);
+        createMosaicBackground(root);
         stage.setTitle("Level Selector");
 
         Label selectLevelLabel = new Label("Please select a level: ");
@@ -357,7 +342,6 @@ public class GraphicsHandler {
         centralBar.setPadding(new Insets(canvasWidth /2, 3, 90, 190));
         root.setBottom(centralBar);
 
-        //Implement level access blocking via .setDisable method and loop?
         Button levelOneButton = new Button("1");
         Button levelTwoButton = new Button("2");
         levelTwoButton.setDisable(true);
@@ -390,23 +374,17 @@ public class GraphicsHandler {
         });
 
         levelTwoButton.setOnAction(e -> {
-            //Create Level 2
-            //Go to Render to display level.
             levelHandler.createLevel(2);
         });
 
         levelThreeButton.setOnAction(e -> {
-            //Create Level 3
-            //Go to Render to display level.
-
         });
 
-        //Button to return to main menu:
         Button returnToMainMenuButton = new Button("Return to Main menu");
         returnToMainMenuButton.setMinWidth(100);
 
         returnToMainMenuButton.setOnAction(e -> {
-            MenuScreenUI(stage);
+            menuScreenUI(stage);
         });
 
         centralBar.getChildren().addAll(returnToMainMenuButton, selectLevelLabel);
@@ -420,13 +398,13 @@ public class GraphicsHandler {
         stage.show();
     }
 
-    //Remove In Final(?)
+    //Remove In Final Before Submission
     public void TestScreenUI(Stage stage){;
         //NOTE: Change once a TitleImage has been made.
         Image userInterfaceImage = new Image("file:UserInterface/InterimTitleImage1.png");
 
         BorderPane root = new BorderPane();
-        CreateMosaicBackground(root);
+        createMosaicBackground(root);
 
         root.minHeight(200);
         root.minWidth(200);
@@ -463,7 +441,7 @@ public class GraphicsHandler {
         Button profileSelectScreenInterfaceButton = new Button("Profile Select Interface");
         profileSelectScreenInterfaceButton.setOnAction(e -> {
             //Call Profile Selection Interface for testing.
-            LoadProfileSelectorUI(stage);
+            loadProfileSelectorUI(stage);
         });
 
         Button winScreenInterfaceButton = new Button("Win Screen Interface");
@@ -486,91 +464,6 @@ public class GraphicsHandler {
         centralBar.getChildren().addAll(profileSelectScreenInterfaceButton, winScreenInterfaceButton, loseScreenInterfaceButton, quitButton);
 
         Scene scene = new Scene(root, canvasWidth, canvasHeight);
-        stage.setScene(scene);
-        stage.show();
-    }
-
-    //Level Selector
-    public void LevelSelectorUI(int maxLevel, Stage stage) {
-        BorderPane root = new BorderPane();
-        CreateMosaicBackground(root);
-        stage.setTitle("Level Selector");
-
-        Label selectLevelLabel = new Label("Please select a level: ");
-        selectLevelLabel.setMinWidth(500);
-        selectLevelLabel.setTextFill(Color.color(1,1,1));
-
-        HBox selectBar = new HBox();
-        selectBar.setSpacing(0);
-        selectBar.setPadding(new Insets(100, 3, 90, 125));
-        root.setBottom(selectBar);
-
-        HBox levelBar = new HBox();
-        levelBar.setSpacing(10);
-        levelBar.setPadding(new Insets(150, 3, 90, 125));
-        root.setBottom(levelBar);
-
-        HBox centralBar = new HBox();
-        centralBar.setSpacing(0);
-        centralBar.setPadding(new Insets(canvasWidth /2, 3, 90, 190));
-        root.setBottom(centralBar);
-
-        //Implement level access blocking via .setDisable method and loop?
-        Button levelOneButton = new Button("1");
-        Button levelTwoButton = new Button("2");
-        levelTwoButton.setDisable(true);
-        Button levelThreeButton = new Button("3");
-        levelThreeButton.setDisable(true);
-
-        //Subject to removal?
-        Button randomlevelButton = new Button("R");
-        randomlevelButton.setDisable(true);
-
-        switch (maxLevel) {
-            case (2):
-                levelTwoButton.setDisable(false);
-                randomlevelButton.setDisable(false);
-            case (3):
-                levelTwoButton.setDisable(false);
-                levelThreeButton.setDisable(false);
-                randomlevelButton.setDisable(false);
-        }
-
-        levelOneButton.setOnAction(e -> {
-            //Create Level 1
-        });
-
-        levelTwoButton.setOnAction(e -> {
-            //Create Level 2
-        });
-
-        levelThreeButton.setOnAction(e -> {
-            //Create Level 3
-        });
-
-
-        //Remove if not enough time is given.
-        randomlevelButton.setOnAction(e -> {
-            //Random number generator between 1 -> max level unlocked for profile.
-            //Create the respective level.
-        });
-
-
-        //Button to return to main menu:
-        Button returnToMainMenuButton = new Button("Return to Main menu");
-        returnToMainMenuButton.setMinWidth(100);
-
-        returnToMainMenuButton.setOnAction(e -> {
-            MenuScreenUI(stage);
-        });
-
-        centralBar.getChildren().addAll(returnToMainMenuButton, selectLevelLabel);
-        levelBar.getChildren().addAll(levelOneButton, levelTwoButton, levelThreeButton, randomlevelButton);
-        selectBar.getChildren().add(selectLevelLabel);
-
-        root.getChildren().addAll(selectBar, levelBar);
-
-        Scene scene = new Scene (root, canvasWidth, canvasHeight);
         stage.setScene(scene);
         stage.show();
     }
@@ -822,80 +715,73 @@ public class GraphicsHandler {
         }
     }
 
-    //Win Screen Interface
     public void winScreenUI(Stage stage, Game game) {
         BorderPane root = new BorderPane();
-        CreateMosaicBackground(root);
+        createMosaicBackground(root);
         stage.setTitle("Win Screen");
 
         Label winMessageLabel = new Label("Congratulations, you beat this level.");
         winMessageLabel.setMinWidth(200);
         winMessageLabel.setTextFill(Color.color(1,1,1));
 
-        //VBox Declaration
         VBox centralVBox = new VBox();
-        centralVBox.setPadding(new Insets(50, 3, 90, 200));
-        centralVBox.setSpacing(50);
+        centralVBox.setPadding(new Insets(75, 0, 0, 50));
+        centralVBox.setSpacing(10);
+        root.setCenter(centralVBox);
+
+        TableView scoreBoardTableView = new TableView();
+        scoreBoardTableView.setMaxSize(400,400);
 
         HBox centralBar = new HBox();
-        centralBar.setSpacing(50);
-        centralBar.setPadding(new Insets(300, 3, 90, 30));
+        centralBar.setSpacing(10);
+        centralBar.setPadding(new Insets(40, 3, 90, 125));
         root.setBottom(centralBar);
 
-        //Button to return to main menu:
         Button returnToMainMenuButton = new Button("Return to Main menu");
         returnToMainMenuButton.setMinWidth(100);
 
         returnToMainMenuButton.setOnAction(e -> {
-            MenuScreenUI(stage);
+            menuScreenUI(stage);
         });
 
         Button nextLevelButton = new Button("Next Level");
         nextLevelButton.setMinWidth(100);
-        //Disable button if there are no more levels
 
-       nextLevelButton.setOnAction(e -> {
-           game.updateLevel(game.getLevelNum() + 1);
+        nextLevelButton.setOnAction(e -> {
+            game.updateLevel(game.getLevelNum() + 1);
             gameUI(stage, game);
-       });
+        });
 
         centralBar.getChildren().addAll(returnToMainMenuButton, nextLevelButton);
 
-        centralVBox.getChildren().add(winMessageLabel);
+        centralVBox.getChildren().addAll(winMessageLabel, scoreBoardTableView);
 
-        root.getChildren().add(centralVBox);
 
         Scene scene = new Scene (root, canvasWidth, canvasHeight);
         stage.setScene(scene);
         stage.show();
     }
 
-    //Lose Screen Interface
     public void loseScreenUI(Stage stage, Game game) {
         BorderPane root = new BorderPane();
-        CreateMosaicBackground(root);
+        createMosaicBackground(root);
         stage.setTitle("Lose Screen");
 
         Label loseMessageLabel = new Label("You died, Please try again!");
         loseMessageLabel.setMinWidth(150);
         loseMessageLabel.setTextFill(Color.color(1,1,1));
 
-        //VBox Declaration
         VBox centralVBox = new VBox();
-        centralVBox.setPadding(new Insets(50, 3, 90, 200));
-        centralVBox.setSpacing(50);
+        centralVBox.setPadding(new Insets(40, 3, 90, 125));
 
         HBox centralBar = new HBox();
-        centralBar.setSpacing(50);
-        centralBar.setPadding(new Insets(300, 3, 90, 30));
-        root.setBottom(centralBar);
+        centralBar.setPadding(new Insets(40, 3, 90, 125));
+        centralBar.setSpacing(10);
 
-        //Button to return to main menu:
         Button returnToMainMenuButton = new Button("Return to Main menu");
-        returnToMainMenuButton.setMinWidth(100);
 
         returnToMainMenuButton.setOnAction(e -> {
-            MenuScreenUI(stage);
+            menuScreenUI(stage);
         });
 
         Button restartLevelButton = new Button("Retry Level");
@@ -907,10 +793,10 @@ public class GraphicsHandler {
         });
 
         centralBar.getChildren().addAll(restartLevelButton, returnToMainMenuButton);
+        root.setBottom(centralBar);
 
         centralVBox.getChildren().add(loseMessageLabel);
-
-        root.getChildren().add(centralVBox);
+        root.setTop(centralVBox);
 
         Scene scene = new Scene (root, canvasWidth, canvasHeight);
         stage.setScene(scene);

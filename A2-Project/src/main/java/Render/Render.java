@@ -31,7 +31,7 @@ public class Render extends Application{
 		//initUI(stage);
 		Game game = new Game();
 		game.setLevelNum(1);
-		gameGraphicEngine.CreateNewProfileUI(stage);
+		gameGraphicEngine.createNewProfileUI(stage);
 		//game = new Game();
 	}
 }
