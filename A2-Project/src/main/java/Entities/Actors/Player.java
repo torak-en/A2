@@ -105,6 +105,7 @@ public class Player extends Actor{
 		}
 	}
 
+	// Getters and setters for various player attributes
 	
 	public boolean isAlive() {
 		return alive;

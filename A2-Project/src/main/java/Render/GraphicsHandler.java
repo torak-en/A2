@@ -12,9 +12,6 @@ import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import Level.LevelHandler;
 import Profile.Profile;
 import Profile.ProfileHandler;
@@ -34,6 +31,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * GraphicsHandler manages the graphical user interface elements and rendering.
+ * It handles various UI screens, level selection, profile management, and game rendering.
+ */
 public class GraphicsHandler {
     private int canvasWidth = 500;
     private int canvasHeight = 500;
@@ -70,6 +71,11 @@ public class GraphicsHandler {
 
     //Place level rendering in Graphics Handler(Alex)
 
+     /**
+     * Displays the main menu screen UI.
+     * @param stage The JavaFX stage to display the menu on.
+     * @return The JavaFX stage with the menu screen UI displayed.
+     */
     public void menuScreenUI(Stage stage) {
         BorderPane root = new BorderPane();
 
@@ -127,6 +133,11 @@ public class GraphicsHandler {
         stage.show();
     }
 
+    /**
+     * Creates a mosaic background for the UI.
+     * @param root The root pane to add the mosaic background to.
+     * @return The root pane with the mosaic background added.
+     */
     private BorderPane createMosaicBackground(BorderPane root) {
         for (int y = 0; y < canvasHeight; y += backgroundImage.getHeight()) {
             for (int x = 0; x < canvasWidth; x += backgroundImage.getWidth()) {
@@ -151,6 +162,11 @@ public class GraphicsHandler {
         return root;
     }
 
+    /**
+     * Displays the profile selector UI.
+     * @param stage The JavaFX stage to display the profile selector on.
+     * @return The JavaFX stage with the profile selector UI displayed.
+     */
     public void loadProfileSelectorUI(Stage stage) {
         ProfileHandler profileHandler = new ProfileHandler();
 
@@ -234,15 +250,26 @@ public class GraphicsHandler {
         stage.show();
     }
     
+    /**
+     * Obtains the profile name from the profile selector UI.
+     * @param listView The ListView containing the profile names.
+     * @return The profile name selected.
+     * @throws NullPointerException If no profile is selected.
+     */
     private static String obtainProfileName(ListView<String> listView) {
         String selectedProfileName = listView.getSelectionModel().getSelectedItem();
         if (selectedProfileName != null) {
             return selectedProfileName;
         } else {
-            return "No item selected";
+            throw new NullPointerException();
         }
     }
 
+    /**
+     * Obtains the profile names from the profile selector UI.
+     * @param profileList The list of profiles to obtain the names from.
+     * @return The list of profile names.
+     */
     private ArrayList<String> obtainProfileNameList(List<Profile> profileList) {
         ArrayList<String> profileData = new ArrayList<>();
 
@@ -254,6 +281,11 @@ public class GraphicsHandler {
         return profileData;
     }
 
+    /**
+     * Displays the create new profile UI.
+     * @param stage The JavaFX stage to display the create new profile UI on.
+     * @return The JavaFX stage with the create new profile UI displayed.
+     */
     public void createNewProfileUI(Stage stage) {
         ProfileHandler profileHandler = new ProfileHandler();
         BorderPane root = new BorderPane();
@@ -312,6 +344,13 @@ public class GraphicsHandler {
         stage.show();
     }
 
+    /**
+     * Displays the level selector UI.
+     * @param profileSelected The profile selected to display the level selector UI for.
+     * @param stage The JavaFX stage to display the level selector UI on.
+     * @return The JavaFX stage with the level selector UI displayed.
+     * @throws Exception If the profile selected has an unlocked level greater than the total number of levels unlocked.
+     */
     public void levelSelectorUI(Profile profileSelected, Stage stage) throws Exception {
 
         LevelHandler levelHandler = new LevelHandler();
@@ -345,7 +384,7 @@ public class GraphicsHandler {
         Button levelThreeButton = new Button("3");
         levelThreeButton.setDisable(true);
 
-        int maxLevel = profileSelected.getMaxLevelNumUnlcoked();
+        int maxLevel = profileSelected.getMaxLevelNumUnlocked();
 
         if (maxLevel > maxLevelPermitted) {
             throw new Exception();
@@ -465,6 +504,11 @@ public class GraphicsHandler {
         stage.show();
     }
 
+    /**
+     * Displays the game UI.
+     * @param stage The JavaFX stage to display the game UI on.
+     * @param game The game to display the UI for.
+     */
     public void gameUI(Stage stage, Game game){
         StackPane root = new StackPane();
 
@@ -501,6 +545,11 @@ public class GraphicsHandler {
 
     }
 
+    /**
+     * Obtains the scene for the game UI.
+     * @param root The root pane to add the scene to.
+     * @return The scene for the game UI.
+     */
     private Scene getScene(StackPane root) {
         Scene scene = new Scene(root, 900, 900);
         scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
@@ -546,6 +595,11 @@ public class GraphicsHandler {
         return scene;
     }
 
+    /**
+     * Displays the win screen UI or lose screen UI.
+     * @param stage The JavaFX stage to display the UI on.
+     * @param game The game to display the UI for.
+     */
     private void tick(Stage stage, Game game) {
         Player p = game.getLevel().getPlayer();
         if (playerMoveCooldown == 0) {
@@ -571,6 +625,10 @@ public class GraphicsHandler {
 
     }
 
+    /**
+     * Renders the game level on the graphical canvas.
+     * @param game The game object containing the current level.
+     */
     public void renderLevel(Game game) {
         curLevel = game.getLevel();
         if (curLevel != null) {
@@ -686,11 +744,25 @@ public class GraphicsHandler {
         }
     }
 
+    /**
+     * Renders the textures on the graphical canvas.
+     * @param x The x coordinate to render the texture at.
+     * @param y The y coordinate to render the texture at.
+     * @param w The width of the texture.
+     * @param h The height of the texture.
+     * @param texture The texture to render.
+     */
     public void renderTextures(int x, int y, int w, int h, Image texture) {
         // Render textures at specified position and size
         gc.drawImage(texture, x, y, w, h);
     }
 
+    /**
+     * Sets the tiles visible on the graphical canvas.
+     * @param tiles The tiles to set visible.
+     * @param x The x coordinate of the player.
+     * @param y The y coordinate of the player.
+     */
     public void setTileVisible(Tile[][] tiles,int x, int y){
         for (Tile[] tileArray : tiles) {
             for (Tile t : tileArray) {
@@ -701,18 +773,37 @@ public class GraphicsHandler {
         }
     }
 
+    /**
+     * Sets the items visible on the graphical canvas.
+     * @param items The items to set visible.
+     * @param tiles The tiles to set visible.
+     * @param x The x coordinate of the player.
+     * @param y The y coordinate of the player.
+     */
     public void setItemsVisible(List<Item> items, Tile[][] tiles, int x, int y) {
         for (Item i : items) {
             i.setVisible(tiles[i.getX()][i.getY()].isVisible());
         }
     }
 
+    /**
+     * Sets the actors visible on the graphical canvas.
+     * @param actors The actors to set visible.
+     * @param tiles The tiles to set visible.
+     * @param x The x coordinate of the player.
+     * @param y The y coordinate of the player.
+     */
     public void setActorsVisible(List<Actor> actors, Tile[][] tiles, int x, int y) {
         for (Actor a : actors) {
             a.setVisible(tiles[a.getX()][a.getY()].isVisible());
         }
     }
 
+    /**
+     * Displays the win screen UI.
+     * @param stage The JavaFX stage to display the win screen UI on.
+     * @param game The game object.
+     */
     public void winScreenUI(Stage stage, Game game) {
         BorderPane root = new BorderPane();
         createMosaicBackground(root);
@@ -761,6 +852,11 @@ public class GraphicsHandler {
         stage.show();
     }
 
+    /**
+     * Displays the lose screen UI.
+     * @param stage The JavaFX stage to display the lose screen UI on.
+     * @param game The game object.
+     */
     public void loseScreenUI(Stage stage, Game game) {
         BorderPane root = new BorderPane();
         createMosaicBackground(root);
