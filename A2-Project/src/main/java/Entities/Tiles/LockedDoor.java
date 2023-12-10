@@ -40,4 +40,8 @@ public class LockedDoor extends Tile{
 	public String getDoorColour(){
 		return doorColour;
 	}
+
+	public void setLocked(boolean locked) {
+		this.locked = locked;
+	}
 }

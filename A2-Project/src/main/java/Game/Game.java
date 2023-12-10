@@ -11,8 +11,21 @@ import Profile.Profile;
 import Profile.ProfileHandler;
 import Render.Render;
 
+import java.util.List;
+
+/**
+ * Represents the main game control and logic class.
+ */
 public class Game {
 	private Level level;
+	private int levelNum;
+	private Profile currentProfile;
+
+
+	/**
+     * Main method used for testing highscore functionality.
+     * @param args Command-line arguments (unused).
+     */
 
  	public static void main(String[] args) {
 		HighscoreHandler highscoreHandler = new HighscoreHandler();
@@ -21,17 +34,27 @@ public class Game {
 		System.out.println(highscoreHandler.getHighscores(2));
 	}
 
+	/**
+     * Default constructor for the Game class.
+     */
 	public Game(){
-		level = new LevelHandler().createLevel(1);
+		 // Initialization logic
 	}
+
+
+	/**
+     * Method to update the game state in each tick.
+     * Moves all actors, updates items and tiles on the level.
+     */
 
 	public void tick(){
 		for (Actor a : level.getActorList()) {
 			level = a.tick(level);
 		}
 
-		for (Item i : level.getItemList()) {
-			level = i.tick(level);
+		List<Item> items = level.getItemList();
+		for (int i = 0; i < items.size(); i++) {
+			items.get(i).tick(level);
 		}
 
 		for (Tile[] tileLayer : level.getTileLayer()) {
@@ -41,11 +64,39 @@ public class Game {
 		}
 	}
 
+
+	/**
+     * Updates the current level to a new level based on level number.
+     * @param levelNum The number of the level to be updated.
+     */
+	
+	public void updateLevel(int levelNum){
+		 this.levelNum = levelNum;
+		 LevelHandler handler = new LevelHandler();
+		 level = handler.createLevel(levelNum);
+	}
+
 	public Level getLevel() {
 		return level;
 	}
 
 	public void setLevel(Level level) {
 		this.level = level;
+	}
+
+	public int getLevelNum() {
+		return levelNum;
+	}
+
+	public void setLevelNum(int levelNum) {
+		this.levelNum = levelNum;
+	}
+
+	public Profile getCurrentProfile() {
+		return currentProfile;
+	}
+
+	public void setCurrentProfile(Profile currentProfile) {
+		this.currentProfile = currentProfile;
 	}
 }
