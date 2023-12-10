@@ -8,7 +8,7 @@ W,P,A,P,A,A,P,W,P,W
 W,P,P,P,A,A,P,W,P,W
 W,P,P,A,A,A,P,W,P,W
 W,P,A,A,A,A,P,W,W,W
-W,P,P,P,P,P,P,A,E,W
+W,P,P,P,P,P,P,Lr,E,W
 W,W,W,W,W,W,W,W,W,W
 K,3,5,r
 Pl,1,2
