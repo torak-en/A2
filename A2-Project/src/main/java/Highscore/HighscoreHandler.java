@@ -6,7 +6,17 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
 
+/**
+ * Manages highscores for different levels.
+ */
 public class HighscoreHandler {
+
+	/**
+     * Retrieves the highscores for a specific level.
+     *
+     * @param levelNum The number of the level for which highscores are retrieved.
+     * @return A list of highscores for the specified level.
+     */
 	public List<Highscore> getHighscores(int levelNum){
 		List<Highscore> highscores = new ArrayList<>();
 		File levelHighscores = new File("Highscores/" + levelNum + ".txt");
@@ -37,6 +47,12 @@ public class HighscoreHandler {
 		return highscores;
 	}
 
+	 /**
+     * Adds a new highscore to the highscores list for a specific level.
+     *
+     * @param levelNum  The number of the level for which the highscore is added.
+     * @param highscore The highscore entry to be added.
+     */
 	public void newHighscore(int levelNum, Highscore highscore){
 		File levelHighscores = new File("Highscores/"+ levelNum +".txt");
 
