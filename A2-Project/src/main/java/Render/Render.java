@@ -22,10 +22,16 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.List;
 
+/**
+ * Main class, that extends Application allowing for it to Override start.
+ */
 public class Render extends Application{
-
 	private GraphicsHandler gameGraphicEngine = new GraphicsHandler();
 
+	/**
+	 * Start-up logic for our program.
+	 * @param stage the stage that will be used for creating windows and graphics for our game
+	 */
 	@Override
 	public void start(Stage stage) throws Exception {
 		gameGraphicEngine.menuScreenUI(stage);
