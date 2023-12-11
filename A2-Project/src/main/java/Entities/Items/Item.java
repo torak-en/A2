@@ -5,8 +5,8 @@ import Entities.Entity;
 import Enum.EntityType;
 import Level.Level;
 
-/***
- * The class representing an Item in the game.
+/**
+ * The class representing an item in the game.
  */
 
 public class Item extends Entity {

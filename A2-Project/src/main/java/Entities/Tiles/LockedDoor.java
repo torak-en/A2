@@ -8,16 +8,21 @@ import javafx.scene.paint.Color;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
+/**
+ * The class representing an ice tile in the game.
+ */
+
 public class LockedDoor extends Tile{
 	private String doorColour;
 	private boolean locked = true;
+
 	/**
-	 * Creates a locked door with the coordinates and door colour
-	 *
-	 * @param x          The x-coordinate of the locked door
-	 * @param y          The y-coordinate of the locked door
-	 * @param doorColour The colour of the locked door
+	 * Creates a locked door with the coordinates and door colour.
+	 * @param x          The x-coordinate of the locked door.
+	 * @param y          The y-coordinate of the locked door.
+	 * @param doorColour The colour of the locked door.
 	 */
+
 	public LockedDoor(int x, int y, String doorColour) {
 		super(x, y, EntityType.LOCKED_DOOR);
 		try {
@@ -31,11 +36,11 @@ public class LockedDoor extends Tile{
 
 	/**
 	 * Logic for the locked door during each tick
-	 * If the locked door is unlocked, it changes to a path tile
-	 *
-	 * @param level The current level in-game
-	 * @return The updated game level after the tick
+	 * If the locked door is unlocked, it changes to a path tile.
+	 * @param level The current level in-game.
+	 * @return The updated game level after the tick.
 	 */
+
 	@Override
 	public Level tick(Level level) {
 		if (!locked) {
@@ -45,13 +50,18 @@ public class LockedDoor extends Tile{
 	}
 
 	/**
-	 * Gets the colour of the dor
-	 *
-	 * @return The colour of the door
+	 * Gets the colour of the door.
+	 * @return The colour of the door.
 	 */
+
 	public String getDoorColour(){
 		return doorColour;
 	}
+
+	/**
+	 * Sets the state of the door.
+	 * @param locked The state of the door.
+	 */
 
 	public void setLocked(boolean locked) {
 		this.locked = locked;

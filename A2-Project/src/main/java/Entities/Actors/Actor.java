@@ -176,7 +176,7 @@ public abstract class Actor extends Entity {
 		return true;
 	}
 
-	/***
+	/**
 	 * Checks if the specified location for a block's movement is valid and performs actions accordingly.
 	 * @param direction The direction in which the block is being moved.
 	 * @param level The level where the check is performed.
@@ -259,11 +259,12 @@ public abstract class Actor extends Entity {
 		this.pendingDirection = pendingDirection;
 	}
 
+	/**
+	 * Sets the direction state of the actor.
+	 * @param cannotMove The state in which the actor cannot move.
+	 */
+
 	public void setCannotMove(boolean cannotMove) {
 		this.cannotMove = cannotMove;
-	}
-
-	public boolean isCannotMove() {
-		return cannotMove;
 	}
 }

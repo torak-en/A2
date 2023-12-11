@@ -88,6 +88,4 @@ public class Level {
 	public int getTimeTaken() {
 		return timeTaken;
 	}
-
-	//endregion
 }

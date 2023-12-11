@@ -105,7 +105,7 @@ public class Player extends Actor{
 		}
 	}
 
-	/***
+	/**
 	 * Retrieves the alive state of the player.
 	 * @return The state of the player.
 	 */
@@ -114,7 +114,7 @@ public class Player extends Actor{
 		return alive;
 	}
 
-	/***
+	/**
 	 * Sets the alive state of the player.
 	 * @param alive The state of the player.
 	 */
@@ -123,7 +123,7 @@ public class Player extends Actor{
 		this.alive = alive;
 	}
 
-	/***
+	/**
 	 * Sets the current state of the player when being moved on ice.
 	 * @param beingMovedByIce The state of the player being moved on ice.
 	 */
@@ -132,7 +132,7 @@ public class Player extends Actor{
 		this.beingMovedByIce = beingMovedByIce;
 	}
 
-	/***
+	/**
 	 * Retrieves the state of the player when being moved on ice.
 	 * @return The state of the player when being moved on ice.
 	 */
@@ -141,7 +141,7 @@ public class Player extends Actor{
 		return beingMovedByIce;
 	}
 
-	/***
+	/**
 	 * Sets the cooldown value of the player's movement.
 	 * @param cooldown The number of seconds before a keyboard move.
 	 */
@@ -150,7 +150,7 @@ public class Player extends Actor{
 		this.cooldown = cooldown;
 	}
 
-	/***
+	/**
 	 * Retrieves the state of the player winning the game.
 	 * @return The state of the player winning the game.
 	 */
@@ -159,7 +159,7 @@ public class Player extends Actor{
 		return won;
 	}
 
-	/***
+	/**
 	 * Sets the state of the player winning the game.
 	 * @param won The state of the player winning the game.
 	 */
@@ -168,7 +168,7 @@ public class Player extends Actor{
 		this.won = won;
 	}
 
-	/***
+	/**
 	 * Retrieves a list of keys the player holds.
 	 * @return The keys held by the player.
 	 */
@@ -177,7 +177,7 @@ public class Player extends Actor{
 		return heldKeys;
 	}
 
-	/***
+	/**
 	 * Retrieves a list of the computer chips held by the player.
 	 * @return The computer chips held by the player.
 	 */
