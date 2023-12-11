@@ -20,11 +20,11 @@ public class LockedDoor extends Tile{
 	 */
 	public LockedDoor(int x, int y, String doorColour) {
 		super(x, y, EntityType.LOCKED_DOOR);
-//		try {
-//			texture = new Image(new FileInputStream("Textures/door_" + doorColour + ".png"));
-//		} catch (FileNotFoundException e) {
-//			throw new RuntimeException(e);
-//		}
+		try {
+			texture = new Image(new FileInputStream("Textures/locked_door_" + doorColour + ".png"));
+		} catch (FileNotFoundException e) {
+			throw new RuntimeException(e);
+		}
 
 		this.doorColour = doorColour;
 	}

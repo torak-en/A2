@@ -115,6 +115,7 @@ public class LevelHandler {
 			case "d" -> Direction.DOWN;
 			case "r" -> Direction.RIGHT;
 			case "l" -> Direction.LEFT;
+			case "n" -> Direction.NONE;
 			default -> throw new IllegalArgumentException("Not a valid direction  (" + s + ")");
 		};
 	}
