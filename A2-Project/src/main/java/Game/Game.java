@@ -8,8 +8,6 @@ import Highscore.HighscoreHandler;
 import Level.Level;
 import Level.LevelHandler;
 import Profile.Profile;
-import Profile.ProfileHandler;
-import Render.Render;
 
 import java.util.List;
 

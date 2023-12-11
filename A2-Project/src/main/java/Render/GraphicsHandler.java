@@ -19,7 +19,7 @@ import Profile.ProfileHandler;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
+import Highscore.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
@@ -32,7 +32,6 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import Highscore.HighscoreHandler;
 
 /**
  * GraphicsHandler manages the graphical user interface elements and rendering.
@@ -815,61 +814,34 @@ public class GraphicsHandler {
         stage.setTitle("Win Screen");
 
         int levelBeat = game.getLevelNum();
-
-//        HighscoreHandler highScoreHandler = new HighscoreHandler();
-//        List<Highscore> highscores = highScoreHandler.getHighscores(levelBeat);
-
-//        for (int i = 0; i < highscoreArrayList.size(); i++) {
-//            System.out.println(highscoreArrayList.get(i));
-//        }
+        HighscoreHandler highScoreLevelHandler = new HighscoreHandler();
 
         Label winMessageLabel = new Label("Congratulations, you beat this level.");
         winMessageLabel.setMinWidth(200);
         winMessageLabel.setTextFill(Color.color(1,1,1));
 
         VBox centralVBox = new VBox();
-        centralVBox.setPadding(new Insets(75, 0, 0, 50));
+        centralVBox.setPadding(new Insets(75, 0, 0, 100));
         centralVBox.setSpacing(10);
         root.setCenter(centralVBox);
 
+        //-------------------------------
 
+        //ListView
 
-        TableView scoreBoardTableView = new TableView<Highscore>();
-        scoreBoardTableView.setMaxSize(400,400);
+        levelBeat = 1;
 
-        // Define columns
-        TableColumn playerNameColumn = new TableColumn<Highscore, String>("Name");
-        playerNameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+        ArrayList<Highscore> highscoreArrayList = obtainHighscoreData(highScoreLevelHandler.getHighscores(levelBeat));
 
-        TableColumn timeTakenColumn = new TableColumn<Highscore, Integer>("Time Taken");
-        timeTakenColumn.setCellValueFactory(new PropertyValueFactory<>("timeTaken"));
+        ObservableList<String> profileNameData =
+                FXCollections.observableArrayList("ProfileName-/-TimeTaken");
 
-        TableColumn dayColumn = new TableColumn<Highscore, Integer>("Day");
-        dayColumn.setCellValueFactory(new PropertyValueFactory<>("day"));
+        for (int i = 0; i < highscoreArrayList.size(); i++) {
+            profileNameData.add(highscoreArrayList.get(i).getName() + " " + highscoreArrayList.get(i).getTimeTaken());
+        }
 
-        TableColumn monthColumn = new TableColumn<Highscore, Integer>("Month");
-        monthColumn.setCellValueFactory(new PropertyValueFactory<>("month"));
-
-        TableColumn yearColumn = new TableColumn<Highscore, Integer>("Year");
-        yearColumn.setCellValueFactory(new PropertyValueFactory<>("year"));
-
-        scoreBoardTableView.getColumns().add(playerNameColumn);
-        scoreBoardTableView.getColumns().add(timeTakenColumn);
-        scoreBoardTableView.getColumns().add(dayColumn);
-        scoreBoardTableView.getColumns().add(monthColumn);
-        scoreBoardTableView.getColumns().add(yearColumn);
-
-        scoreBoardTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-
-        Highscore h1 = new Highscore("John", 1,1,1,1);
-
-        scoreBoardTableView.getItems().add(h1);
-
-        ObservableList<Highscore> observableList =  FXCollections.observableArrayList();
-
-        observableList.add(h1);
-
-        scoreBoardTableView.setItems(observableList);
+        ListView<String> listView = new ListView<>(profileNameData);
+        listView.setMaxSize(300,300);
 
         HBox centralBar = new HBox();
         centralBar.setSpacing(10);
@@ -888,13 +860,12 @@ public class GraphicsHandler {
 
         nextLevelButton.setOnAction(e -> {
             game.updateLevel(game.getLevelNum() + 1);
-
             gameUI(stage, game);
         });
 
         centralBar.getChildren().addAll(returnToMainMenuButton, nextLevelButton);
 
-        centralVBox.getChildren().addAll(winMessageLabel, scoreBoardTableView);
+        centralVBox.getChildren().addAll(winMessageLabel, listView);
 
 
         Scene scene = new Scene (root, canvasWidth, canvasHeight);
@@ -902,16 +873,17 @@ public class GraphicsHandler {
         stage.show();
     }
 
-    private ArrayList<String> obtainHighscoreList(List<Highscore> highscoreList) {
-        ArrayList<String> highscoreData = new ArrayList<>();
+    private ArrayList<Highscore> obtainHighscoreData(List<Highscore> highscoresList) {
+        ArrayList<Highscore> highScoreDataStore = new ArrayList<>();
 
-        for (int i = 0; i < highscoreList.size(); i++) {
-            String highscoreName = String.valueOf(highscoreList.get(i).getName());
-            highscoreData.add(highscoreName);
+        for (int i = 0; i < highscoresList.size(); i++) {
+            Highscore highScoreData = highscoresList.get(i);
+            highScoreDataStore.add(highScoreData);
         }
 
-        return highscoreData;
+        return highScoreDataStore;
     }
+
 
     /**
      * Displays the lose screen UI.
@@ -938,6 +910,7 @@ public class GraphicsHandler {
 
         returnToMainMenuButton.setOnAction(e -> {
             menuScreenUI(stage);
+
         });
 
         Button restartLevelButton = new Button("Retry Level");

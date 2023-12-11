@@ -11,11 +11,11 @@ import java.util.Date;
  * Represents a highscore entry in the game.
  */
 public class Highscore {
-	private StringProperty name = new SimpleStringProperty(" ");
-	private IntegerProperty timeTaken = new SimpleIntegerProperty( );
-	private IntegerProperty day = new SimpleIntegerProperty( );
-	private IntegerProperty month = new SimpleIntegerProperty( );
-	private IntegerProperty year = new SimpleIntegerProperty( );
+	private String name;
+	private int timeTaken;
+	private int day;
+	private int month;
+	private int year;
 
 
 	/**
@@ -28,11 +28,11 @@ public class Highscore {
      */
 
 	public Highscore(String name, int timeTaken, int day, int month, int year){
-		this.name.set(name);
-		this.timeTaken.set(timeTaken);
-		this.day.set(day);
-		this.month.set(month);
-		this.year.set(year);
+		this.name = name;
+		this.timeTaken = timeTaken;
+		this.day = day;
+		this.month = month;
+		this.year = year;
 	}
 
 	/**
@@ -40,7 +40,7 @@ public class Highscore {
      * @return The name associated with the highscore.
      */
 	public String getName() {
-		return name.get();
+		return name;
 	}
 
 	/**
@@ -48,7 +48,7 @@ public class Highscore {
      * @param name The name to set for the highscore.
      */
 	public void setName(String name) {
-		this.name.set(name);
+		this.name = name;
 	}
 
 	/**
@@ -56,7 +56,7 @@ public class Highscore {
      * @return The time taken for the highscore.
      */
 	public int getTimeTaken() {
-		return timeTaken.get();
+		return timeTaken;
 	}
 
 	/**
@@ -64,15 +64,15 @@ public class Highscore {
      * @param timeTaken The time taken to set for the highscore.
      */
 	public void setTimeTaken(int timeTaken) {
-		this.timeTaken.set(timeTaken);
+		this.timeTaken = timeTaken;
 	}
 
 	/**
      * Retrieves the day of the recorded highscore.
      * @return The day of the highscore.
      */
-	public SimpleIntegerProperty getDay() {
-		return (SimpleIntegerProperty) day;
+	public int getDay() {
+		return day;
 	}
 
 	/**
@@ -80,7 +80,7 @@ public class Highscore {
      * @param day The day to set for the highscore.
      */
 	public void setDay(int day) {
-		this.day.set(day);
+		this.day = day;
 	}
 
 	/**
@@ -88,7 +88,7 @@ public class Highscore {
      * @return The month of the highscore.
      */
 	public int getMonth() {
-		return month.get();
+		return month;
 	}
 
 	/**
@@ -96,7 +96,7 @@ public class Highscore {
      * @param month The month to set for the highscore.
      */
 	public void setMonth(int month) {
-		this.month.set(month);
+		this.month = month;
 	}
 
 	/**
@@ -104,7 +104,7 @@ public class Highscore {
      * @return The year of the highscore.
      */
 	public int getYear() {
-		return year.get();
+		return year;
 	}
 
 	/**
@@ -112,6 +112,6 @@ public class Highscore {
      * @param year The year to set for the highscore.
      */
 	public void setYear(int year) {
-		this.year.set(year);
+		this.year = year ;
 	}
 }

@@ -61,7 +61,7 @@ public class HighscoreHandler {
 
 		String name = highscore.getName();
 		int timeTaken = highscore.getTimeTaken();
-		int day = highscore.getDay().get();
+		int day = highscore.getDay();
 		int month = highscore.getMonth();
 		int year = highscore.getYear();
 
