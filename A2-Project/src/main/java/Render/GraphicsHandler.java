@@ -62,8 +62,6 @@ public class GraphicsHandler {
     private final int maxLevelPermitted = 7;
     private Direction nextInput = Direction.NONE;
     private Image fog;
-
-    //Magic Number Solver.
     private int minHeightVal = 200;
     private int minWidthVal = 200;
     private int maxHeightVal = 500;
@@ -423,8 +421,10 @@ public class GraphicsHandler {
             levelSixButton.setDisable(false);
         }
         if (maxLevel > 6) {
-
             levelSevenButton.setDisable(false);
+        }
+        if (maxLevel == maxLevelPermitted) {
+            selectLevelLabel.setText("Congratulations on beating all levels!");
         }
 
         //Add additional cases
