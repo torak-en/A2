@@ -23,6 +23,7 @@ public abstract class Actor extends Entity {
 	private boolean isMovedByIce;
 	private Direction pendingDirection;
 	private Direction previousDirection;
+	private boolean cannotMove = false;
 
 
 	/**
@@ -49,16 +50,21 @@ public abstract class Actor extends Entity {
      */
 
 	public void applyMove(){
-		int x = getX();
-		int y = getY();
-		if (pendingDirection == Direction.UP){
-			setY(y - 1);
-		} else if (pendingDirection == Direction.DOWN){
-			setY(y + 1);
-		} else if (pendingDirection == Direction.LEFT) {
-			setX(x - 1);
-		} else if (pendingDirection == Direction.RIGHT){
-			setX(x + 1);
+		if (!cannotMove) {
+			int x = getX();
+			int y = getY();
+			if (pendingDirection == Direction.UP) {
+				setY(y - 1);
+			} else if (pendingDirection == Direction.DOWN) {
+				setY(y + 1);
+			} else if (pendingDirection == Direction.LEFT) {
+				setX(x - 1);
+			} else if (pendingDirection == Direction.RIGHT) {
+				setX(x + 1);
+			} else {
+				setX(x);
+				setY(y);
+			}
 		}
 		previousDirection = pendingDirection;
 		pendingDirection = null;
@@ -134,13 +140,11 @@ public abstract class Actor extends Entity {
 			}
 			for (Key key : p.getHeldKeys()) {
 				if (Objects.equals(key.getColour(), door.getDoorColour())){
-					usedKey = key;
 					door.setLocked(false);
 				} else {
 					return false;
 				}
 			}
-			p.getHeldKeys().remove(usedKey);
 		} else if (nextTile.getType() == EntityType.CHIP_SOCKET) {
 			ChipSocket altar = (ChipSocket) nextTile;
 			if (p.getHeldGold().size() == altar.getNumOfGoldRequired()){
@@ -250,5 +254,11 @@ public abstract class Actor extends Entity {
 		this.pendingDirection = pendingDirection;
 	}
 
+	public void setCannotMove(boolean cannotMove) {
+		this.cannotMove = cannotMove;
+	}
 
+	public boolean isCannotMove() {
+		return cannotMove;
+	}
 }

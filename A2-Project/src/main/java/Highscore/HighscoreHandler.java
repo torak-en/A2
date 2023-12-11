@@ -88,6 +88,9 @@ public class HighscoreHandler {
 				newFileData.append(line).append("\n");
 				count++;
 			}
+			if (count != 10 && notWritten){
+				newFileData.append(name).append(",").append(timeTaken).append(",").append(day).append(",").append(month).append(",").append(year).append("\n");
+			}
 			sc.close();
 
 			FileWriter writer = null;
