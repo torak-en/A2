@@ -87,7 +87,6 @@ public abstract class Actor extends Entity {
 		}
 		EntityType nextTile = level.getTileLayer()[newX][newY].getType();
 		if (nextTile != EntityType.PATH && nextTile != EntityType.BUTTON && nextTile != EntityType.TRAP ){
-			System.out.println("WHy");
 			return false;
 		}
 
@@ -195,8 +194,6 @@ public abstract class Actor extends Entity {
 			Ice ice = (Ice) nextTile;
 			if (!ice.checkMoveOntoIce(direction)){
 				return false;
-			} else {
-
 			}
 		}
 

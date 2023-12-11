@@ -16,6 +16,9 @@ public class Level {
 	private List<Item> itemList;
 	private List<Actor> actorList;
 	private Player player;
+	private int currentTicks = 60;
+	private int timeTaken = 0;
+
 	public Level(int levelTime, String levelName, Tile[][] tileLayer, List<Item> itemList, List<Actor> actorList, Player player){
 		this.levelTime = levelTime;
 		this.levelName = levelName;
@@ -23,6 +26,18 @@ public class Level {
 		this.itemList = itemList;
 		this.actorList = actorList;
 		this.player = player;
+	}
+
+	public void tick(){
+		currentTicks--;
+		if (currentTicks == 0){
+			currentTicks = 60;
+			currentTime--;
+			timeTaken++;
+		}
+		if (currentTime == 0){
+			player.setAlive(false);
+		}
 	}
 
 	//region Getters and Setters

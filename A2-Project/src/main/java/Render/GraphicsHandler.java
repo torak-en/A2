@@ -519,6 +519,12 @@ public class GraphicsHandler {
 
         Canvas canvas = new Canvas(900, 900);
         gc = canvas.getGraphicsContext2D();
+
+        Label levelTimeLabel = new Label("");
+        Label levelNameLabel = new Label(game.getLevel().getLevelName());
+        root.getChildren().add(levelTimeLabel);
+        root.getChildren().add(levelNameLabel);
+
         root.getChildren().add(canvas);
 
         startTime = System.nanoTime();
@@ -530,10 +536,11 @@ public class GraphicsHandler {
                     long currentTime = System.nanoTime();
                     double diff = currentTime-startTime;
                     progress += diff / nsPerTick;
-                    if (progress >=1) {
+                    while(progress >=1) {
                         progress--;
                         tick(stage, game);
                         startTime = currentTime;
+                        levelTimeLabel.setText(String.valueOf(game.getLevel().getCurrentTime()));
                     }
                 }
             }
@@ -689,9 +696,9 @@ public class GraphicsHandler {
             }
             renderTextures(0,0,1000,1000, background);
 
-            setTileVisible(tiles, x, y);
-            setItemsVisible(items, tiles, x, y);
-            setActorsVisible(actors, tiles, x, y);
+//            setTileVisible(tiles, x, y);
+//            setItemsVisible(items, tiles, x, y);
+//            setActorsVisible(actors, tiles, x, y);
 
             for (int i = minPossibleX; i < maxPossibleX + 1; i++) {
                 for (int j = minPossibleY; j < maxPossibleY + 1; j++) {
@@ -700,7 +707,7 @@ public class GraphicsHandler {
                         if (tile != null){
                             Image texture;
                             if (tile.isVisible()) {
-                                texture = tile.getType().getImage();
+                                texture = tile.getTexture();
                             } else {
                                 try {
                                     texture = new Image(new FileInputStream("Textures/fog.png"));
