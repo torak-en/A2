@@ -39,11 +39,11 @@ import java.util.Random;
  * GraphicsHandler manages the graphical user interface elements and rendering.
  * It handles various UI screens, level selection, profile management, and game rendering.
  */
-public class GraphicsHandler {
-    private int canvasWidth = 500;
-    private int canvasHeight = 500;
-    private Canvas paneCanvas = new Canvas(canvasWidth, canvasHeight);
 
+public class GraphicsHandler {
+    private static int canvasWidth = 500;
+    private static int canvasHeight = 500;
+    private Canvas paneCanvas = new Canvas(canvasWidth, canvasHeight);
     private Image backgroundImage = new Image("file:UserInterface/path_background.png");
     private Image dirtBackgroundImage = new Image("file:UserInterface/dirt_background.png");
     private Image crackedBackgroundImage = new Image("file:UserInterface/cracked_path_background.png");
@@ -58,17 +58,30 @@ public class GraphicsHandler {
     private Level curLevel;
     boolean goUp, goDown, goRight, goLeft;
     private int playerMoveCooldown = 0;
-
     private static String currentProfileName;
     private final int maxLevelPermitted = 7;
     private Direction nextInput = Direction.NONE;
     private Image fog;
+
+    //Magic Number Solver.
+
+    private int minHeightVal = 200;
+    private int minWidthVal = 200;
+    private int maxHeightVal = 500;
+    private int maxWidthVal = 500;
+    private int spacingVal = 10;
+    private int fitTitleHeight = 150;
+    private int fitTitleWidth = 190;
+    private int listViewMax = 350;
+    private int minWidthButton = 100;
+
 
      /**
      * Displays the main menu screen UI.
      * @param stage The JavaFX stage to display the menu on.
      * @return The JavaFX stage with the menu screen UI displayed.
      */
+
     public void menuScreenUI(Stage stage) {
         BorderPane root = new BorderPane();
 
@@ -76,29 +89,29 @@ public class GraphicsHandler {
 
         createMosaicBackground(root);
 
-        root.minHeight(200);
-        root.minWidth(200);
-        root.maxHeight(500);
-        root.minWidth(500);
+        root.minHeight(minHeightVal);
+        root.minWidth(minWidthVal);
+        root.maxHeight(maxHeightVal);
+        root.minWidth(maxWidthVal);
 
         ImageView titleImageView = new ImageView();
         titleImageView.setImage(gameTitleImage);
         titleImageView.setPreserveRatio(true);
-        titleImageView.maxHeight(500);
-        titleImageView.maxWidth(500);
+        titleImageView.maxHeight(maxHeightVal);
+        titleImageView.maxWidth(maxWidthVal);
 
-        titleImageView.setFitHeight(150);
-        titleImageView.setFitWidth(190);
+        titleImageView.setFitHeight(fitTitleHeight);
+        titleImageView.setFitWidth(fitTitleWidth);
 
-        titleImageView.setX(150);
-        titleImageView.setY(150);
+        titleImageView.setX(fitTitleHeight);
+        titleImageView.setY(fitTitleHeight);
 
         root.getChildren().add(titleImageView);
 
         stage.setTitle("Main Menu");
 
         HBox centralBar = new HBox();
-        centralBar.setSpacing(10);
+        centralBar.setSpacing(spacingVal);
         centralBar.setPadding(new Insets(300, 3, 90, 120));
         root.setCenter(centralBar);
 
@@ -131,6 +144,7 @@ public class GraphicsHandler {
      * @param root The root pane to add the mosaic background to.
      * @return The root pane with the mosaic background added.
      */
+
     private BorderPane createMosaicBackground(BorderPane root) {
         for (int y = 0; y < canvasHeight; y += backgroundImage.getHeight()) {
             for (int x = 0; x < canvasWidth; x += backgroundImage.getWidth()) {
@@ -160,6 +174,7 @@ public class GraphicsHandler {
      * @param stage The JavaFX stage to display the profile selector on.
      * @return The JavaFX stage with the profile selector UI displayed.
      */
+
     public void loadProfileSelectorUI(Stage stage) {
         ProfileHandler profileHandler = new ProfileHandler();
 
@@ -168,36 +183,36 @@ public class GraphicsHandler {
         stage.setTitle("Profile Selector");
 
         VBox centralVBox = new VBox();
-        centralVBox.setSpacing(10);
-        centralVBox.setPadding(new Insets(50,50,0,75));
+        centralVBox.setSpacing(spacingVal);
+        centralVBox.setPadding(new Insets(50, 50, 0, 75));
         root.setCenter(centralVBox);
 
         Label selectionLabel = new Label("Please select a Profile: ");
-        selectionLabel.setTextFill(Color.color(1,1,1));
+        selectionLabel.setTextFill(Color.color(1, 1, 1));
 
         ObservableList<String> profileNameData =
                 FXCollections.observableArrayList(obtainProfileNameList(profileHandler.getProfiles()));
 
         ListView<String> listView = new ListView<>(profileNameData);
-        listView.setMaxSize(350, 350);
+        listView.setMaxSize(listViewMax, listViewMax);
 
         centralVBox.getChildren().addAll(selectionLabel, listView);
 
         HBox centralHBar = new HBox();
-        centralHBar.setSpacing(10);
+        centralHBar.setSpacing(spacingVal);
         centralHBar.setPadding(new Insets(50, 3, 90, 75));
         root.setBottom(centralHBar);
 
         Button selectProfileButton = new Button("Select Profile");
-        selectProfileButton.setMinWidth(100);
+        selectProfileButton.setMinWidth(minWidthButton);
         selectProfileButton.setDisable(true);
 
         Button deleteProfileButton = new Button("Delete Profile");
-        deleteProfileButton.setMinWidth(100);
+        deleteProfileButton.setMinWidth(minWidthButton);
         deleteProfileButton.setDisable(true);
 
         Button returnToMainMenuButton = new Button("Return to Main menu");
-        returnToMainMenuButton.setMinWidth(100);
+        returnToMainMenuButton.setMinWidth(minWidthButton);
 
         deleteProfileButton.setOnAction(e -> {
             for (int i = 0; i < profileNameData.size(); i++) {
@@ -221,15 +236,15 @@ public class GraphicsHandler {
             }
         });
 
-        selectProfileButton.setOnAction(e ->{
+        selectProfileButton.setOnAction(e -> {
             for (int i = 0; i < profileHandler.getProfiles().size(); i++) {
                 if (profileHandler.getProfiles().get(i).getProfileName().equalsIgnoreCase(currentProfileName)) {
                     Profile selectedProfile = profileHandler.getProfiles().get(i);
                     try {
                         levelSelectorUI(selectedProfile, stage);
                     } catch (Exception maxLevel) {
-                        System.out.println("The selected profile has an unlocked level greater" +
-                                " than the total number of levels unlocked. Please try again!");
+                        System.out.println("The selected profile has an unlocked level greater"
+                                + " than the total number of levels unlocked. Please try again!");
                         System.exit(1);
                     }
                 }
@@ -249,6 +264,7 @@ public class GraphicsHandler {
      * @return The profile name selected.
      * @throws NullPointerException If no profile is selected.
      */
+
     private static String obtainProfileName(ListView<String> listView) {
         String selectedProfileName = listView.getSelectionModel().getSelectedItem();
         if (selectedProfileName != null) {
@@ -263,6 +279,7 @@ public class GraphicsHandler {
      * @param profileList The list of profiles to obtain the names from.
      * @return The list of profile names.
      */
+
     private ArrayList<String> obtainProfileNameList(List<Profile> profileList) {
         ArrayList<String> profileData = new ArrayList<>();
 
@@ -279,6 +296,7 @@ public class GraphicsHandler {
      * @param stage The JavaFX stage to display the create new profile UI on.
      * @return The JavaFX stage with the create new profile UI displayed.
      */
+
     public void createNewProfileUI(Stage stage) {
         ProfileHandler profileHandler = new ProfileHandler();
         BorderPane root = new BorderPane();
@@ -286,31 +304,31 @@ public class GraphicsHandler {
         stage.setTitle("Create New Profile");
 
         Label profileSelectorInformationDisplay = new Label("Please enter a name:");
-        profileSelectorInformationDisplay.setMinWidth(150);
-        profileSelectorInformationDisplay.setTextFill(Color.color(1,1,1));
+        profileSelectorInformationDisplay.setMinWidth(minWidthButton);
+        profileSelectorInformationDisplay.setTextFill(Color.color(1, 1, 1));
 
         TextField nameEntryField = new TextField();
 
-        nameEntryField.setMaxSize(150,100);
+        nameEntryField.setMaxSize(150, 100);
 
         VBox centralVBox = new VBox();
         centralVBox.setPadding(new Insets(100, 3, 90, 125));
-        centralVBox.setSpacing(5);
+        centralVBox.setSpacing(spacingVal);
         root.setTop(centralVBox);
 
         HBox centralHBar = new HBox();
-        centralHBar.setSpacing(10);
+        centralHBar.setSpacing(spacingVal);
         centralHBar.setPadding(new Insets(100, 3, 90, 125));
         root.setBottom(centralHBar);
 
         Button createProfileNameButton = new Button("Start");
-        createProfileNameButton.setMinWidth(100);
+        createProfileNameButton.setMinWidth(minWidthButton);
 
         Button returnToMainMenuButton = new Button("Return to Main menu");
-        returnToMainMenuButton.setMinWidth(100);
+        returnToMainMenuButton.setMinWidth(minWidthButton);
 
         Label creationErrorLabel = new Label("");
-        creationErrorLabel.setMinWidth(150);
+        creationErrorLabel.setMinWidth(minWidthButton);
         creationErrorLabel.setTextFill(Color.color(1,1,1));
 
         createProfileNameButton.setOnAction(e -> {
@@ -344,6 +362,7 @@ public class GraphicsHandler {
      * @return The JavaFX stage with the level selector UI displayed.
      * @throws Exception If the profile selected has an unlocked level greater than the total number of levels unlocked.
      */
+
     public void levelSelectorUI(Profile profileSelected, Stage stage) throws Exception {
 
         BorderPane root = new BorderPane();
@@ -355,17 +374,15 @@ public class GraphicsHandler {
         selectLevelLabel.setTextFill(Color.color(1,1,1));
 
         HBox selectBar = new HBox();
-        selectBar.setSpacing(0);
         selectBar.setPadding(new Insets(100, 3, 90, 125));
         root.setBottom(selectBar);
 
         HBox levelBar = new HBox();
-        levelBar.setSpacing(10);
+        levelBar.setSpacing(spacingVal);
         levelBar.setPadding(new Insets(150, 3, 90, 125));
         root.setBottom(levelBar);
 
         HBox centralBar = new HBox();
-        centralBar.setSpacing(0);
         centralBar.setPadding(new Insets(canvasWidth /2, 3, 90, 190));
         root.setBottom(centralBar);
 
@@ -456,7 +473,7 @@ public class GraphicsHandler {
         });
 
         Button returnToMainMenuButton = new Button("Return to Main menu");
-        returnToMainMenuButton.setMinWidth(100);
+        returnToMainMenuButton.setMinWidth(minWidthButton);
 
         returnToMainMenuButton.setOnAction(e -> {
             menuScreenUI(stage);
@@ -470,76 +487,6 @@ public class GraphicsHandler {
         root.getChildren().addAll(selectBar, levelBar);
 
         Scene scene = new Scene (root, canvasWidth, canvasHeight);
-        stage.setScene(scene);
-        stage.show();
-    }
-
-    //Remove In Final Before Submission
-    public void TestScreenUI(Stage stage){;
-        //NOTE: Change once a TitleImage has been made.
-        Image userInterfaceImage = new Image("file:UserInterface/InterimTitleImage1.png");
-
-        BorderPane root = new BorderPane();
-        createMosaicBackground(root);
-
-        root.minHeight(200);
-        root.minWidth(200);
-        root.maxHeight(500);
-        root.minWidth(500);
-
-        //Setting up the GameTitle Image shown on the main menu.
-        ImageView imageView = new ImageView();
-        imageView.setImage(userInterfaceImage);
-        imageView.setPreserveRatio(true);
-        imageView.maxHeight(500);
-        imageView.maxWidth(500);
-
-        //IMG Size
-        imageView.setFitHeight(150);
-        imageView.setFitWidth(190);
-
-        //IMG Positioning
-        imageView.setX(150);
-        imageView.setY(150);
-
-        root.getChildren().add(imageView);
-        root.setCenter(paneCanvas);
-
-        //PANE Title
-        stage.setTitle("Main Menu (Test)");
-
-        //HorizontalBox used to place buttons in a good position.
-        HBox centralBar = new HBox();
-        centralBar.setSpacing(5);
-        centralBar.setPadding(new Insets(300, 3, 90, 30));
-        root.setCenter(centralBar);
-
-        Button profileSelectScreenInterfaceButton = new Button("Profile Select Interface");
-        profileSelectScreenInterfaceButton.setOnAction(e -> {
-            //Call Profile Selection Interface for testing.
-            loadProfileSelectorUI(stage);
-        });
-
-        Button winScreenInterfaceButton = new Button("Win Screen Interface");
-        winScreenInterfaceButton.setOnAction(e -> {
-            //Test
-//            winScreenUI(stage, game);
-        });
-
-        Button loseScreenInterfaceButton = new Button("Lose Screen Interface");
-        loseScreenInterfaceButton.setOnAction(e -> {
-//            loseScreenUI(stage, game);
-        });
-
-
-        Button quitButton = new Button("Quit");
-        quitButton.setOnAction(e -> {
-            System.exit(0);
-        });
-
-        centralBar.getChildren().addAll(profileSelectScreenInterfaceButton, winScreenInterfaceButton, loseScreenInterfaceButton, quitButton);
-
-        Scene scene = new Scene(root, canvasWidth, canvasHeight);
         stage.setScene(scene);
         stage.show();
     }
@@ -572,11 +519,11 @@ public class GraphicsHandler {
                     long currentTime = System.nanoTime();
                     double diff = currentTime-startTime;
                     progress += diff / nsPerTick;
-                    while(progress >=1) {
+                    while (progress >= 1) {
                         progress--;
                         tick(stage, game);
                         gc.setFill(Color.WHITE);
-                        gc.fillText(game.getLevel().getLevelName(),20,20);
+                        gc.fillText(game.getLevel().getLevelName(), 20, 20);
                         gc.fillText(String.valueOf(game.getLevel().getCurrentTime()),850, 20);
                         startTime = currentTime;
                     }
@@ -599,6 +546,7 @@ public class GraphicsHandler {
      * @param root The root pane to add the scene to.
      * @return The scene for the game UI.
      */
+
     private Scene getScene(StackPane root) {
         Scene scene = new Scene(root, 900, 900);
         scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
@@ -649,6 +597,7 @@ public class GraphicsHandler {
      * @param stage The JavaFX stage to display the UI on.
      * @param game The game to display the UI for.
      */
+
     private void tick(Stage stage, Game game) {
         Player p = game.getLevel().getPlayer();
         if (playerMoveCooldown == 0) {
@@ -679,7 +628,8 @@ public class GraphicsHandler {
             highscoreHandler.newHighscore(game.getLevelNum(), newHighscore);
 
             Profile currentProfile = game.getCurrentProfile();
-            if(currentProfile.getMaxLevelNumUnlocked() < game.getLevelNum() + 1 && game.getLevelNum() < maxLevelPermitted){
+            if (currentProfile.getMaxLevelNumUnlocked() < game.getLevelNum()
+                    + 1 && game.getLevelNum() < maxLevelPermitted) {
                 currentProfile.setMaxLevelNumUnlocked(game.getLevelNum() + 1);
                 ProfileHandler profileHandler = new ProfileHandler();
                 profileHandler.updateProfile(currentProfile);
@@ -697,6 +647,7 @@ public class GraphicsHandler {
      * Renders the game level on the graphical canvas.
      * @param game The game object containing the current level.
      */
+
     public void renderLevel(Game game) {
         curLevel = game.getLevel();
         if (curLevel != null) {
@@ -751,7 +702,7 @@ public class GraphicsHandler {
             } catch (FileNotFoundException e) {
                 throw new RuntimeException(e);
             }
-            renderTextures(0,0,1000,1000, background);
+            renderTextures(0, 0, 1000, 1000, background);
 
             setTileVisible(tiles, x, y);
             setItemsVisible(items, tiles, x, y);
@@ -768,10 +719,13 @@ public class GraphicsHandler {
                             } else {
                                 texture = fog;
                             }
-                            renderTextures((i + counterX) * tileSize, (j + counterY) * tileSize, tileSize, tileSize, texture);
-                            if (tile.getType() == EntityType.CHIP_SOCKET && tile.isVisible()){
+                            renderTextures((i + counterX) * tileSize,
+                                    (j + counterY) * tileSize, tileSize, tileSize, texture);
+                            if (tile.getType() == EntityType.CHIP_SOCKET && tile.isVisible()) {
                                 ChipSocket socket = (ChipSocket) tile;
-                                gc.fillText(String.valueOf(socket.getNumOfGoldRequired()), ((i + counterX) * tileSize) + 47,((j + counterY) * tileSize) + 53);
+                                gc.fillText(String.valueOf(socket.getNumOfGoldRequired()),
+                                        ((i + counterX) * tileSize) + 47,
+                                        ((j + counterY) * tileSize) + 53);
                             }
                         }
                     }
@@ -779,7 +733,8 @@ public class GraphicsHandler {
             }
 
             for (Item i : items) {
-                if (i.getX() >= minActualX && i.getX() <= maxActualX && i.getY() >= minActualY && i.getY() <= maxActualY){
+                if (i.getX() >= minActualX && i.getX() <= maxActualX
+                        && i.getY() >= minActualY && i.getY() <= maxActualY){
                     Image texture;
                     if (i.isVisible()) {
                         texture = i.getTexture();
@@ -791,7 +746,8 @@ public class GraphicsHandler {
             }
 
             for (Actor a : actors) {
-                if (a.getX() >= minActualX && a.getX() <= maxActualX && a.getY() >= minActualY && a.getY() <= maxActualY){
+                if (a.getX() >= minActualX && a.getX()
+                        <= maxActualX && a.getY() >= minActualY && a.getY() <= maxActualY){
                     Image texture;
                     if (a.isVisible()) {
                         texture = a.getTexture();
@@ -812,6 +768,7 @@ public class GraphicsHandler {
      * @param h The height of the texture.
      * @param texture The texture to render.
      */
+
     public void renderTextures(int x, int y, int w, int h, Image texture) {
         // Render textures at specified position and size
         gc.drawImage(texture, x, y, w, h);
@@ -823,10 +780,16 @@ public class GraphicsHandler {
      * @param x The x coordinate of the player.
      * @param y The y coordinate of the player.
      */
-    public void setTileVisible(Tile[][] tiles,int x, int y){
+
+    public void setTileVisible(Tile[][] tiles, int x, int y){
         for (Tile[] tileArray : tiles) {
             for (Tile t : tileArray) {
-                if (t.getX() >= x-2 && t.getX() <= x+2 && t.getY() >= y-2 && t.getY() <= y+2 && ((t.getX() != x-2 && t.getY() != y-2) || (t.getX() != x+2 && t.getY() != y+2) || (t.getX() != x-2 && t.getY() != y+2) || (t.getX() != x+2 && t.getY() != y-2))){
+                if (t.getX() >= x-2 && t.getX() <= x+2 && t.getY() >= y-2
+                        && t.getY() <= y+2 && ((t.getX() != x-2
+                        && t.getY() != y-2) || (t.getX() != x+2
+                        && t.getY() != y+2) || (t.getX() != x-2
+                        && t.getY() != y+2) || (t.getX() != x+2
+                        && t.getY() != y-2))){
                     t.setVisible(true);
                 }
             }
@@ -840,6 +803,7 @@ public class GraphicsHandler {
      * @param x The x coordinate of the player.
      * @param y The y coordinate of the player.
      */
+
     public void setItemsVisible(List<Item> items, Tile[][] tiles, int x, int y) {
         for (Item i : items) {
             i.setVisible(tiles[i.getX()][i.getY()].isVisible());
@@ -853,6 +817,7 @@ public class GraphicsHandler {
      * @param x The x coordinate of the player.
      * @param y The y coordinate of the player.
      */
+
     public void setActorsVisible(List<Actor> actors, Tile[][] tiles, int x, int y) {
         for (Actor a : actors) {
             a.setVisible(tiles[a.getX()][a.getY()].isVisible());
@@ -864,6 +829,7 @@ public class GraphicsHandler {
      * @param stage The JavaFX stage to display the win screen UI on.
      * @param game The game object.
      */
+
     public void winScreenUI(Stage stage, Game game) {
         BorderPane root = new BorderPane();
         createMosaicBackground(root);
@@ -873,12 +839,12 @@ public class GraphicsHandler {
         HighscoreHandler highScoreLevelHandler = new HighscoreHandler();
 
         Label winMessageLabel = new Label("Congratulations, you beat this level.");
-        winMessageLabel.setMinWidth(200);
+        winMessageLabel.setMinWidth(minWidthButton);
         winMessageLabel.setTextFill(Color.color(1,1,1));
 
         VBox centralVBox = new VBox();
         centralVBox.setPadding(new Insets(75, 0, 0, 100));
-        centralVBox.setSpacing(10);
+        centralVBox.setSpacing(spacingVal);
         root.setCenter(centralVBox);
 
         ArrayList<Highscore> highscoreArrayList = obtainHighscoreData(highScoreLevelHandler.getHighscores(levelBeat));
@@ -886,7 +852,7 @@ public class GraphicsHandler {
         ListView<String> listView = getListViewData(highscoreArrayList);
 
         HBox centralBar = new HBox();
-        centralBar.setSpacing(10);
+        centralBar.setSpacing(spacingVal);
         centralBar.setPadding(new Insets(40, 3, 90, 125));
         root.setBottom(centralBar);
 
@@ -900,7 +866,7 @@ public class GraphicsHandler {
         Button nextLevelButton = new Button("Next Level");
         nextLevelButton.setMinWidth(100);
 
-        if (game.getLevelNum() == maxLevelPermitted){
+        if (game.getLevelNum() == maxLevelPermitted) {
             nextLevelButton.setDisable(true);
         }
 
@@ -924,6 +890,7 @@ public class GraphicsHandler {
      * @param highscoreArrayList The ArrayList of highscore objects.
      * @return A ListView object with data inserted.
      */
+
     private static ListView<String> getListViewData(ArrayList<Highscore> highscoreArrayList) {
         ObservableList<String> profileNameData = FXCollections.observableArrayList();
 
@@ -932,7 +899,11 @@ public class GraphicsHandler {
         } else {
             profileNameData.add("ProfileName / TimeTaken - Date (Day/Month/Year)");
             for (int i = 0; i < highscoreArrayList.size(); i++) {
-                profileNameData.add(highscoreArrayList.get(i).getName() + " " + highscoreArrayList.get(i).getTimeTaken() + "s " + highscoreArrayList.get(i).getDay() + "/" + highscoreArrayList.get(i).getMonth() + "/" + highscoreArrayList.get(i).getYear());
+                profileNameData.add(highscoreArrayList.get(i).getName() + " "
+                        + highscoreArrayList.get(i).getTimeTaken() + "s "
+                        + highscoreArrayList.get(i).getDay() + "/"
+                        + highscoreArrayList.get(i).getMonth() +
+                        "/" + highscoreArrayList.get(i).getYear());
             }
         }
 
@@ -946,6 +917,7 @@ public class GraphicsHandler {
      * @param highscoresList The List of highscore objects.
      * @return An ArrayList of highscore objects.
      */
+
     private ArrayList<Highscore> obtainHighscoreData(List<Highscore> highscoresList) {
         ArrayList<Highscore> highScoreArrayList = new ArrayList<>();
 
@@ -962,6 +934,7 @@ public class GraphicsHandler {
      * @param stage The JavaFX stage to display the lose screen UI on.
      * @param game The game object.
      */
+
     public void loseScreenUI(Stage stage, Game game) {
         BorderPane root = new BorderPane();
         createMosaicBackground(root);
@@ -976,7 +949,7 @@ public class GraphicsHandler {
 
         HBox centralBar = new HBox();
         centralBar.setPadding(new Insets(40, 3, 90, 125));
-        centralBar.setSpacing(10);
+        centralBar.setSpacing(spacingVal);
 
         Button returnToMainMenuButton = new Button("Return to Main menu");
 
