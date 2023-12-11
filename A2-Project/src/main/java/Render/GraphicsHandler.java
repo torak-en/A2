@@ -60,7 +60,7 @@ public class GraphicsHandler {
     private int playerMoveCooldown = 0;
 
     private static String currentProfileName;
-    private final int maxLevelPermitted = 4;
+    private final int maxLevelPermitted = 5;
     private Direction nextInput = Direction.NONE;
     private Image fog;
 
@@ -388,6 +388,8 @@ public class GraphicsHandler {
         levelThreeButton.setDisable(true);
         Button levelFourButton = new Button("4");
         levelFourButton.setDisable(true);
+        Button levelFiveButton = new Button("5");
+        levelFiveButton.setDisable(true);
 
         int maxLevel = profileSelected.getMaxLevelNumUnlocked();
 
@@ -403,6 +405,9 @@ public class GraphicsHandler {
         }
         if (maxLevel > 3){
             levelFourButton.setDisable(false);
+        }
+        if (maxLevel > 4){
+            levelFiveButton.setDisable(false);
         }
 
         //Add additional cases
@@ -433,6 +438,12 @@ public class GraphicsHandler {
             gameUI(stage, game);
         });
 
+        levelFiveButton.setOnAction(e -> {
+            game.updateLevel(5);
+            game.setCurrentProfile(profileSelected);
+            gameUI(stage, game);
+        });
+
         Button returnToMainMenuButton = new Button("Return to Main menu");
         returnToMainMenuButton.setMinWidth(100);
 
@@ -441,7 +452,7 @@ public class GraphicsHandler {
         });
 
         centralBar.getChildren().addAll(returnToMainMenuButton, selectLevelLabel);
-        levelBar.getChildren().addAll(levelOneButton, levelTwoButton, levelThreeButton, levelFourButton);
+        levelBar.getChildren().addAll(levelOneButton, levelTwoButton, levelThreeButton, levelFourButton, levelFiveButton);
         selectBar.getChildren().add(selectLevelLabel);
 
         root.getChildren().addAll(selectBar, levelBar);
@@ -549,7 +560,6 @@ public class GraphicsHandler {
                     long currentTime = System.nanoTime();
                     double diff = currentTime-startTime;
                     progress += diff / nsPerTick;
-                    System.out.println(progress);
                     while(progress >=1) {
                         progress--;
                         tick(stage, game);
@@ -756,7 +766,7 @@ public class GraphicsHandler {
                 if (i.getX() >= minActualX && i.getX() <= maxActualX && i.getY() >= minActualY && i.getY() <= maxActualY){
                     Image texture;
                     if (i.isVisible()) {
-                        texture = i.getType().getImage();
+                        texture = i.getTexture();
                     } else {
                         texture = fog;
                     }
@@ -768,7 +778,7 @@ public class GraphicsHandler {
                 if (a.getX() >= minActualX && a.getX() <= maxActualX && a.getY() >= minActualY && a.getY() <= maxActualY){
                     Image texture;
                     if (a.isVisible()) {
-                        texture = a.getType().getImage();
+                        texture = a.getTexture();
                     } else {
                         texture = fog;
                     }

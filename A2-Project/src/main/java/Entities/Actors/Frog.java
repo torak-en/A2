@@ -58,10 +58,12 @@ public class Frog extends Actor{
 				playerX = p.getX();
 				playerY = p.getY();
 			}
+
 			if (nodePathToPlayer != null) {
 				setX(nodePathToPlayer.getX());
 				setY(nodePathToPlayer.getY());
 				nodePathToPlayer = nodePathToPlayer.getParentNode();
+				setPendingDirection(null);
 				System.out.println("Actual Move");
 			} else {
 				System.out.println("Random Move");
@@ -69,7 +71,6 @@ public class Frog extends Actor{
 				setPendingDirection(d);
 				applyMove();
 			}
-
 		}
 		ticksTillMove--;
 		return level;

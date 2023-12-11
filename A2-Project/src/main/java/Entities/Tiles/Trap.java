@@ -1,7 +1,7 @@
 package Entities.Tiles;
 
 import Entities.Actors.Actor;
-import Entities.Actors.Player;
+import Enum.Direction;
 import Enum.EntityType;
 import Level.Level;
 import javafx.scene.image.Image;
@@ -40,13 +40,9 @@ public class Trap extends Tile{
 
 	@Override
 	public Level tick(Level level) {
-		List<Actor> actors = new ArrayList<>(level.getActorList());
-		for (Actor a : actors) {
-			if (a.getX() == getX() && a.getY() == getY() && active){
-				System.out.println(a.getType());
-				System.out.println("X: " + a.getX() + ",Y: " + a.getY());
-				System.out.println("Should be: " + getX() + "," + getY());
-				level.getActorList().remove(a);
+		for (Actor a : level.getActorList()) {
+			if (a.getX() == getX() && a.getY() == getY()){
+				a.setCannotMove(active);
 			}
 		}
 		return level;

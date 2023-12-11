@@ -4,10 +4,15 @@ import Entities.Actors.Actor;
 import Enum.Direction;
 import Enum.EntityType;
 import Level.Level;
+import javafx.scene.image.Image;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 
 public class Ice extends Tile{
 	private Direction entranceDirection1;
 	private Direction entranceDirection2;
+	private boolean noDirections = false;
 	/**
 	 * Creates an ice tile with the coordinates and entrance directions
 	 *
@@ -18,6 +23,21 @@ public class Ice extends Tile{
 	 */
 	public Ice(int x, int y, Direction entranceDirection1, Direction entranceDirection2) {
 		super(x, y, EntityType.ICE);
+		if (entranceDirection1 == Direction.NONE && entranceDirection2 == Direction.NONE){
+			try {
+				System.out.println("Why");
+				texture = new Image(new FileInputStream("Textures/ice.png"));
+				noDirections = true;
+			} catch (FileNotFoundException e) {
+				throw new RuntimeException(e);
+			}
+		} else {
+			try {
+				texture = new Image(new FileInputStream("Textures/ice_" + entranceDirection1.toSingleString() + entranceDirection2.toSingleString() + ".png"));
+			} catch (FileNotFoundException e) {
+				throw new RuntimeException(e);
+			}
+		}
 		this.entranceDirection1 = entranceDirection1;
 		this.entranceDirection2 = entranceDirection2;
 	}
@@ -39,6 +59,10 @@ public class Ice extends Tile{
 	}
 
 	public boolean checkMoveOntoIce(Direction direction){
+		if (noDirections){
+			System.out.println("?");
+			return true;
+		}
 		return getInverse(direction) == entranceDirection1 || getInverse(direction) == entranceDirection2;
 	}
 	/**
@@ -48,6 +72,26 @@ public class Ice extends Tile{
 	 * @return The direction in which the player should slide
 	 */
 	public Direction slide(Actor a, Level level){
+		if (noDirections){
+			if (a.getType() == EntityType.PLAYER){
+				if(a.playerCheckLocation(a.getPreviousDirection(), level)){
+					return a.getPreviousDirection();
+				} else if (a.playerCheckLocation(getInverse(a.getPreviousDirection()), level)){
+					return getInverse(a.getPreviousDirection());
+				} else {
+					return Direction.NONE;
+				}
+			} else if (a.getType() == EntityType.BLOCK){
+				if(a.playerCheckLocation(a.getPreviousDirection(), level)){
+					return a.getPreviousDirection();
+				} else if (a.playerCheckLocation(getInverse(a.getPreviousDirection()), level)){
+					return getInverse(a.getPreviousDirection());
+				} else {
+					return Direction.NONE;
+				}
+			}
+			return Direction.NONE;
+		}
 		Direction directionMovedOntoIce = a.getPreviousDirection();
 		if (directionMovedOntoIce == getInverse(entranceDirection1)){
 			if (a.getType() == EntityType.PLAYER){
