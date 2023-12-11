@@ -2,12 +2,14 @@ package Render;
 import Entities.Actors.Actor;
 import Entities.Actors.Player;
 import Entities.Items.Item;
+import Entities.Tiles.ChipSocket;
 import Entities.Tiles.Tile;
 import Game.Game;
 import Highscore.Highscore;
 import Highscore.HighscoreHandler;
 import Level.Level;
 import Enum.Direction;
+import Enum.EntityType;
 import javafx.animation.AnimationTimer;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -19,13 +21,11 @@ import Profile.ProfileHandler;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.*;
-import Highscore.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 
 import java.io.FileInputStream;
@@ -389,22 +389,23 @@ public class GraphicsHandler {
             throw new Exception();
         }
 
-        if (maxLevel > 1){
+        if (maxLevel > 1) {
             levelTwoButton.setDisable(false);
         }
-        if (maxLevel > 2){
+        if (maxLevel > 2) {
             levelThreeButton.setDisable(false);
         }
-        if (maxLevel > 3){
+        if (maxLevel > 3) {
             levelFourButton.setDisable(false);
         }
-        if (maxLevel > 4){
+        if (maxLevel > 4) {
             levelFiveButton.setDisable(false);
         }
-        if (maxLevel > 5){
+        if (maxLevel > 5) {
             levelSixButton.setDisable(false);
         }
-        if (maxLevel > 6){
+        if (maxLevel > 6) {
+
             levelSevenButton.setDisable(false);
         }
 
@@ -768,6 +769,10 @@ public class GraphicsHandler {
                                 texture = fog;
                             }
                             renderTextures((i + counterX) * tileSize, (j + counterY) * tileSize, tileSize, tileSize, texture);
+                            if (tile.getType() == EntityType.CHIP_SOCKET && tile.isVisible()){
+                                ChipSocket socket = (ChipSocket) tile;
+                                gc.fillText(String.valueOf(socket.getNumOfGoldRequired()), ((i + counterX) * tileSize) + 47,((j + counterY) * tileSize) + 53);
+                            }
                         }
                     }
                 }

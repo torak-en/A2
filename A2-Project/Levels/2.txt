@@ -1,4 +1,4 @@
-Continuation,100
+Continuation,80
 20,10
 W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W
 W,P,W,E,Lr,P,P,P,P,C2,P,P,P,P,P,P,P,P,P,W

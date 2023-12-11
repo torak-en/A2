@@ -127,7 +127,6 @@ public abstract class Actor extends Entity {
 
 		Tile nextTile = level.getTileLayer()[newX][newY];
 		Player p = level.getPlayer();
-		Key usedKey = null;
 		if (nextTile.getType() == EntityType.WALL){
 			return false;
 		} else if (nextTile.getType() == EntityType.LOCKED_DOOR){
@@ -135,12 +134,18 @@ public abstract class Actor extends Entity {
 			if (p.getHeldKeys().isEmpty()) {
 			return false;
 			}
+
+			boolean validKey = false;
 			for (Key key : p.getHeldKeys()) {
+				System.out.println(key.getColour());
+				System.out.println(door.getDoorColour());
 				if (Objects.equals(key.getColour(), door.getDoorColour())){
+					validKey = true;
 					door.setLocked(false);
-				} else {
-					return false;
 				}
+			}
+			if (!validKey){
+				return false;
 			}
 		} else if (nextTile.getType() == EntityType.CHIP_SOCKET) {
 			ChipSocket altar = (ChipSocket) nextTile;
