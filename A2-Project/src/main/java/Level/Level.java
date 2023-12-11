@@ -9,15 +9,17 @@ import java.util.List;
 
 public class Level {
 
-	private int levelTime;
 	private int currentTime;
 	private String levelName;
 	private Tile[][] tileLayer;
 	private List<Item> itemList;
 	private List<Actor> actorList;
 	private Player player;
+	private int currentTicks = 60;
+	private int timeTaken = 0;
+
 	public Level(int levelTime, String levelName, Tile[][] tileLayer, List<Item> itemList, List<Actor> actorList, Player player){
-		this.levelTime = levelTime;
+		this.currentTime = levelTime;
 		this.levelName = levelName;
 		this.tileLayer = tileLayer;
 		this.itemList = itemList;
@@ -25,15 +27,19 @@ public class Level {
 		this.player = player;
 	}
 
+	public void tick(){
+		currentTicks--;
+		if (currentTicks == 0){
+			currentTicks = 60;
+			currentTime--;
+			timeTaken++;
+		}
+		if (currentTime == 0){
+			player.setAlive(false);
+		}
+	}
+
 	//region Getters and Setters
-	public int getLevelTime() {
-		return levelTime;
-	}
-
-	public void setLevelTime(int levelTime) {
-		this.levelTime = levelTime;
-	}
-
 	public int getCurrentTime() {
 		return currentTime;
 	}
@@ -76,6 +82,10 @@ public class Level {
 
 	public Player getPlayer() {
 		return player;
+	}
+
+	public int getTimeTaken() {
+		return timeTaken;
 	}
 
 	//endregion

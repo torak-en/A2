@@ -46,6 +46,8 @@ public class Game {
      */
 
 	public void tick(){
+		level.tick();
+
 		List<Actor> actors = level.getActorList();
 		for (int i = 0; i < actors.size(); i++) {
 			level = actors.get(i).tick(level);

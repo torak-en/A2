@@ -1,5 +1,6 @@
 package Entities.Actors;
 
+import Entities.Tiles.Button;
 import Enum.Direction;
 import Enum.EntityType;
 import Enum.Direction;
@@ -48,8 +49,12 @@ public class Bug extends Actor{
 		if (getX() == p.getX() && getY() == p.getY()){
 			p.setAlive(false);
 		}
+
 		if (ticksTillMove == 0 && getPendingDirection() == null){
 			ticksTillMove = TICKS_BETWEEN_MOVE;
+			if (getPreviousDirection() == Direction.NONE){
+				setPreviousDirection(initialDirection);
+			}
 			setPendingDirection(calculateMove(level));
 			applyMove();
 		}

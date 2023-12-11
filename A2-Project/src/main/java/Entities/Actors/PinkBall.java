@@ -12,7 +12,7 @@ import Level.Level;
  */
 
 public class PinkBall extends Actor{
-	private Direction initialDirection;
+	private final Direction initialDirection;
 	private final int TICKS_BETWEEN_MOVE = 20;
 	private int ticksTillMove = 0;
 
@@ -47,6 +47,9 @@ public class PinkBall extends Actor{
 		}
 		if (ticksTillMove == 0 && getPendingDirection() == null){
 			ticksTillMove = TICKS_BETWEEN_MOVE;
+			if (getPreviousDirection() == Direction.NONE){
+				setPreviousDirection(initialDirection);
+			}
 			setPendingDirection(calculateMove(level));
 			applyMove();
 		}

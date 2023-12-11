@@ -3,13 +3,15 @@ package Entities;
 import Enum.EntityType;
 import Enum.Direction;
 import Level.Level;
+import javafx.scene.image.Image;
 
 
 public abstract class Entity {
-	private boolean visible = true;
+	private boolean visible = false;
 	private EntityType type;
 	private int x;
 	private  int y;
+	protected Image texture;
 
 	/**
 	 * Constructs an entity with a specific type and coordinates
@@ -22,6 +24,7 @@ public abstract class Entity {
 		this.x = x;
 		this.y = y;
 		this.type = type;
+		texture = type.getImage();
 	}
 
 	/**
@@ -147,5 +150,13 @@ public abstract class Entity {
 		} else {
 			return Direction.UP;
 		}
+	}
+
+	public Image getTexture(){
+		return texture;
+	}
+
+	protected Image loadTexture(){
+		return type.getImage();
 	}
 }
