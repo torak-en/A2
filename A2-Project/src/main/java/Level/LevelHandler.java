@@ -15,7 +15,17 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * Represents a level handler in the game.
+ */
+
 public class LevelHandler {
+
+	/**
+	 * Constructs a Level from the level number and respective file.
+	 * @param levelNumber The level's number.
+	 * @return A level with all actors, tiles, items initialised.
+	 */
 
 	public Level createLevel(int levelNumber){
 		Scanner sc = null;
@@ -73,6 +83,14 @@ public class LevelHandler {
 	}
 
 
+	/**
+	 * Checks for whether a given tile type matches with the string passed in.
+	 * @param s The string it is checked against.
+	 * @param x The x co-ordinate that it is checked against.
+	 * @param y The y co-ordinate that it is checked against.
+	 * @return The validated tile.
+	 */
+
 	public Tile checkTileType(String s, int x, int y){
 		String[] sp = s.split("");
 		return switch (sp[0]) {
@@ -91,10 +109,14 @@ public class LevelHandler {
 		};
 	}
 
+	/**
+	 * Checks for whether a given item or actor type matches with the string passed in.
+	 * @param s The string the actor/item is checked against.
+	 * @return The validated entity (actor or item).
+	 */
+
 	public Entity checkItemOrActorType(String s){
 		String[] sp = s.split(",");
-
-
 		final int x = Integer.parseInt(sp[1]);
 		final int y = Integer.parseInt(sp[2]);
 		return switch (sp[0]) {
@@ -108,6 +130,12 @@ public class LevelHandler {
 			default -> throw new IllegalArgumentException("Not a valid String for Item or Actor (" + s + ")");
 		};
 	}
+
+	/**
+	 * Converts a given string to the respective direction.
+	 * @param s The string passed in representing the direction.
+	 * @return A direction enum value for the string passed in.
+	 */
 
 	public Direction sToDirection(String s){
 		return switch (s) {

@@ -1,8 +1,5 @@
 package Highscore;
 
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -16,10 +13,10 @@ public class HighscoreHandler {
 
 	/**
      * Retrieves the highscores for a specific level.
-     *
      * @param levelNum The number of the level for which highscores are retrieved.
      * @return A list of highscores for the specified level.
      */
+
 	public List<Highscore> getHighscores(int levelNum){
 		List<Highscore> highscores = new ArrayList<>();
 		File levelHighscores = new File("Highscores/" + levelNum + ".txt");
@@ -52,10 +49,10 @@ public class HighscoreHandler {
 
 	 /**
      * Adds a new highscore to the highscores list for a specific level.
-     *
      * @param levelNum  The number of the level for which the highscore is added.
      * @param highscore The highscore entry to be added.
      */
+
 	public void newHighscore(int levelNum, Highscore highscore){
 		File levelHighscores = new File("Highscores/"+ levelNum +".txt");
 

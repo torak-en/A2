@@ -79,25 +79,55 @@ public class Game {
 		 level = handler.createLevel(levelNum);
 	}
 
+	/**
+	 * Gets the current level.
+	 * @return The current level.
+	 */
+
 	public Level getLevel() {
 		return level;
 	}
+
+	/**
+	 * Sets the level to whatever level object is passed.
+	 * @param level The level that it will be set to.
+	 */
 
 	public void setLevel(Level level) {
 		this.level = level;
 	}
 
+	/**
+	 * Gets the current level number.
+	 * @return The level number.
+	 */
+
 	public int getLevelNum() {
 		return levelNum;
 	}
+
+	/**
+	 * Sets the current level number to whatever level number is passed in.
+	 * @param levelNum The new level number.
+	 */
 
 	public void setLevelNum(int levelNum) {
 		this.levelNum = levelNum;
 	}
 
+	/**
+	 * Gets the current profile.
+	 * @return The current profile.
+	 */
+
 	public Profile getCurrentProfile() {
 		return currentProfile;
 	}
+
+	/**
+	 * Sets the current profile to whatever profile object is passed in.
+	 * @param currentProfile The current profile.
+	 */
 
 	public void setCurrentProfile(Profile currentProfile) {
 		this.currentProfile = currentProfile;
