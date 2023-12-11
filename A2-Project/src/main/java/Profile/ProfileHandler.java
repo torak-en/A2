@@ -35,7 +35,22 @@ public class ProfileHandler {
 		return profiles;
 	}
 
-	public void updateProfile(String name, int newMaxLevel){
+	public void updateProfile(Profile p){
+		System.out.println("Profile being updated");
+		File profileToUpdate = new File("Profiles/" + p.getProfileName() + ".txt");
+		if (profileToUpdate.exists()){
+			try {
+				FileWriter writer = new FileWriter(profileToUpdate);
+				System.out.println(p.getMaxLevelNumUnlocked());
+				writer.write(String.valueOf(p.getMaxLevelNumUnlocked()));
+				writer.close();
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			}
+		} else {
+			throw new RuntimeException("The profile you are trying to update doesn't exist.");
+		}
+
 
 	}
 
