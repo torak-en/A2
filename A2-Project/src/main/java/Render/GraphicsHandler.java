@@ -56,7 +56,7 @@ public class GraphicsHandler {
     private long startTime = System.nanoTime();
     private GraphicsContext gc;
     private Level curLevel;
-    boolean goUp, goDown, goRight, goLeft;
+    private boolean goUp, goDown, goRight, goLeft;
     private int playerMoveCooldown = 0;
     private static String currentProfileName;
     private final int maxLevelPermitted = 7;
@@ -78,7 +78,6 @@ public class GraphicsHandler {
      /**
      * Displays the main menu screen UI.
      * @param stage The JavaFX stage to display the menu on.
-     * @return The JavaFX stage with the menu screen UI displayed.
      */
 
     public void menuScreenUI(Stage stage) {
@@ -171,7 +170,6 @@ public class GraphicsHandler {
     /**
      * Displays the profile selector UI.
      * @param stage The JavaFX stage to display the profile selector on.
-     * @return The JavaFX stage with the profile selector UI displayed.
      */
 
     public void loadProfileSelectorUI(Stage stage) {
@@ -293,7 +291,6 @@ public class GraphicsHandler {
     /**
      * Displays the create new profile UI.
      * @param stage The JavaFX stage to display the create new profile UI on.
-     * @return The JavaFX stage with the create new profile UI displayed.
      */
 
     public void createNewProfileUI(Stage stage) {
@@ -358,7 +355,6 @@ public class GraphicsHandler {
      * Displays the level selector UI.
      * @param profileSelected The profile selected to display the level selector UI for.
      * @param stage The JavaFX stage to display the level selector UI on.
-     * @return The JavaFX stage with the level selector UI displayed.
      * @throws Exception If the profile selected has an unlocked level greater than the total number of levels unlocked.
      */
 

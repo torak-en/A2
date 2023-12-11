@@ -29,7 +29,6 @@ public class Profile {
 	/**
      * Retrieves the maximum level number unlocked in the profile.
 	 * @param profileName The profile name to set.
-     * @return The maximum level number unlocked.
      */
 	public void setProfileName(String profileName) {
 		this.profileName = profileName;

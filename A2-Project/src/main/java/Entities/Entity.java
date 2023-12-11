@@ -58,16 +58,15 @@ public abstract class Entity {
 
 	/**
 	 * Sets the new y-coordinate.
-	 * @return The new y-coordinate.
+	 * @param y The new y-coordinate.
 	 */
-
 	public void setY(int y) {
 		this.y = y;
 	}
 
 	/**
 	 * Sets the new x-coordinate.
-	 * @return The new x-coordinate.
+	 * @param x The new x-coordinate.
 	 */
 
 	public void setX(int x) {

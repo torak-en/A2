@@ -18,6 +18,7 @@ public class Key extends Item {
 	 * Constructor for a Key object.
 	 * @param x The x-coordinate of the key.
 	 * @param y The y-coordinate of the key.
+	 * @param colour The colour of the key
 	 */
 
 	public Key(int x, int y, String colour) {

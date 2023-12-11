@@ -12,6 +12,12 @@ import Level.Level;
 public class Item extends Entity {
 	private boolean pickedUp = false;
 
+	/**
+	 * Constructor for the class Item.
+	 * @param x The x-coordinate of the key.
+	 * @param y The y-coordinate of the key.
+	 * @param type The EntityType of the Item
+	 */
 	public Item(int x, int y, EntityType type){
 		super(x,y,type);
 	}

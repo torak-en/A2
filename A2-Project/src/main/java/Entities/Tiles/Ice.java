@@ -64,6 +64,12 @@ public class Ice extends Tile{
 		return level;
 	}
 
+	/**
+	 * Determines whether the player or actor can move onto the ice from the direction they are coming from.
+	 * @param direction The direction the player or actor is attempting to move onto the ice.
+	 * @return Whether the player can move onto the ice from that direction
+	 */
+
 	public boolean checkMoveOntoIce(Direction direction){
 		if (noDirections){
 			System.out.println("?");
@@ -74,8 +80,8 @@ public class Ice extends Tile{
 
 	/**
 	 * Determines the direction in which an actor should slide based on its previous direction.
-	 *
 	 * @param a The player sliding on the ice.
+	 * @param level The current level object representing the game.
 	 * @return The direction in which the player should slide.
 	 */
 
