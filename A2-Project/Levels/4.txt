@@ -11,7 +11,7 @@ W,W,W,P,W,W,W,D,P,P,P,P,P,P,P,P,P,P,P,P,P,P,P,P,W
 W,P,P,P,P,P,P,P,P,D,D,D,D,D,A,A,A,A,D,D,D,D,D,P,W
 W,D,P,D,D,D,D,D,P,D,D,D,D,A,A,A,A,A,A,A,D,D,D,P,W
 W,D,P,D,D,D,D,D,P,D,D,D,D,A,A,A,A,A,A,A,D,D,D,P,W
-W,W,Lg,W,W,W,P,P,P,P,P,P,P,P,P,P,P,P,P,P,P,P,P,P,W
+W,W,P,W,W,W,P,P,P,P,P,P,P,P,P,P,P,P,P,P,P,P,P,P,W
 W,P,P,P,P,W,D,D,D,D,D,D,D,D,D,D,D,D,D,D,W,W,C3,W,W
 W,P,P,P,E,W,D,D,D,D,D,D,D,D,D,D,D,D,D,D,W,P,P,P,W
 W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W

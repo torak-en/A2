@@ -9,7 +9,6 @@ import java.util.List;
 
 public class Level {
 
-	private int levelTime;
 	private int currentTime;
 	private String levelName;
 	private Tile[][] tileLayer;
@@ -20,7 +19,7 @@ public class Level {
 	private int timeTaken = 0;
 
 	public Level(int levelTime, String levelName, Tile[][] tileLayer, List<Item> itemList, List<Actor> actorList, Player player){
-		this.levelTime = levelTime;
+		this.currentTime = levelTime;
 		this.levelName = levelName;
 		this.tileLayer = tileLayer;
 		this.itemList = itemList;
@@ -41,14 +40,6 @@ public class Level {
 	}
 
 	//region Getters and Setters
-	public int getLevelTime() {
-		return levelTime;
-	}
-
-	public void setLevelTime(int levelTime) {
-		this.levelTime = levelTime;
-	}
-
 	public int getCurrentTime() {
 		return currentTime;
 	}
@@ -91,6 +82,10 @@ public class Level {
 
 	public Player getPlayer() {
 		return player;
+	}
+
+	public int getTimeTaken() {
+		return timeTaken;
 	}
 
 	//endregion
