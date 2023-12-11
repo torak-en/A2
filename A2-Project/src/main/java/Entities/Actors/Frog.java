@@ -2,7 +2,6 @@ package Entities.Actors;
 
 import java.util.*;
 
-import Entities.Tiles.Tile;
 import Enum.EntityType;
 import Enum.Direction;
 import Level.Level;
@@ -96,6 +95,7 @@ public class Frog extends Actor{
 	 * @param level The level where the frog exists.
 	 * @return The node containing the path to the player.
 	 */
+
 	private Node calculatePathToPlayer(Player player, Level level) {
 		int pX = player.getX();
 		int pY = player.getY();

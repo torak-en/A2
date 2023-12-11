@@ -18,7 +18,7 @@ public class Node {
      * @param parentNode The parent node of this node in the path.
      */
 
-	public Node (int x, int y, Node parentNode){
+	public Node (int x, int y, Node parentNode) {
 		this.x = x;
 		this.y = y;
 		this.parentNode = parentNode;

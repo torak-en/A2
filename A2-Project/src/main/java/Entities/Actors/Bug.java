@@ -1,9 +1,7 @@
 package Entities.Actors;
 
-import Entities.Tiles.Button;
 import Enum.Direction;
 import Enum.EntityType;
-import Enum.Direction;
 import Level.Level;
 
 
@@ -12,7 +10,7 @@ import Level.Level;
  * Extends the Actor class.
  */
 
-public class Bug extends Actor{
+public class Bug extends Actor {
 	private Direction initialDirection;
 	private Direction edgeDirection;
 	private final int TICKS_BETWEEN_MOVE = 30;
@@ -50,9 +48,9 @@ public class Bug extends Actor{
 			p.setAlive(false);
 		}
 
-		if (ticksTillMove == 0 && getPendingDirection() == null){
+		if (ticksTillMove == 0 && getPendingDirection() == null) {
 			ticksTillMove = TICKS_BETWEEN_MOVE;
-			if (getPreviousDirection() == Direction.NONE){
+			if (getPreviousDirection() == Direction.NONE) {
 				setPreviousDirection(initialDirection);
 			}
 			setPendingDirection(calculateMove(level));
@@ -74,33 +72,32 @@ public class Bug extends Actor{
 	public Direction calculateMove(Level level) {
 		boolean clearSpace = false;
 		Direction d = Direction.NONE;
-		if (edgeDirection == Direction.LEFT){
+		if (edgeDirection == Direction.LEFT) {
 			d = getAntiClockwise(getPreviousDirection());
 			clearSpace = checkLocation(d, level);
-		} else if (edgeDirection == Direction.RIGHT){
+		} else if (edgeDirection == Direction.RIGHT) {
 			d = getClockwise(getPreviousDirection());
 			clearSpace = checkLocation(d, level);
 		}
 		if (clearSpace){
 			return d;
 		}
-		if (checkLocation(getPreviousDirection(), level)){
+		if (checkLocation(getPreviousDirection(), level)) {
 			return getPreviousDirection();
 		}
-		if (edgeDirection == Direction.LEFT){
+		if (edgeDirection == Direction.LEFT) {
 			d = getClockwise(getPreviousDirection());
 			clearSpace = checkLocation(d, level);
-		} else if (edgeDirection == Direction.RIGHT){
+		} else if (edgeDirection == Direction.RIGHT) {
 			d = getAntiClockwise(getPreviousDirection());
 			clearSpace = checkLocation(d, level);
 		}
 		if (clearSpace){
 			return d;
 		}
-		if (checkLocation(getInverse(getPreviousDirection()), level)){
+		if (checkLocation(getInverse(getPreviousDirection()), level)) {
 			return getInverse(getPreviousDirection());
 		}
 		return Direction.NONE;
 	}
-
 }

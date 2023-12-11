@@ -105,41 +105,84 @@ public class Player extends Actor{
 		}
 	}
 
-	// Getters and setters for various player attributes
-	
-	public boolean isAlive() {
+	/***
+	 * Retrieves the alive state of the player.
+	 * @return The state of the player.
+	 */
+
+	public boolean isAlive(){
 		return alive;
 	}
 
-	public void setAlive(boolean alive) {
+	/***
+	 * Sets the alive state of the player.
+	 * @param alive The state of the player.
+	 */
+
+	public void setAlive(boolean alive){
 		this.alive = alive;
 	}
 
-	public void setBeingMovedByIce(boolean beingMovedByIce) {
+	/***
+	 * Sets the current state of the player when being moved on ice.
+	 * @param beingMovedByIce The state of the player being moved on ice.
+	 */
+
+	public void setBeingMovedByIce(boolean beingMovedByIce){
 		this.beingMovedByIce = beingMovedByIce;
 	}
 
-	public boolean isBeingMovedByIce() {
+	/***
+	 * Retrieves the state of the player when being moved on ice.
+	 * @return The state of the player when being moved on ice.
+	 */
+
+	public boolean isBeingMovedByIce(){
 		return beingMovedByIce;
 	}
 
-	public void setCooldown(int cooldown) {
+	/***
+	 * Sets the cooldown value of the player's movement.
+	 * @param cooldown The number of seconds before a keyboard move.
+	 */
+
+	public void setCooldown(int cooldown){
 		this.cooldown = cooldown;
 	}
 
-	public boolean hasWon() {
+	/***
+	 * Retrieves the state of the player winning the game.
+	 * @return The state of the player winning the game.
+	 */
+
+	public boolean hasWon(){
 		return won;
 	}
 
-	public void setWon(boolean won) {
+	/***
+	 * Sets the state of the player winning the game.
+	 * @param won The state of the player winning the game.
+	 */
+
+	public void setWon(boolean won){
 		this.won = won;
 	}
 
-	public List<Key> getHeldKeys() {
+	/***
+	 * Retrieves a list of keys the player holds.
+	 * @return The keys held by the player.
+	 */
+
+	public List<Key> getHeldKeys(){
 		return heldKeys;
 	}
 
-	public List<ComputerChip> getHeldGold() {
+	/***
+	 * Retrieves a list of the computer chips held by the player.
+	 * @return The computer chips held by the player.
+	 */
+
+	public List<ComputerChip> getHeldGold(){
 		return heldGold;
 	}
 }

@@ -1,7 +1,6 @@
 package Entities.Actors;
 
 import Entities.Entity;
-import Entities.Items.ComputerChip;
 import Entities.Items.Key;
 import Entities.Tiles.ChipSocket;
 import Entities.Tiles.Ice;
@@ -10,14 +9,12 @@ import Entities.Tiles.Tile;
 import Enum.Direction;
 import Enum.EntityType;
 import Level.Level;
-import javafx.scene.image.ImageView;
-
-import java.nio.channels.NonWritableChannelException;
 import java.util.Objects;
 
 /**
  * The abstract class representing an actor entity in the game.
  */
+
 public abstract class Actor extends Entity {
 	private char layout;
 	private boolean isMovedByIce;
@@ -32,8 +29,8 @@ public abstract class Actor extends Entity {
      * @param type The type of entity.
      */
 
-	public Actor (int x, int y, EntityType type){
-		super(x,y,type);
+	public Actor (int x, int y, EntityType type) {
+		super(x, y, type);
 	}
 
 	/**
@@ -48,16 +45,16 @@ public abstract class Actor extends Entity {
      * Applies the pending movement to the actor's position.
      */
 
-	public void applyMove(){
+	public void applyMove() {
 		int x = getX();
 		int y = getY();
-		if (pendingDirection == Direction.UP){
+		if (pendingDirection == Direction.UP) {
 			setY(y - 1);
-		} else if (pendingDirection == Direction.DOWN){
+		} else if (pendingDirection == Direction.DOWN) {
 			setY(y + 1);
 		} else if (pendingDirection == Direction.LEFT) {
 			setX(x - 1);
-		} else if (pendingDirection == Direction.RIGHT){
+		} else if (pendingDirection == Direction.RIGHT) {
 			setX(x + 1);
 		}
 		previousDirection = pendingDirection;
@@ -74,7 +71,7 @@ public abstract class Actor extends Entity {
 	public boolean checkLocation(Direction direction, Level level){
 		int newX = getX();
 		int newY = getY();
-		if (direction == Direction.UP){
+		if (direction == Direction.UP) {
 			newY--;
 		} else if (direction == Direction.DOWN){
 			newY++;
@@ -86,7 +83,7 @@ public abstract class Actor extends Entity {
 			return true;
 		}
 		EntityType nextTile = level.getTileLayer()[newX][newY].getType();
-		if (nextTile != EntityType.PATH && nextTile != EntityType.BUTTON && nextTile != EntityType.TRAP ){
+		if (nextTile != EntityType.PATH && nextTile != EntityType.BUTTON && nextTile != EntityType.TRAP){
 			return false;
 		}
 
@@ -175,6 +172,13 @@ public abstract class Actor extends Entity {
 		return true;
 	}
 
+	/***
+	 * Checks if the specified location for a block's movement is valid and performs actions accordingly.
+	 * @param direction The direction in which the block is being moved.
+	 * @param level The level where the check is performed.
+	 * @return True if the location is valid for the block's movement, false otherwise.
+	 */
+
 	public boolean blockCheckLocation(Direction direction, Level level){
 		int newX = getX();
 		int newY = getY();
@@ -190,8 +194,11 @@ public abstract class Actor extends Entity {
 			return true;
 		}
 		Tile nextTile = level.getTileLayer()[newX][newY];
-		if (nextTile.getType() != EntityType.PATH && nextTile.getType() != EntityType.BUTTON && nextTile.getType() != EntityType.TRAP && nextTile.getType() != EntityType.ICE && nextTile.getType() != EntityType.WATER){
-			System.out.println("WHy");
+		if (nextTile.getType() != EntityType.PATH
+				&& nextTile.getType() != EntityType.BUTTON
+				&& nextTile.getType() != EntityType.TRAP
+				&& nextTile.getType() != EntityType.ICE
+				&& nextTile.getType() != EntityType.WATER){
 			return false;
 		} else if (nextTile.getType() == EntityType.ICE){
 			Ice ice = (Ice) nextTile;
@@ -208,8 +215,6 @@ public abstract class Actor extends Entity {
 
 		return true;
 	}
-
-
 
 	/**
      * Retrieves the previous direction of the actor.

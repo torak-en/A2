@@ -21,7 +21,7 @@ public class Block extends Actor{
 	 * @param y The y-coordinate of the block.
 	 */
 
-	public Block(int x, int y) {
+	public Block(int x, int y){
 		super(x, y, EntityType.BLOCK);
 	}
 
@@ -34,7 +34,7 @@ public class Block extends Actor{
 	 */
 
 	@Override
-	public Level tick(Level level) {
+	public Level tick(Level level){
 		if (level.getTileLayer()[getX()][getY()].getType() == EntityType.WATER){
 			System.out.println("Block on water");
 			level.getTileLayer()[getX()][getY()] = new Path(getX(), getY());
@@ -58,8 +58,9 @@ public class Block extends Actor{
 	 * @param level The level where the block exists.
 	 * @return The calculated movement direction.
 	 */
+
 	@Override
-	public Direction calculateMove(Level level) {
+	public Direction calculateMove(Level level){
 		return null;
 	}
 }
