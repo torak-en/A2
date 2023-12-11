@@ -1,5 +1,10 @@
 package Highscore;
 
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+
 import java.util.Date;
 
 /**
@@ -22,7 +27,7 @@ public class Highscore {
      * @param year The year of the recorded highscore.
      */
 
-	public Highscore(String name, int timeTaken,int day, int month, int year){
+	public Highscore(String name, int timeTaken, int day, int month, int year){
 		this.name = name;
 		this.timeTaken = timeTaken;
 		this.day = day;
@@ -107,6 +112,6 @@ public class Highscore {
      * @param year The year to set for the highscore.
      */
 	public void setYear(int year) {
-		this.year = year;
+		this.year = year ;
 	}
 }
