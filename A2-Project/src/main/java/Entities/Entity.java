@@ -7,7 +7,7 @@ import javafx.scene.image.Image;
 
 
 public abstract class Entity {
-	private boolean visible = true;
+	private boolean visible = false;
 	private EntityType type;
 	private int x;
 	private  int y;

@@ -61,6 +61,7 @@ public class GraphicsHandler {
     private static String currentProfileName;
     private final int maxLevelPermitted = 4;
     private Direction nextInput = Direction.NONE;
+    private Image fog;
 
 
 
@@ -530,6 +531,12 @@ public class GraphicsHandler {
 
         root.getChildren().add(canvas);
 
+        try {
+            fog = new Image(new FileInputStream("Textures/fog.png"));
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+
         startTime = System.nanoTime();
         timer = new AnimationTimer() {
             @Override
@@ -539,6 +546,7 @@ public class GraphicsHandler {
                     long currentTime = System.nanoTime();
                     double diff = currentTime-startTime;
                     progress += diff / nsPerTick;
+                    System.out.println(progress);
                     while(progress >=1) {
                         progress--;
                         tick(stage, game);
@@ -720,9 +728,9 @@ public class GraphicsHandler {
             }
             renderTextures(0,0,1000,1000, background);
 
-//            setTileVisible(tiles, x, y);
-//            setItemsVisible(items, tiles, x, y);
-//            setActorsVisible(actors, tiles, x, y);
+            setTileVisible(tiles, x, y);
+            setItemsVisible(items, tiles, x, y);
+            setActorsVisible(actors, tiles, x, y);
 
             for (int i = minPossibleX; i < maxPossibleX + 1; i++) {
                 for (int j = minPossibleY; j < maxPossibleY + 1; j++) {
@@ -733,11 +741,7 @@ public class GraphicsHandler {
                             if (tile.isVisible()) {
                                 texture = tile.getTexture();
                             } else {
-                                try {
-                                    texture = new Image(new FileInputStream("Textures/fog.png"));
-                                } catch (FileNotFoundException e) {
-                                    throw new RuntimeException(e);
-                                }
+                                texture = fog;
                             }
                             renderTextures((i + counterX) * tileSize, (j + counterY) * tileSize, tileSize, tileSize, texture);
                         }
@@ -751,11 +755,7 @@ public class GraphicsHandler {
                     if (i.isVisible()) {
                         texture = i.getType().getImage();
                     } else {
-                        try {
-                            texture = new Image(new FileInputStream("Textures/fog.png"));
-                        } catch (FileNotFoundException e) {
-                            throw new RuntimeException(e);
-                        }
+                        texture = fog;
                     }
                     renderTextures((i.getX() + counterX) * tileSize, (i.getY() + counterY) * tileSize, tileSize, tileSize, texture);
                 }
@@ -767,11 +767,7 @@ public class GraphicsHandler {
                     if (a.isVisible()) {
                         texture = a.getType().getImage();
                     } else {
-                        try {
-                            texture = new Image(new FileInputStream("Textures/fog.png"));
-                        } catch (FileNotFoundException e) {
-                            throw new RuntimeException(e);
-                        }
+                        texture = fog;
                     }
                     renderTextures((a.getX() + counterX) * tileSize, (a.getY() + counterY)* tileSize, tileSize, tileSize, texture);
                 }
@@ -870,6 +866,10 @@ public class GraphicsHandler {
 
         Button nextLevelButton = new Button("Next Level");
         nextLevelButton.setMinWidth(100);
+
+        if (game.getLevelNum() == maxLevelPermitted){
+            nextLevelButton.setDisable(true);
+        }
 
         nextLevelButton.setOnAction(e -> {
             game.updateLevel(game.getLevelNum() + 1);

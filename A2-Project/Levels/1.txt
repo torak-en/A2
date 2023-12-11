@@ -10,6 +10,6 @@ W,P,P,A,A,A,P,W,P,W
 W,P,A,A,A,A,P,W,W,W
 W,P,P,P,P,P,P,Lr,E,W
 W,W,W,W,W,W,W,W,W,W
-K,3,5,r
+K,3,5,b
 Pl,1,2
 Pi,8,1,r
