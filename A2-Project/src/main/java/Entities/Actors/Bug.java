@@ -52,6 +52,9 @@ public class Bug extends Actor{
 
 		if (ticksTillMove == 0 && getPendingDirection() == null){
 			ticksTillMove = TICKS_BETWEEN_MOVE;
+			if (getPreviousDirection() == Direction.NONE){
+				setPreviousDirection(initialDirection);
+			}
 			setPendingDirection(calculateMove(level));
 			applyMove();
 		}

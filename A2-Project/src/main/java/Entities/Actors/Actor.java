@@ -129,6 +129,9 @@ public abstract class Actor extends Entity {
 			return false;
 		} else if (nextTile.getType() == EntityType.LOCKED_DOOR){
 			LockedDoor door = (LockedDoor) nextTile;
+			if (p.getHeldKeys().isEmpty()) {
+			return false;
+			}
 			for (Key key : p.getHeldKeys()) {
 				if (Objects.equals(key.getColour(), door.getDoorColour())){
 					usedKey = key;
