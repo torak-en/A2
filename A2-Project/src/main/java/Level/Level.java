@@ -18,7 +18,8 @@ public class Level {
 	private int currentTicks = 60;
 	private int timeTaken = 0;
 
-	public Level(int levelTime, String levelName, Tile[][] tileLayer, List<Item> itemList, List<Actor> actorList, Player player){
+	public Level(int levelTime, String levelName, Tile[][] tileLayer,
+				 List<Item> itemList, List<Actor> actorList, Player player){
 		this.currentTime = levelTime;
 		this.levelName = levelName;
 		this.tileLayer = tileLayer;

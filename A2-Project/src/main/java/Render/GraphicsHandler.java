@@ -60,21 +60,9 @@ public class GraphicsHandler {
     private int playerMoveCooldown = 0;
 
     private static String currentProfileName;
-    private final int maxLevelPermitted = 5;
+    private final int maxLevelPermitted = 7;
     private Direction nextInput = Direction.NONE;
     private Image fog;
-
-
-
-    //Add Brick tile png to Main Menu Background (REPEATING) (Complete)
-    //Add ScrollBarView (ListView) for Profile Selector (Complete)
-    //Names in Profile Selector and Select Button (Complete)
-    //Centre the ListView (Complete)
-    //CreateProfile button
-    //DeleteProfile button
-    //Create Levels (10 target, but 8 aimed)
-
-    //Place level rendering in Graphics Handler(Alex)
 
      /**
      * Displays the main menu screen UI.
@@ -390,6 +378,10 @@ public class GraphicsHandler {
         levelFourButton.setDisable(true);
         Button levelFiveButton = new Button("5");
         levelFiveButton.setDisable(true);
+        Button levelSixButton = new Button("6");
+        levelSixButton.setDisable(true);
+        Button levelSevenButton = new Button("7");
+        levelSevenButton.setDisable(true);
 
         int maxLevel = profileSelected.getMaxLevelNumUnlocked();
 
@@ -408,6 +400,12 @@ public class GraphicsHandler {
         }
         if (maxLevel > 4){
             levelFiveButton.setDisable(false);
+        }
+        if (maxLevel > 5){
+            levelSixButton.setDisable(false);
+        }
+        if (maxLevel > 6){
+            levelSevenButton.setDisable(false);
         }
 
         //Add additional cases
@@ -444,6 +442,18 @@ public class GraphicsHandler {
             gameUI(stage, game);
         });
 
+        levelSixButton.setOnAction(e -> {
+            game.updateLevel(6);
+            game.setCurrentProfile(profileSelected);
+            gameUI(stage, game);
+        });
+
+        levelSevenButton.setOnAction(e -> {
+            game.updateLevel(7);
+            game.setCurrentProfile(profileSelected);
+            gameUI(stage, game);
+        });
+
         Button returnToMainMenuButton = new Button("Return to Main menu");
         returnToMainMenuButton.setMinWidth(100);
 
@@ -452,7 +462,8 @@ public class GraphicsHandler {
         });
 
         centralBar.getChildren().addAll(returnToMainMenuButton, selectLevelLabel);
-        levelBar.getChildren().addAll(levelOneButton, levelTwoButton, levelThreeButton, levelFourButton, levelFiveButton);
+        levelBar.getChildren().addAll(levelOneButton, levelTwoButton, levelThreeButton, levelFourButton,
+                levelFiveButton, levelSixButton, levelSevenButton);
         selectBar.getChildren().add(selectLevelLabel);
 
         root.getChildren().addAll(selectBar, levelBar);

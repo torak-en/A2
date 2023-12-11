@@ -1,0 +1,15 @@
+Hope,100
+10,10
+W,W,W,W,W,W,W,W,W,W
+W,P,P,P,P,P,P,P,E,W
+W,P,P,P,P,P,P,P,P,W
+W,P,P,P,P,P,P,P,P,W
+W,P,P,P,P,P,P,P,P,W
+W,P,P,P,P,P,P,P,P,W
+W,P,P,P,P,P,P,P,P,W
+W,P,P,P,P,P,P,P,P,W
+W,P,P,P,P,P,P,P,P,W
+W,W,W,W,W,W,W,W,W,W
+K,3,5,b
+Pl,1,2
+Pi,8,1,r

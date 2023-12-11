@@ -14,6 +14,7 @@ import java.util.List;
 /**
  * Represents the main game control and logic class.
  */
+
 public class Game {
 	private Level level;
 	private int levelNum;
@@ -35,6 +36,7 @@ public class Game {
 	/**
      * Default constructor for the Game class.
      */
+
 	public Game(){
 		 // Initialization logic
 	}

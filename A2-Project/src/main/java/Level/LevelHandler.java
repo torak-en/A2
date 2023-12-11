@@ -102,7 +102,7 @@ public class LevelHandler {
 			case "K" -> new Key(x, y, sp[3]);
 			case "Pl" -> new Player(x, y);
 			case "F" -> new Frog(x, y);
-			case "Bu" -> new Bug(x, y, sToDirection(sp[3]),sToDirection(sp[4]));
+			case "Bu" -> new Bug(x, y, sToDirection(sp[3]), sToDirection(sp[4]));
 			case "Pi" -> new PinkBall(x, y, sToDirection(sp[3]));
 			case "Bl" -> new Block(x, y);
 			default -> throw new IllegalArgumentException("Not a valid String for Item or Actor (" + s + ")");

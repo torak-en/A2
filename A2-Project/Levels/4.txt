@@ -1,4 +1,4 @@
-Continuation,100
+Despair,100
 25,15
 W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W
 W,P,P,P,P,P,W,P,P,P,P,P,P,A,A,A,A,A,A,A,A,A,A,A,W
