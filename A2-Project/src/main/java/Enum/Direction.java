@@ -1,17 +1,16 @@
 package Enum;
 
 /**
- * The class representing a directions in the game.
+ * Enum representing a number of 5 different directions in the game.
  */
 
 public enum Direction {
 	UP,DOWN,LEFT,RIGHT,NONE;
 
 	/**
-	 * Returns a single string representation of the directions read.
+	 * Returns a single string representation of the direction enum, allowing for file comparisons.
 	 * @return The respective direction.
 	 */
-
 	public String toSingleString(){
 		if (toString().equals("UP")){
 			return "u";

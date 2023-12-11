@@ -10,8 +10,6 @@ import Level.Level;
  */
 
 public class Item extends Entity {
-	private int x;
-	private int y;
 	private boolean pickedUp = false;
 
 	public Item(int x, int y, EntityType type){
