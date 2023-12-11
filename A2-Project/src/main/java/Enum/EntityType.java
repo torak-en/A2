@@ -7,7 +7,7 @@ import javafx.scene.image.*;
 import javafx.scene.image.Image;
 
 /**
- * The class representing entity types in the game.
+ * The Enum representing entity types in the game, each representing a different entity.
  */
 
 public enum EntityType {
@@ -16,8 +16,8 @@ public enum EntityType {
 	private Image image;
 
 	/**
-	 * A method that finds the various entity type texture images within the project
-	 * and initialises an image with their respective file.
+	 * A constructor that initialises an image representing
+	 * an entity using the EntityType.toString()
 	 */
 
 	EntityType(){
