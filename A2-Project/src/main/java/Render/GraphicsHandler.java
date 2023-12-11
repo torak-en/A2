@@ -81,7 +81,7 @@ public class GraphicsHandler {
     public void menuScreenUI(Stage stage) {
         BorderPane root = new BorderPane();
 
-        Image gameTitleImage = new Image("file:UserInterface/InterimTitleImage1.png");
+        Image gameTitleImage = new Image("file:UserInterface/InterimTitleImage3.png");
 
         createMosaicBackground(root);
 
@@ -392,20 +392,17 @@ public class GraphicsHandler {
             throw new Exception();
         }
 
-        switch (maxLevel) {
-            case (2):
-                levelTwoButton.setDisable(false);
-            case (3):
-                levelTwoButton.setDisable(false);
-                levelThreeButton.setDisable(false);
+        if (maxLevel == 2) {
+            levelTwoButton.setDisable(false);
+        } else if (maxLevel == 3) {
+            levelTwoButton.setDisable(false);
         }
+
+        //Add additional cases
 
         Game game = new Game();
 
         levelOneButton.setOnAction(e -> {
-            //Create Level 1
-            //Go to Render to display level.
-            //levelHandler.createLevel(1);
             game.updateLevel(3);
             game.setCurrentProfile(profileSelected);
             gameUI(stage, game);
@@ -418,6 +415,9 @@ public class GraphicsHandler {
         });
 
         levelThreeButton.setOnAction(e -> {
+            game.updateLevel(3);
+            game.setCurrentProfile(profileSelected);
+            gameUI(stage, game);
         });
 
         Button returnToMainMenuButton = new Button("Return to Main menu");
@@ -825,23 +825,9 @@ public class GraphicsHandler {
         centralVBox.setSpacing(10);
         root.setCenter(centralVBox);
 
-        //-------------------------------
-
-        //ListView
-
-        levelBeat = 1;
-
         ArrayList<Highscore> highscoreArrayList = obtainHighscoreData(highScoreLevelHandler.getHighscores(levelBeat));
 
-        ObservableList<String> profileNameData =
-                FXCollections.observableArrayList("ProfileName-/-TimeTaken");
-
-        for (int i = 0; i < highscoreArrayList.size(); i++) {
-            profileNameData.add(highscoreArrayList.get(i).getName() + " " + highscoreArrayList.get(i).getTimeTaken());
-        }
-
-        ListView<String> listView = new ListView<>(profileNameData);
-        listView.setMaxSize(300,300);
+        ListView<String> listView = getListViewData(highscoreArrayList);
 
         HBox centralBar = new HBox();
         centralBar.setSpacing(10);
@@ -873,17 +859,43 @@ public class GraphicsHandler {
         stage.show();
     }
 
+    /***
+     * Produces a ListView object that has all data from the ArrayList of highscores passed in.
+     * @param highscoreArrayList The ArrayList of highscore objects.
+     * @return A ListView object with data inserted.
+     */
+    private static ListView<String> getListViewData(ArrayList<Highscore> highscoreArrayList) {
+        ObservableList<String> profileNameData = FXCollections.observableArrayList();
+
+        if (highscoreArrayList.size() == 0) {
+            profileNameData.add("No High scores present for the current level");
+        } else {
+            profileNameData.add("ProfileName / TimeTaken - Date (Day/Month/Year)");
+            for (int i = 0; i < highscoreArrayList.size(); i++) {
+                profileNameData.add(highscoreArrayList.get(i).getName() + " " + highscoreArrayList.get(i).getTimeTaken() + "s " + highscoreArrayList.get(i).getDay() + "/" + highscoreArrayList.get(i).getMonth() + "/" + highscoreArrayList.get(i).getYear());
+            }
+        }
+
+        ListView<String> listView = new ListView<>(profileNameData);
+        listView.setMaxSize(300,300);
+        return listView;
+    }
+
+    /**
+     * Produces an ArrayList of all Highscore objects found in the list of Highscore objects
+     * @param highscoresList The List of highscore objects.
+     * @return An ArrayList of highscore objects.
+     */
     private ArrayList<Highscore> obtainHighscoreData(List<Highscore> highscoresList) {
-        ArrayList<Highscore> highScoreDataStore = new ArrayList<>();
+        ArrayList<Highscore> highScoreArrayList = new ArrayList<>();
 
         for (int i = 0; i < highscoresList.size(); i++) {
             Highscore highScoreData = highscoresList.get(i);
-            highScoreDataStore.add(highScoreData);
+            highScoreArrayList.add(highScoreData);
         }
 
-        return highScoreDataStore;
+        return highScoreArrayList;
     }
-
 
     /**
      * Displays the lose screen UI.
