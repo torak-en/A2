@@ -19,6 +19,7 @@ import Profile.ProfileHandler;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.*;
+import Highscore.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
@@ -82,7 +83,7 @@ public class GraphicsHandler {
     public void menuScreenUI(Stage stage) {
         BorderPane root = new BorderPane();
 
-        Image gameTitleImage = new Image("file:UserInterface/InterimTitleImage1.png");
+        Image gameTitleImage = new Image("file:UserInterface/InterimTitleImage3.png");
 
         createMosaicBackground(root);
 
@@ -402,6 +403,8 @@ public class GraphicsHandler {
         if (maxLevel > 3){
             levelFourButton.setDisable(false);
         }
+
+        //Add additional cases
 
         Game game = new Game();
 
@@ -844,17 +847,21 @@ public class GraphicsHandler {
         createMosaicBackground(root);
         stage.setTitle("Win Screen");
 
+        int levelBeat = game.getLevelNum();
+        HighscoreHandler highScoreLevelHandler = new HighscoreHandler();
+
         Label winMessageLabel = new Label("Congratulations, you beat this level.");
         winMessageLabel.setMinWidth(200);
         winMessageLabel.setTextFill(Color.color(1,1,1));
 
         VBox centralVBox = new VBox();
-        centralVBox.setPadding(new Insets(75, 0, 0, 50));
+        centralVBox.setPadding(new Insets(75, 0, 0, 100));
         centralVBox.setSpacing(10);
         root.setCenter(centralVBox);
 
-        TableView scoreBoardTableView = new TableView();
-        scoreBoardTableView.setMaxSize(400,400);
+        ArrayList<Highscore> highscoreArrayList = obtainHighscoreData(highScoreLevelHandler.getHighscores(levelBeat));
+
+        ListView<String> listView = getListViewData(highscoreArrayList);
 
         HBox centralBar = new HBox();
         centralBar.setSpacing(10);
@@ -878,12 +885,50 @@ public class GraphicsHandler {
 
         centralBar.getChildren().addAll(returnToMainMenuButton, nextLevelButton);
 
-        centralVBox.getChildren().addAll(winMessageLabel, scoreBoardTableView);
+        centralVBox.getChildren().addAll(winMessageLabel, listView);
 
 
         Scene scene = new Scene (root, canvasWidth, canvasHeight);
         stage.setScene(scene);
         stage.show();
+    }
+
+    /***
+     * Produces a ListView object that has all data from the ArrayList of highscores passed in.
+     * @param highscoreArrayList The ArrayList of highscore objects.
+     * @return A ListView object with data inserted.
+     */
+    private static ListView<String> getListViewData(ArrayList<Highscore> highscoreArrayList) {
+        ObservableList<String> profileNameData = FXCollections.observableArrayList();
+
+        if (highscoreArrayList.size() == 0) {
+            profileNameData.add("No High scores present for the current level");
+        } else {
+            profileNameData.add("ProfileName / TimeTaken - Date (Day/Month/Year)");
+            for (int i = 0; i < highscoreArrayList.size(); i++) {
+                profileNameData.add(highscoreArrayList.get(i).getName() + " " + highscoreArrayList.get(i).getTimeTaken() + "s " + highscoreArrayList.get(i).getDay() + "/" + highscoreArrayList.get(i).getMonth() + "/" + highscoreArrayList.get(i).getYear());
+            }
+        }
+
+        ListView<String> listView = new ListView<>(profileNameData);
+        listView.setMaxSize(300,300);
+        return listView;
+    }
+
+    /**
+     * Produces an ArrayList of all Highscore objects found in the list of Highscore objects
+     * @param highscoresList The List of highscore objects.
+     * @return An ArrayList of highscore objects.
+     */
+    private ArrayList<Highscore> obtainHighscoreData(List<Highscore> highscoresList) {
+        ArrayList<Highscore> highScoreArrayList = new ArrayList<>();
+
+        for (int i = 0; i < highscoresList.size(); i++) {
+            Highscore highScoreData = highscoresList.get(i);
+            highScoreArrayList.add(highScoreData);
+        }
+
+        return highScoreArrayList;
     }
 
     /**
@@ -911,6 +956,7 @@ public class GraphicsHandler {
 
         returnToMainMenuButton.setOnAction(e -> {
             menuScreenUI(stage);
+
         });
 
         Button restartLevelButton = new Button("Retry Level");
