@@ -2,6 +2,11 @@ package Entities.Tiles;
 
 import Enum.EntityType;
 import Level.Level;
+import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 
 public class LockedDoor extends Tile{
 	private String doorColour;
@@ -15,6 +20,12 @@ public class LockedDoor extends Tile{
 	 */
 	public LockedDoor(int x, int y, String doorColour) {
 		super(x, y, EntityType.LOCKED_DOOR);
+//		try {
+//			texture = new Image(new FileInputStream("Textures/door_" + doorColour + ".png"));
+//		} catch (FileNotFoundException e) {
+//			throw new RuntimeException(e);
+//		}
+
 		this.doorColour = doorColour;
 	}
 
@@ -32,6 +43,7 @@ public class LockedDoor extends Tile{
 		}
 		return level;
 	}
+
 	/**
 	 * Gets the colour of the dor
 	 *

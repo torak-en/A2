@@ -1,9 +1,8 @@
 package Entities.Actors;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
+import Entities.Tiles.Tile;
 import Enum.EntityType;
 import Enum.Direction;
 import Level.Level;
@@ -48,11 +47,15 @@ public class Frog extends Actor{
 			level.getPlayer().setAlive(false);
 			setPendingDirection(Direction.NONE);
 		}
-		if (ticksTillMove == 0 && getPendingDirection() == null){
+		if (ticksTillMove == 0){
 			Player p = level.getPlayer();
 			ticksTillMove = TICKS_BETWEEN_MOVE;
-			if (playerX != p.getX() && playerY != p.getY() && p.isAlive()) {
+			if (playerX != p.getX() && playerY != p.getY()) {
+				long startTime = System.nanoTime();
 				nodePathToPlayer = calculatePathToPlayer(p, level);
+				long endTime = System.nanoTime();
+				long difference = endTime - startTime;
+				System.out.println(String.format("%.3fms", difference / 1_000_000d));
 				playerX = p.getX();
 				playerY = p.getY();
 			}
@@ -60,12 +63,12 @@ public class Frog extends Actor{
 				setX(nodePathToPlayer.getX());
 				setY(nodePathToPlayer.getY());
 				nodePathToPlayer = nodePathToPlayer.getParentNode();
+				System.out.println("Actual Move");
 			} else {
-				System.out.println("New Move");
+				System.out.println("Random Move");
 				Direction d = randomDirection(level);
 				setPendingDirection(d);
 				applyMove();
-				System.out.println(" ");
 			}
 
 		}
@@ -97,71 +100,30 @@ public class Frog extends Actor{
 		int pX = player.getX();
 		int pY = player.getY();
 
-		boolean notFound = true;
-
 		Node playerNode = new Node(pX, pY, null);
-		Node frogNode = null;
 
-		List<Node> lastNodes = new ArrayList<>();
-		List<Node> filledNodes = new ArrayList<>();
+		LinkedList<Node> toScan = new LinkedList<>();
+		toScan.add(playerNode);
 
-		lastNodes.add(playerNode);
+		boolean[][] scanned = new boolean[level.getTileLayer().length][level.getTileLayer()[0].length];
 
-		while (notFound){
-			List<Node> adjacentNodes = new ArrayList<>();
+		while (!toScan.isEmpty()){
+			Node currentNode = toScan.removeFirst();
+			scanned[currentNode.getX()][currentNode.getY()] = true;
+			for (int[] delta : new int[][]{{0,-1},{1,0},{0,1},{-1,0}}) {
+				int newX = delta[0] + currentNode.getX();
+				int newY = delta[1] + currentNode.getY();
 
-			for (Node node : lastNodes) {
-				int x = node.getX();
-				int y = node.getY();
-
-				if (checkValidLocation(x+1, y, level, filledNodes, lastNodes)){
-					Node n = new Node (x+1, y, node);
-					adjacentNodes.add(n);
-
-					if (n.getX() == getX() && n.getY() == getY() && frogNode == null){
-						frogNode = n;
-						notFound = false;
+				if (checkValidLocation(newX, newY, level) && !scanned[newX][newY]){
+					Node newNode = new Node(newX, newY, currentNode);
+					toScan.add(newNode);
+					if (newX == getX() && newY == getY()){
+						return newNode;
 					}
 				}
-				if (checkValidLocation(x-1, y, level, filledNodes, lastNodes)){
-					Node n = new Node (x-1, y, node);
-					adjacentNodes.add(n);
-
-					if (n.getX() == getX() && n.getY() == getY() && frogNode == null){
-						frogNode = n;
-						notFound = false;
-					}
-				}
-				if (checkValidLocation(x, y-1, level, filledNodes, lastNodes)){
-					Node n = new Node (x, y-1, node);
-					adjacentNodes.add(n);
-
-					if (n.getX() == getX() && n.getY() == getY() && frogNode == null){
-						frogNode = n;
-						notFound = false;
-					}
-				}
-				if (checkValidLocation(x, y+1, level, filledNodes, lastNodes)){
-					Node n = new Node (x, y+1, node);
-					adjacentNodes.add(n);
-
-					if (n.getX() == getX() && n.getY() == getY() && frogNode == null){
-						frogNode = n;
-						notFound = false;
-					}
-				}
-			}
-
-			filledNodes.addAll(lastNodes);
-
-			lastNodes = adjacentNodes;
-
-			if (lastNodes.isEmpty()){
-				return null;
 			}
 		}
-		return frogNode;
-
+		return null;
 	}
 
 
@@ -170,32 +132,18 @@ public class Frog extends Actor{
 	 * @param x The x-coordinate of the location.
 	 * @param y The y-coordinate of the location.
 	 * @param level The level where the check is performed.
-	 * @param filledNodes The list of nodes that have already been checked.
-	 * @param lastNodes The list of nodes that have been checked in the previous iteration.
 	 * @return True if the location is valid for movement, false otherwise.
 	 */
 
-	private Boolean checkValidLocation (int x, int y, Level level, List<Node> filledNodes, List<Node> lastNodes){
+	private boolean checkValidLocation (int x, int y, Level level){
 		EntityType nextTile = level.getTileLayer()[x][y].getType();
-		if (nextTile == EntityType.EXIT || nextTile == EntityType.WATER || nextTile == EntityType.WALL || nextTile == EntityType.LOCKED_DOOR || nextTile == EntityType.CHIP_SOCKET){
+		if (nextTile != EntityType.PATH && nextTile != EntityType.BUTTON && nextTile != EntityType.TRAP ){
 			return false;
-		}
-
-		for (Node n:filledNodes) {
-			if (n.getX() == x && n.getY() == y){
-				return false;
-			}
-		}
-
-		for (Node n:lastNodes) {
-			if (n.getX() == x && n.getY() == y){
-				return false;
-			}
 		}
 
 		for (Actor a : level.getActorList()) {
 			if (x == a.getX() && y == a.getY()){
-				if (a.getType() == EntityType.BLOCK){
+				if (a.getType() != EntityType.PLAYER && a != this){
 					return false;
 				}
 			}

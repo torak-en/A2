@@ -44,20 +44,16 @@ public class Button extends Tile{
 			}
 		}
 
-		for (Actor a : level.getActorList()) {
+		boolean actorOnButton = false;
+		for (Actor a: level.getActorList()) {
 			if (a.getX() == getX() && a.getY() == getY()){
-				for (Trap t: linkedTraps) {
-					t.setActive(true);
-				}
-			} else {
-				for (Trap t: linkedTraps) {
-					t.setActive(false);
-				}
+				actorOnButton = true;
+				break;
 			}
 		}
-
-
-
+		for (Trap trap : linkedTraps) {
+			trap.setActive(actorOnButton);
+		}
 
 		return level;
 	}

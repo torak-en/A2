@@ -11,7 +11,7 @@ W,P,T1,W,P,B1,P,P,P,P,P,P,P,P,P,P,P,P,P,W
 W,P,P,W,P,P,P,P,P,P,P,P,P,P,P,P,P,P,P,W
 W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W
 K,5,1,r
-Pl,10,4
+Pl,10,5
 CC,18,4
 CC,18,3
 Pi,1,2,u
