@@ -10,7 +10,7 @@ import java.util.*;
  * Manages highscores for different levels.
  */
 public class HighscoreHandler {
-
+	private final int MAX_NUM_HIGHSCORES = 10;
 	/**
      * Retrieves the highscores for a specific level.
      * @param levelNum The number of the level for which highscores are retrieved.
@@ -29,9 +29,8 @@ public class HighscoreHandler {
 				throw new RuntimeException(e);
 			}
 
-
 			int count = 0;
-			while (sc.hasNextLine() && count != 10) {
+			while (sc.hasNextLine() && count != MAX_NUM_HIGHSCORES) {
 				String line = sc.nextLine();
 				String[] data = line.split(",");
 				String name = data[0];
@@ -74,7 +73,7 @@ public class HighscoreHandler {
 
 			boolean notWritten = true;
 			int count = 0;
-			while (sc.hasNextLine() && count != 10) {
+			while (sc.hasNextLine() && count != MAX_NUM_HIGHSCORES) {
 				String line = sc.nextLine();
 				String[] data = line.split(",");
 				if (timeTaken <= Integer.parseInt(data[1]) && notWritten) {
@@ -85,7 +84,7 @@ public class HighscoreHandler {
 				newFileData.append(line).append("\n");
 				count++;
 			}
-			if (count != 10 && notWritten){
+			if (count != MAX_NUM_HIGHSCORES && notWritten){
 				newFileData.append(name).append(",").append(timeTaken).append(",").append(day).append(",").append(month).append(",").append(year).append("\n");
 			}
 			sc.close();

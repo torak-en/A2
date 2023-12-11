@@ -50,8 +50,6 @@ public class ProfileHandler {
 		} else {
 			throw new RuntimeException("The profile you are trying to update doesn't exist.");
 		}
-
-
 	}
 
 	public String createNewProfile(String name){
