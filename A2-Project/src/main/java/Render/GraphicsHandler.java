@@ -5,6 +5,7 @@ import Entities.Items.Item;
 import Entities.Tiles.Tile;
 import Game.Game;
 import Highscore.Highscore;
+import Highscore.HighscoreHandler;
 import Level.Level;
 import Enum.Direction;
 import javafx.animation.AnimationTimer;
@@ -13,7 +14,6 @@ import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import Level.LevelHandler;
 import Profile.Profile;
 import Profile.ProfileHandler;
 import javafx.collections.FXCollections;
@@ -25,10 +25,12 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -58,7 +60,7 @@ public class GraphicsHandler {
     private int playerMoveCooldown = 0;
 
     private static String currentProfileName;
-    private final int maxLevelPermitted = 3;
+    private final int maxLevelPermitted = 4;
     private Direction nextInput = Direction.NONE;
 
 
@@ -355,8 +357,6 @@ public class GraphicsHandler {
      */
     public void levelSelectorUI(Profile profileSelected, Stage stage) throws Exception {
 
-        LevelHandler levelHandler = new LevelHandler();
-
         BorderPane root = new BorderPane();
         createMosaicBackground(root);
         stage.setTitle("Level Selector");
@@ -385,6 +385,8 @@ public class GraphicsHandler {
         levelTwoButton.setDisable(true);
         Button levelThreeButton = new Button("3");
         levelThreeButton.setDisable(true);
+        Button levelFourButton = new Button("4");
+        levelFourButton.setDisable(true);
 
         int maxLevel = profileSelected.getMaxLevelNumUnlocked();
 
@@ -392,10 +394,14 @@ public class GraphicsHandler {
             throw new Exception();
         }
 
-        if (maxLevel == 2) {
+        if (maxLevel > 1){
             levelTwoButton.setDisable(false);
-        } else if (maxLevel == 3) {
-            levelTwoButton.setDisable(false);
+        }
+        if (maxLevel > 2){
+            levelThreeButton.setDisable(false);
+        }
+        if (maxLevel > 3){
+            levelFourButton.setDisable(false);
         }
 
         //Add additional cases
@@ -403,7 +409,7 @@ public class GraphicsHandler {
         Game game = new Game();
 
         levelOneButton.setOnAction(e -> {
-            game.updateLevel(3);
+            game.updateLevel(1);
             game.setCurrentProfile(profileSelected);
             gameUI(stage, game);
         });
@@ -420,6 +426,12 @@ public class GraphicsHandler {
             gameUI(stage, game);
         });
 
+        levelFourButton.setOnAction(e -> {
+            game.updateLevel(4);
+            game.setCurrentProfile(profileSelected);
+            gameUI(stage, game);
+        });
+
         Button returnToMainMenuButton = new Button("Return to Main menu");
         returnToMainMenuButton.setMinWidth(100);
 
@@ -428,7 +440,7 @@ public class GraphicsHandler {
         });
 
         centralBar.getChildren().addAll(returnToMainMenuButton, selectLevelLabel);
-        levelBar.getChildren().addAll(levelOneButton, levelTwoButton, levelThreeButton);
+        levelBar.getChildren().addAll(levelOneButton, levelTwoButton, levelThreeButton, levelFourButton);
         selectBar.getChildren().add(selectLevelLabel);
 
         root.getChildren().addAll(selectBar, levelBar);
@@ -518,6 +530,7 @@ public class GraphicsHandler {
 
         Canvas canvas = new Canvas(900, 900);
         gc = canvas.getGraphicsContext2D();
+
         root.getChildren().add(canvas);
 
         startTime = System.nanoTime();
@@ -529,10 +542,12 @@ public class GraphicsHandler {
                     long currentTime = System.nanoTime();
                     double diff = currentTime-startTime;
                     progress += diff / nsPerTick;
-                    System.out.println(progress);
-                    if (progress >=1) {
+                    while(progress >=1) {
                         progress--;
                         tick(stage, game);
+                        gc.setFill(Color.WHITE);
+                        gc.fillText(game.getLevel().getLevelName(),20,20);
+                        gc.fillText(String.valueOf(game.getLevel().getCurrentTime()),850, 20);
                         startTime = currentTime;
                     }
                 }
@@ -621,6 +636,25 @@ public class GraphicsHandler {
         game.tick();
         if (p.hasWon()){
             timer.stop();
+
+            String name = game.getCurrentProfile().getProfileName();
+            int timeTaken = game.getLevel().getTimeTaken();
+            LocalDateTime time = LocalDateTime.now();
+            int day = time.getDayOfMonth();
+            int month = time.getMonthValue();
+            int year = time.getYear();
+
+            Highscore newHighscore = new Highscore(name, timeTaken, day, month, year);
+            HighscoreHandler highscoreHandler = new HighscoreHandler();
+            highscoreHandler.newHighscore(game.getLevelNum(), newHighscore);
+
+            Profile currentProfile = game.getCurrentProfile();
+            if(currentProfile.getMaxLevelNumUnlocked() < game.getLevelNum() + 1 && game.getLevelNum() < maxLevelPermitted){
+                currentProfile.setMaxLevelNumUnlocked(game.getLevelNum() + 1);
+                ProfileHandler profileHandler = new ProfileHandler();
+                profileHandler.updateProfile(currentProfile);
+            }
+
             winScreenUI(stage, game);
         } else if (!p.isAlive()){
             timer.stop();
@@ -689,9 +723,9 @@ public class GraphicsHandler {
             }
             renderTextures(0,0,1000,1000, background);
 
-            setTileVisible(tiles, x, y);
-            setItemsVisible(items, tiles, x, y);
-            setActorsVisible(actors, tiles, x, y);
+//            setTileVisible(tiles, x, y);
+//            setItemsVisible(items, tiles, x, y);
+//            setActorsVisible(actors, tiles, x, y);
 
             for (int i = minPossibleX; i < maxPossibleX + 1; i++) {
                 for (int j = minPossibleY; j < maxPossibleY + 1; j++) {
@@ -700,7 +734,7 @@ public class GraphicsHandler {
                         if (tile != null){
                             Image texture;
                             if (tile.isVisible()) {
-                                texture = tile.getType().getImage();
+                                texture = tile.getTexture();
                             } else {
                                 try {
                                     texture = new Image(new FileInputStream("Textures/fog.png"));

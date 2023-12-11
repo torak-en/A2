@@ -8,7 +8,11 @@ public class Key extends Item {
 		super(x, y, EntityType.KEY);
 		this.colour = colour;
 	}
-
+	/**
+	 * Gets the color of the key
+	 *
+	 * @return The color of the key
+	 */
 	public String getColour() {
 		return colour;
 	}

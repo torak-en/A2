@@ -13,9 +13,9 @@ public class Profile {
      * @param profileName         The name of the player's profile.
      * @param maxLevelNumUnlocked The maximum level number unlocked in the profile.
      */
-	public Profile(String profileName, int maxLevelNumUnlcoked){
+	public Profile(String profileName, int maxLevelNumUnlocked){
 		this.profileName = profileName;
-		this.maxLevelNumUnlocked = maxLevelNumUnlcoked;
+		this.maxLevelNumUnlocked = maxLevelNumUnlocked;
 	}
 
 	/**
@@ -37,7 +37,7 @@ public class Profile {
 
 	/**
      * Sets the maximum level number unlocked in the profile.
-     * @param maxLevelNumUnlocked The maximum level number to set.
+     * @return The maximum level number to set.
      */
 	public int getMaxLevelNumUnlocked() {
 		return maxLevelNumUnlocked;

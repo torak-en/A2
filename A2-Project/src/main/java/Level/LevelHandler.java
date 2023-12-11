@@ -86,6 +86,7 @@ public class LevelHandler {
 			case "C" -> new ChipSocket(x, y, Integer.parseInt(sp[1]));
 			case "A" -> new Water(x, y);
 			case "T" -> new Trap(x,y,Integer.parseInt(sp[1]));
+			case "#" -> new Empty(x,y);
 			default -> throw new IllegalArgumentException("Not a valid String for Tile (" + s + ")");
 		};
 	}

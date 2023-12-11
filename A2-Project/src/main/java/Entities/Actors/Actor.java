@@ -4,11 +4,13 @@ import Entities.Entity;
 import Entities.Items.ComputerChip;
 import Entities.Items.Key;
 import Entities.Tiles.ChipSocket;
+import Entities.Tiles.Ice;
 import Entities.Tiles.LockedDoor;
 import Entities.Tiles.Tile;
 import Enum.Direction;
 import Enum.EntityType;
 import Level.Level;
+import javafx.scene.image.ImageView;
 
 import java.nio.channels.NonWritableChannelException;
 import java.util.Objects;
@@ -85,7 +87,6 @@ public abstract class Actor extends Entity {
 		}
 		EntityType nextTile = level.getTileLayer()[newX][newY].getType();
 		if (nextTile != EntityType.PATH && nextTile != EntityType.BUTTON && nextTile != EntityType.TRAP ){
-			System.out.println("WHy");
 			return false;
 		}
 
@@ -124,7 +125,6 @@ public abstract class Actor extends Entity {
 		Tile nextTile = level.getTileLayer()[newX][newY];
 		Player p = level.getPlayer();
 		Key usedKey = null;
-		ComputerChip usedChip = null;
 		if (nextTile.getType() == EntityType.WALL){
 			return false;
 		} else if (nextTile.getType() == EntityType.LOCKED_DOOR){
@@ -142,22 +142,70 @@ public abstract class Actor extends Entity {
 			ChipSocket altar = (ChipSocket) nextTile;
 			if (p.getHeldGold().size() == altar.getNumOfGoldRequired()){
 				System.out.println(altar.getNumOfGoldRequired());
-				for (int i = 0; i < altar.getNumOfGoldRequired(); i++) {
-					p.getHeldGold().remove(0);
+				if (altar.getNumOfGoldRequired() > 0) {
+					p.getHeldGold().subList(0, altar.getNumOfGoldRequired()).clear();
 				}
 				altar.setLocked(false);
 			} else {
 				return false;
 			}
+		} else if (nextTile.getType() == EntityType.ICE){
+			Ice ice = (Ice) nextTile;
+			if (!ice.checkMoveOntoIce(direction)){
+				return false;
+			}
 		}
 
 		for (Actor a : level.getActorList()) {
-			if (a.getType() == EntityType.BLOCK){
+			if (a.getX() == newX && a.getY() == newY &&  a.getType() == EntityType.BLOCK){
 				Block b = (Block) a;
+				System.out.println(direction);
+				System.out.println(b.blockCheckLocation(direction,level));
+				if (!b.blockCheckLocation(direction,level)){
+					return false;
+				} else {
+					b.setPendingDirection(direction);
+					b.applyMove();
+				}
 			}
 		}
 		return true;
 	}
+
+	public boolean blockCheckLocation(Direction direction, Level level){
+		int newX = getX();
+		int newY = getY();
+		if (direction == Direction.UP){
+			newY--;
+		} else if (direction == Direction.DOWN){
+			newY++;
+		} else if (direction == Direction.LEFT) {
+			newX--;
+		} else if (direction == Direction.RIGHT){
+			newX++;
+		} else if (direction == Direction.NONE){
+			return true;
+		}
+		Tile nextTile = level.getTileLayer()[newX][newY];
+		if (nextTile.getType() != EntityType.PATH && nextTile.getType() != EntityType.BUTTON && nextTile.getType() != EntityType.TRAP && nextTile.getType() != EntityType.ICE && nextTile.getType() != EntityType.WATER){
+			System.out.println("WHy");
+			return false;
+		} else if (nextTile.getType() == EntityType.ICE){
+			Ice ice = (Ice) nextTile;
+			if (!ice.checkMoveOntoIce(direction)){
+				return false;
+			}
+		}
+
+		for (Actor a : level.getActorList()) {
+			if (a.getX() == newX && a.getY() == newY && a.getType() != EntityType.PLAYER){
+				return false;
+			}
+		}
+
+		return true;
+	}
+
 
 
 	/**
