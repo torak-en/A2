@@ -5,10 +5,10 @@ W,W,W,Idr,A,P,W,W,Ird,Ilr,Ilr,P,P,W,W
 W,W,W,Iud,W,P,P,W,P,P,W,W,P,P,W
 W,P,W,Iud,W,W,P,W,P,P,W,W,W,P,W
 W,P,P,Ilu,W,W,P,W,P,P,W,P,P,P,W
-W,W,P,W,P,P,P,W,W,W,W,P,W,W,W
-W,P,P,P,P,W,W,W,W,P,P,P,W,W,W
+W,W,P,W,P,P,P,Ilr,Idl,W,W,P,W,W,W
+W,P,P,P,P,W,W,W,Iur,P,P,P,W,W,W
 W,A,W,W,P,P,P,P,P,P,W,P,P,W,W
-W,W,W,W,W,P,W,P,P,W,W,W,P,A,W
+W,W,W,W,W,P,W,P,P,W,Ird,Ilu,P,A,W
 W,E,P,W,W,P,W,W,P,P,P,W,W,W,W
 W,P,P,W,A,P,P,W,Iud,W,P,P,P,P,W
 W,C4,W,W,W,W,W,Ird,Ilu,P,P,W,Iur,Ild,W
