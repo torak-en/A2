@@ -15,7 +15,7 @@ import Level.Level;
 public class Bug extends Actor{
 	private Direction initialDirection;
 	private Direction edgeDirection;
-	private final int TICKS_BETWEEN_MOVE = 30;
+	private final int TICKS_BETWEEN_MOVE = 40;
 	private int ticksTillMove = 0;
 
 

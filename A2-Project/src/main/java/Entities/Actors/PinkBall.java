@@ -13,7 +13,7 @@ import Level.Level;
 
 public class PinkBall extends Actor{
 	private final Direction initialDirection;
-	private final int TICKS_BETWEEN_MOVE = 20;
+	private final int TICKS_BETWEEN_MOVE = 25;
 	private int ticksTillMove = 0;
 
 

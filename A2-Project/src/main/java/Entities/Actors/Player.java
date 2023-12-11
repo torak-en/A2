@@ -48,8 +48,9 @@ public class Player extends Actor{
 	public Level tick(Level level) {
 		List<Actor> actors = level.getActorList();
 		for (Actor a : actors) {
-			if (a.getX() == getX() && a.getY() == getY() && a != this){
+			if (a.getX() == getX() && a.getY() == getY() && a != this) {
 				alive = false;
+				break;
 			}
 		}
 		return level;
@@ -99,6 +100,7 @@ public class Player extends Actor{
 		if (item.getType() == EntityType.KEY){
 			Key key = (Key) item;
 			heldKeys.add(key);
+			System.out.println("Key Picked up " + key.getColour());
 		} else if (item.getType() == EntityType.COMPUTER_CHIP) {
 			ComputerChip gold = (ComputerChip) item;
 			heldGold.add(gold);

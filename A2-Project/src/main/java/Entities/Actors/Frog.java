@@ -18,7 +18,7 @@ public class Frog extends Actor{
 	private int playerX = -1;
 	private int playerY = -1;
 
-	private final int TICKS_BETWEEN_MOVE = 100;
+	private final int TICKS_BETWEEN_MOVE = 60;
 	private int ticksTillMove = 0;
 
 
@@ -43,12 +43,8 @@ public class Frog extends Actor{
 
 	@Override
 	public Level tick(Level level) {
-		if (playerX == getX() && playerY == getY()){
-			level.getPlayer().setAlive(false);
-			setPendingDirection(Direction.NONE);
-		}
+		Player p = level.getPlayer();
 		if (ticksTillMove == 0){
-			Player p = level.getPlayer();
 			ticksTillMove = TICKS_BETWEEN_MOVE;
 			if (playerX != p.getX() && playerY != p.getY()) {
 				long startTime = System.nanoTime();
@@ -59,15 +55,17 @@ public class Frog extends Actor{
 				playerX = p.getX();
 				playerY = p.getY();
 			}
+			if (playerX == getX() && playerY == getY()){
+				level.getPlayer().setAlive(false);
+				setPendingDirection(Direction.NONE);
+			}
 
 			if (nodePathToPlayer != null) {
 				setX(nodePathToPlayer.getX());
 				setY(nodePathToPlayer.getY());
 				nodePathToPlayer = nodePathToPlayer.getParentNode();
 				setPendingDirection(null);
-				System.out.println("Actual Move");
 			} else {
-				System.out.println("Random Move");
 				Direction d = randomDirection(level);
 				setPendingDirection(d);
 				applyMove();

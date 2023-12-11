@@ -1,4 +1,4 @@
-Avoidance,50
+Timings,50
 15,10
 W,W,W,W,W,W,W,W,W,W,W,W,W,W,W
 W,P,A,A,P,P,P,P,A,A,P,W,P,E,W
