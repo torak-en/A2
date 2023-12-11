@@ -1,5 +1,8 @@
 package Highscore;
 
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
