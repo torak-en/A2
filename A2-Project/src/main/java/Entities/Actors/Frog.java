@@ -77,9 +77,9 @@ public class Frog extends Actor{
 
 	/**
      * Overrides the calculateMove method inherited from Actor class.
-     * This method calculates the movement direction of the frog.
+     * This method is not used for frog movement; movement logic is handled in the tick method.
      * @param level The level where the frog exists.
-     * @return The calculated movement direction of the frog (or NONE if no movement).
+     * @return Null, as the method is not used, just overriden.
      */
 
 	@Override
@@ -92,7 +92,7 @@ public class Frog extends Actor{
 	 * Calculates the path to the player using a breadth first search algorithm.
 	 * @param player The player object.
 	 * @param level The level where the frog exists.
-	 * @return The node containing the path to the player.
+	 * @return The node containing the path of linked Nodes that the frog should follow to the player.
 	 */
 
 	private Node calculatePathToPlayer(Player player, Level level) {
