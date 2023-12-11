@@ -64,16 +64,17 @@ public class GraphicsHandler {
     private Image fog;
 
     //Magic Number Solver.
-
     private int minHeightVal = 200;
     private int minWidthVal = 200;
     private int maxHeightVal = 500;
     private int maxWidthVal = 500;
     private int spacingVal = 10;
-    private int fitTitleHeight = 150;
-    private int fitTitleWidth = 190;
+    private int fitTitleHeight = 300;
+    private int fitTitleWidth = 300;
     private int listViewMax = 350;
     private int minWidthButton = 100;
+    private Insets createProfileInset = new Insets(100, 3, 90, 125);
+    private Insets winLoseScreenBarInset = new Insets(40, 3, 90, 125);
 
 
      /**
@@ -85,7 +86,7 @@ public class GraphicsHandler {
     public void menuScreenUI(Stage stage) {
         BorderPane root = new BorderPane();
 
-        Image gameTitleImage = new Image("file:UserInterface/InterimTitleImage3.png");
+        Image gameTitleImage = new Image("file:UserInterface/FinalTitleImage.png");
 
         createMosaicBackground(root);
 
@@ -103,8 +104,8 @@ public class GraphicsHandler {
         titleImageView.setFitHeight(fitTitleHeight);
         titleImageView.setFitWidth(fitTitleWidth);
 
-        titleImageView.setX(fitTitleHeight);
-        titleImageView.setY(fitTitleHeight);
+        titleImageView.setX(100);
+        titleImageView.setY(100);
 
         root.getChildren().add(titleImageView);
 
@@ -312,13 +313,13 @@ public class GraphicsHandler {
         nameEntryField.setMaxSize(150, 100);
 
         VBox centralVBox = new VBox();
-        centralVBox.setPadding(new Insets(100, 3, 90, 125));
+        centralVBox.setPadding(createProfileInset);
         centralVBox.setSpacing(spacingVal);
         root.setTop(centralVBox);
 
         HBox centralHBar = new HBox();
         centralHBar.setSpacing(spacingVal);
-        centralHBar.setPadding(new Insets(100, 3, 90, 125));
+        centralHBar.setPadding(createProfileInset);
         root.setBottom(centralHBar);
 
         Button createProfileNameButton = new Button("Start");
@@ -496,6 +497,7 @@ public class GraphicsHandler {
      * @param stage The JavaFX stage to display the game UI on.
      * @param game The game to display the UI for.
      */
+
     public void gameUI(Stage stage, Game game){
         StackPane root = new StackPane();
 
@@ -853,7 +855,7 @@ public class GraphicsHandler {
 
         HBox centralBar = new HBox();
         centralBar.setSpacing(spacingVal);
-        centralBar.setPadding(new Insets(40, 3, 90, 125));
+        centralBar.setPadding(winLoseScreenBarInset);
         root.setBottom(centralBar);
 
         Button returnToMainMenuButton = new Button("Return to Main menu");
@@ -945,10 +947,10 @@ public class GraphicsHandler {
         loseMessageLabel.setTextFill(Color.color(1,1,1));
 
         VBox centralVBox = new VBox();
-        centralVBox.setPadding(new Insets(40, 3, 90, 125));
+        centralVBox.setPadding(winLoseScreenBarInset);
 
         HBox centralBar = new HBox();
-        centralBar.setPadding(new Insets(40, 3, 90, 125));
+        centralBar.setPadding(winLoseScreenBarInset);
         centralBar.setSpacing(spacingVal);
 
         Button returnToMainMenuButton = new Button("Return to Main menu");
