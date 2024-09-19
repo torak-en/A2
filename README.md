@@ -4,5 +4,5 @@ A Java-based implementation of the 1989 puzzle game Chip’s Challenge, that was
 ## How to run:
 Download and extract the project, then run the Render.java class.
 ## Gameplay:
-![Recording 2024-09-19 at 14 42 05](https://github.com/user-attachments/assets/9fdaf246-1571-43d7-9802-7355681e5aa5)
+![Recording2024-09-19at14 42 05-ezgif com-crop](https://github.com/user-attachments/assets/2cf6f058-bba7-46e6-bc81-e77d2260bea5)
 
